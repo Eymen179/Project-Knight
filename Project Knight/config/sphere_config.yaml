@@ -1,0 +1,25 @@
+behaviors:
+  ToTheDestination:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 10        # kullanılacak boyut - ne kadar fazla ise o kadar zaman harcanır
+      buffer_size: 100      # Öğrenmeden önce toplanacak deneyim sayısı
+      learning_rate: 3.0e-4  # Öğrenme oranı
+      beta: 5.0e-4            # Entropy regularization
+      epsilon: 0.2            # PPO için clipping parametresi
+      lambd: 0.99             # GAE (Generalized Advantage Estimation) lambda
+      num_epoch: 3            # Her güncellemede kaç kere geçileceği
+      learning_rate_schedule: linear
+      beta_schedule: constant
+      epsilon_schedule: linear
+    network_settings:
+      normalize: false        # Girdi normalizasyonu
+      hidden_units: 128       # Gizli katmandaki nöron sayısı
+      num_layers: 2           # Gizli katman sayısı
+    reward_signals:
+      extrinsic:              # Varsayılan ödül tipi
+        gamma: 0.99           # Discount factor
+        strength: 1.0         # Ödülün ağırlığı
+    max_steps: 500000         # Eğitim adım sayısı (toplam environment step)
+    time_horizon: 64          # Bir rollout’taki maksimum adım
+    summary_freq: 10000       # TensorBoard’a log yazma sıklığı
