@@ -1,9 +1,9 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour // Veya ThirdPersonMovement
 {
-    // Orijinal Deðiþkenler
+    // Orijinal Deï¿½iï¿½kenler
     public Vector2 _moveDirection;
     private Rigidbody rb;
     private Animator _animator;
@@ -14,25 +14,25 @@ public class PlayerMovement : MonoBehaviour // Veya ThirdPersonMovement
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float runSpeed = 6f;
 
-    // YENÝ: Kamerayý ve dönüþ hýzýný referans almak için
+    // YENï¿½: Kamerayï¿½ ve dï¿½nï¿½ï¿½ hï¿½zï¿½nï¿½ referans almak iï¿½in
     private Transform mainCameraTransform;
-    [SerializeField] private float turnSpeed = 10f; // Karakterin hareket yönüne dönme hýzý
+    [SerializeField] private float turnSpeed = 10f; // Karakterin hareket yï¿½nï¿½ne dï¿½nme hï¿½zï¿½
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
-        // YENÝ: Ana kameranýn transformunu al (Kameranýzýn "MainCamera" tag'ine sahip olduðundan emin olun)
+        // YENï¿½: Ana kameranï¿½n transformunu al (Kameranï¿½zï¿½n "MainCamera" tag'ine sahip olduï¿½undan emin olun)
         mainCameraTransform = Camera.main.transform;
     }
 
-    void Update() // Animasyon ve Input okuma için ideal
+    void Update() // Animasyon ve Input okuma iï¿½in ideal
     {
         // Input okuma
         _moveDirection = move.action.ReadValue<Vector2>();
 
-        // Animasyon ayarlarý (Bu kýsým ayný kalabilir)
+        // Animasyon ayarlarï¿½ (Bu kï¿½sï¿½m aynï¿½ kalabilir)
         float inputMagnitude = _moveDirection.magnitude;
         bool isRunning = run.action.IsPressed();
         float animationSpeed = inputMagnitude * (isRunning ? 1f : 0.5f);
@@ -40,49 +40,153 @@ public class PlayerMovement : MonoBehaviour // Veya ThirdPersonMovement
         _animator.SetFloat("speed", animationSpeed);
     }
 
-    void FixedUpdate() // Fizik tabanlý hareket için ideal
+    void FixedUpdate() // Fizik tabanlï¿½ hareket iï¿½in ideal
     {
-        // DEÐÝÞTÝ: Tüm hareket mantýðý kamera yönüne göre yeniden yazýldý
+        // DEï¿½ï¿½ï¿½Tï¿½: Tï¿½m hareket mantï¿½ï¿½ï¿½ kamera yï¿½nï¿½ne gï¿½re yeniden yazï¿½ldï¿½
 
         bool isRunning = run.action.IsPressed();
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
-        // --- HAREKET HESAPLAMASI (Kameraya Göre) ---
+        // --- HAREKET HESAPLAMASI (Kameraya Gï¿½re) ---
 
-        // Eðer input yoksa, karakterin yatay hýzýný sýfýrla (yerçekimi etkilenmesin)
+        // Eï¿½er input yoksa, karakterin yatay hï¿½zï¿½nï¿½ sï¿½fï¿½rla (yerï¿½ekimi etkilenmesin)
         if (_moveDirection == Vector2.zero)
         {
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             return;
         }
 
-        // 1. Kameranýn ileri (forward) ve sað (right) yönlerini al
+        // 1. Kameranï¿½n ileri (forward) ve saï¿½ (right) yï¿½nlerini al
         Vector3 camForward = mainCameraTransform.forward;
         Vector3 camRight = mainCameraTransform.right;
 
-        // 2. Y eksenini sýfýrla (karakterin havaya uçmasýný/yere batmasýný engelle)
+        // 2. Y eksenini sï¿½fï¿½rla (karakterin havaya uï¿½masï¿½nï¿½/yere batmasï¿½nï¿½ engelle)
         camForward.y = 0f;
         camRight.y = 0f;
 
-        // 3. Vektörleri normalize et (Y eksenini kaldýrýnca büyüklükleri deðiþir)
+        // 3. Vektï¿½rleri normalize et (Y eksenini kaldï¿½rï¿½nca bï¿½yï¿½klï¿½kleri deï¿½iï¿½ir)
         camForward.Normalize();
         camRight.Normalize();
 
-        // 4. Input'u kamera yönleriyle birleþtirerek hareket yönünü hesapla
-        //    (_moveDirection.y = W/S tuþlarý, _moveDirection.x = A/D tuþlarý)
+        // 4. Input'u kamera yï¿½nleriyle birleï¿½tirerek hareket yï¿½nï¿½nï¿½ hesapla
+        //    (_moveDirection.y = W/S tuï¿½larï¿½, _moveDirection.x = A/D tuï¿½larï¿½)
         Vector3 moveDirection = (camForward * _moveDirection.y + camRight * _moveDirection.x).normalized;
 
-        // 5. Rigidbody'e hýzý uygula
+        // 5. Rigidbody'e hï¿½zï¿½ uygula
         Vector3 targetVelocity = moveDirection * currentSpeed;
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
 
 
         // --- ROTASYON HESAPLAMASI ---
 
-        // Karakterin, hesaplanan hareket yönüne (moveDirection) bakmasýný saðla
+        // Karakterin, hesaplanan hareket yï¿½nï¿½ne (moveDirection) bakmasï¿½nï¿½ saï¿½la
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
 
-        // Karakterin aniden deðil, yumuþak bir þekilde dönmesi için Slerp kullan
+        // Karakterin aniden deï¿½il, yumuï¿½ak bir ï¿½ekilde dï¿½nmesi iï¿½in Slerp kullan
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
+    }
+}*/
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerMovement : MonoBehaviour // Script adï¿½nï¿½ deï¿½iï¿½tirdim
+{
+    // Orijinal Deï¿½iï¿½kenler
+    public Vector2 _moveDirection;
+    private Rigidbody rb;
+    private Animator _animator;
+
+    [SerializeField] private InputActionReference move;
+    [SerializeField] private InputActionReference run;
+
+    [SerializeField] private float walkSpeed = 3f;
+    [SerializeField] private float runSpeed = 6f;
+
+    // Kamera ve Rotasyon
+    private Transform mainCameraTransform;
+    [SerializeField] private float turnSpeed = 10f;
+
+    // --- YENï¿½: Zï¿½plama Deï¿½iï¿½kenleri ---
+    [Header("Jump")] // Inspector'da baï¿½lï¿½k oluï¿½turur
+    [SerializeField] private InputActionReference jump;
+    [SerializeField] private float jumpForce = 5f;
+
+    // --- YENï¿½: Yer Kontrolï¿½ Deï¿½iï¿½kenleri ---
+    [Header("Ground Check")]
+    [SerializeField] private Transform groundCheck; // Karakterin ayaï¿½ï¿½nï¿½n altï¿½ndaki bir objenin Transform'u
+    [SerializeField] private float groundCheckRadius = 0.2f;
+    [SerializeField] private LayerMask groundLayer; // Nelerin "zemin" olarak kabul edileceï¿½ini belirler
+    private bool isGrounded; // Karakterin yerde olup olmadï¿½ï¿½ï¿½nï¿½ tutar
+
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
+        mainCameraTransform = Camera.main.transform;
+    }
+
+    void Update() // Input ve Animasyon
+    {
+        // --- YENï¿½: Yer Kontrolï¿½ ---
+        // Her frame karakterin yerde olup olmadï¿½ï¿½ï¿½nï¿½ kontrol et
+        // groundCheck pozisyonunda, groundCheckRadius yarï¿½ï¿½apï¿½nda bir kï¿½re oluï¿½turur
+        // ve bu kï¿½re groundLayer'a temas ediyorsa 'true' dï¿½ner.
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+
+        // --- Input Okuma ---
+        _moveDirection = move.action.ReadValue<Vector2>();
+
+        // --- YENï¿½: Zï¿½plama Input'u ---
+        // Eï¿½er zï¿½plama tuï¿½una BU FRAME basï¿½ldï¿½ysa VE karakter yerdeyse
+        if (jump.action.WasPressedThisFrame() && isGrounded)
+        {
+            // Y eksenindeki mevcut hï¿½zï¿½ sï¿½fï¿½rlayï¿½p (dï¿½ï¿½erken zï¿½plarsa daha tutarlï¿½ olur)
+            // yukarï¿½ yï¿½nlï¿½ anlï¿½k bir kuvvet (Impulse) uygula.
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+
+        // --- Animasyon Ayarlarï¿½ ---
+        float inputMagnitude = _moveDirection.magnitude;
+        bool isRunning = run.action.IsPressed();
+        float animationSpeed = inputMagnitude * (isRunning ? 1f : 0.5f);
+        _animator.SetFloat("speed", animationSpeed);
+
+        // YENï¿½ (Opsiyonel): Zï¿½plama animasyonlarï¿½ iï¿½in
+        // Animator'ï¿½nï¿½zde "isGrounded" adï¿½nda bir bool parametresi oluï¿½turun.
+        // _animator.SetBool("isGrounded", isGrounded);
+    }
+
+    void FixedUpdate() // Fizik tabanlï¿½ hareket
+    {
+        bool isRunning = run.action.IsPressed();
+        float currentSpeed = isRunning ? runSpeed : walkSpeed;
+
+        // --- HAREKET HESAPLAMASI (DEï¿½ï¿½ï¿½MEDï¿½) ---
+        if (_moveDirection == Vector2.zero)
+        {
+            // DEï¿½ï¿½ï¿½Tï¿½: rb.linearVelocity.y idi, yerï¿½ekiminin daha iyi ï¿½alï¿½ï¿½masï¿½ iï¿½in rb.velocity.y kullanmak daha doï¿½rudur.
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0); // Kaymayï¿½ durdur ama dï¿½ï¿½meyi engelleme
+            return;
+        }
+
+        Vector3 camForward = mainCameraTransform.forward;
+        Vector3 camRight = mainCameraTransform.right;
+        camForward.y = 0f;
+        camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 moveDirection = (camForward * _moveDirection.y + camRight * _moveDirection.x).normalized;
+        Vector3 targetVelocity = moveDirection * currentSpeed;
+
+        // DEï¿½ï¿½ï¿½Tï¿½: Y eksenindeki hï¿½zï¿½ (zï¿½plama ve yerï¿½ekimi) koru
+        // rb.linearVelocity.y yerine rb.velocity.y kullanmak daha standarttï¿½r.
+        rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
+
+        // --- ROTASYON HESAPLAMASI (DEï¿½ï¿½ï¿½MEDï¿½) ---
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
     }
 }
