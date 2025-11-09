@@ -7,7 +7,8 @@ public class PlayerCombatManager : MonoBehaviour
     private Animator _animator;
 
     // Yeni Input System'den "Attack" eylemini almak için
-    [SerializeField] private InputActionReference attackAction;
+    [SerializeField] private InputActionReference attack;
+    [SerializeField] private InputActionReference block;
 
     // YENÝ (Opsiyonel): Saldýrý sýrasýnda hareketi kýsýtlamak için
     // ThirdPersonMovement script'inize eriþim
@@ -15,14 +16,15 @@ public class PlayerCombatManager : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
-
-        // Opsiyonel: Diðer script'e eriþ
-        // movementScript = GetComponent<ThirdPersonMovement>();
     }
     void Update()
     {
+        bool isBlocking = block.action.IsPressed();
+
+        _animator.SetBool("isBlocking", isBlocking);
+
         // "Attack" eylemine (Sol Týk) BU FRAME basýldý mý?
-        if (attackAction.action.WasPressedThisFrame())
+        if (attack.action.WasPressedThisFrame() && !isBlocking)
         {
             // Animator'e "Attack" adýndaki tetiði gönder
             _animator.SetTrigger("attack");

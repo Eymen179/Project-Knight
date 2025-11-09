@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour // Script ad�n� de�i�tirdim
+public class PlayerMovement : MonoBehaviour
 {
-    // Orijinal De�i�kenler
+    // Orijinal Değişkenler
     public Vector2 _moveDirection;
     private Rigidbody rb;
     private Animator _animator;
@@ -18,23 +18,26 @@ public class PlayerMovement : MonoBehaviour // Script ad�n� de�i�tirdim
     private Transform mainCameraTransform;
     [SerializeField] private float turnSpeed = 10f;
 
-    // --- YEN�: Z�plama De�i�kenleri ---
-    [Header("Jump")] // Inspector'da ba�l�k olu�turur
+    // --- Zıplama Değişkenleri ---
+    [Header("Jump")]
     [SerializeField] private InputActionReference jump;
     [SerializeField] private float jumpForce = 5f;
 
-    // --- YEN�: Yer Kontrol� De�i�kenleri ---
+    // --- Yer Kontrolü Değişkenleri ---
     [Header("Ground Check")]
-    [SerializeField] private Transform groundCheck; // Karakterin aya��n�n alt�ndaki bir objenin Transform'u
+    [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
-    [SerializeField] private LayerMask groundLayer; // Nelerin "zemin" olarak kabul edilece�ini belirler
-    private bool isGrounded; // Karakterin yerde olup olmad���n� tutar
+    [SerializeField] private LayerMask groundLayer;
+    private bool isGrounded;
 
-    [Header("Use Weapons")]
-    [SerializeField] private InputActionReference equip;
+    // --- Kılıç Durumu ---
+    // Bu değişkeni EquipmentManager güncelleyecek
     private bool isEquipped;
-    private int pressCounter = 0;
-    public GameObject sword;
+
+    // --- SİLİNDİ: Bu script artık "equip" input'unu dinlemeyecek ---
+    // [SerializeField] private InputActionReference equip;
+    // private int pressCounter = 0;
+    // public GameObject sword;
 
 
     void Start()
@@ -46,52 +49,32 @@ public class PlayerMovement : MonoBehaviour // Script ad�n� de�i�tirdim
 
     void Update() // Input ve Animasyon
     {
+        // --- SİLİNDİ: Kılıç kuşanma input'u buradan kaldırıldı ---
+        /*
         if (equip.action.WasPressedThisFrame())
         {
-            pressCounter++;
-            if(pressCounter%2 != 0) 
-            {
-                isEquipped = true;
-                _animator.SetTrigger("getSword");
-            }
-            else
-            {
-                isEquipped = false;
-                _animator.SetTrigger("dropSword");
-            }
-            sword.SetActive(isEquipped);
-            Debug.Log("Bastım " + isEquipped);
+            // ... (tüm eski kod silindi) ...
         }
-        // --- YENİ: Önceki Durumu Sakla ---
-        // isGrounded'ın bu frame'deki değerini hesaplamadan önce, geçen frame'deki değerini bir değişkene al.
-        // 'isGrounded' değişkeninin class seviyesinde (en üstte) tanımlı olması gerekiyor, ki zaten öyle.
+        */
+
         bool wasGrounded = isGrounded;
-
-        // --- Yer Kontrolü ---
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
-
-        // --- Animator'a 'isGrounded' Bilgisini Gönder ---
         _animator.SetBool("isGrounded", isGrounded);
 
-        // --- YENİ: "Land" Tetikleyicisini Gönder ---
-        // Eğer geçen frame havadaysak (wasGrounded == false) VE
-        // bu frame yerdeysek (isGrounded == true)...
-        // Bu, "YERE YENİ İNDİK" demektir.
         if (isGrounded && !wasGrounded)
         {
             _animator.SetTrigger("land");
         }
-        // --- Input Okuma ---
+
         _moveDirection = move.action.ReadValue<Vector2>();
 
-        // --- Zıplama Input'u ---
         if (jump.action.WasPressedThisFrame() && isGrounded)
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-            // --- YENİ: Zıplama Animasyonunu Tetikle ---
-            if (isEquipped)
+            // --- GÜNCELLENDİ: Sadece 'isEquipped' durumunu kontrol eder ---
+            if (isEquipped) // Bu değişken artık EquipmentManager tarafından ayarlanacak
             {
                 _animator.SetTrigger("jumpWithSword");
             }
@@ -101,23 +84,21 @@ public class PlayerMovement : MonoBehaviour // Script ad�n� de�i�tirdim
             }
         }
 
-        // --- Animasyon Ayarları (Hız) ---
         float inputMagnitude = _moveDirection.magnitude;
         bool isRunning = run.action.IsPressed();
         float animationSpeed = inputMagnitude * (isRunning ? 1f : 0.5f);
         _animator.SetFloat("speed", animationSpeed);
     }
 
-    void FixedUpdate() // Fizik tabanl� hareket
+    void FixedUpdate()
     {
+        // ... (FixedUpdate içeriği aynı kaldı, değişiklik yok) ...
         bool isRunning = run.action.IsPressed();
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
-        // --- HAREKET HESAPLAMASI (DE���MED�) ---
         if (_moveDirection == Vector2.zero)
         {
-            // DE���T�: rb.linearVelocity.y idi, yer�ekiminin daha iyi �al��mas� i�in rb.velocity.y kullanmak daha do�rudur.
-            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0); // Kaymay� durdur ama d��meyi engelleme
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             return;
         }
 
@@ -131,21 +112,30 @@ public class PlayerMovement : MonoBehaviour // Script ad�n� de�i�tirdim
         Vector3 moveDirection = (camForward * _moveDirection.y + camRight * _moveDirection.x).normalized;
         Vector3 targetVelocity = moveDirection * currentSpeed;
 
-        // DE���T�: Y eksenindeki h�z� (z�plama ve yer�ekimi) koru
-        // rb.linearVelocity.y yerine rb.velocity.y kullanmak daha standartt�r.
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
 
-        // --- ROTASYON HESAPLAMASI (DE���MED�) ---
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
     }
 
-    void NoSwordAnimations()
+    // --- YENİ EKLENDİ: Dışarıdan durumu ve animasyonları güncellemek için ---
+    // EquipmentManager bu fonksiyonu çağıracak.
+    public void SetEquippedState(bool state)
     {
+        isEquipped = state;
 
+        // Kılıç alma/bırakma animasyon tetiklemelerini buraya taşıdık
+        if (isEquipped)
+        {
+            _animator.SetTrigger("getSword");
+        }
+        else
+        {
+            _animator.SetTrigger("dropSword");
+        }
     }
-    void WithSwordAnimations()
-    {
 
-    }
+    // --- Bu fonksiyonlar artık kullanılmıyor, silebilirsin ---
+    // void NoSwordAnimations() { }
+    // void WithSwordAnimations() { }
 }
