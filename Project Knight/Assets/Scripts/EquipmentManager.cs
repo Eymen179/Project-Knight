@@ -12,6 +12,8 @@ public class EquipmentManager : MonoBehaviour
 
     // --- YENÝ EKLENDÝ ---
     private PlayerMovement playerMovement; // PlayerMovement script'ine referans
+    private PlayerCombatManager combatManager;
+
     private bool isWeaponEquipped = false; // Senin 'pressCounter' mantýðý için toggle
 
     void Start() // YENÝ EKLENDÝ
@@ -22,6 +24,9 @@ public class EquipmentManager : MonoBehaviour
         {
             Debug.LogError("PlayerMovement script'i bulunamadý!");
         }
+        // YENÝ: PlayerCombatManager referansýný al
+        combatManager = GetComponent<PlayerCombatManager>();
+        if (combatManager == null) Debug.LogError("PlayerCombatManager script'i bulunamadý!");
     }
 
     private void OnEnable()
@@ -73,6 +78,12 @@ public class EquipmentManager : MonoBehaviour
             // Durumu ve animasyonu güncelle
             isWeaponEquipped = true;
             playerMovement.SetEquippedState(true); // PlayerMovement'a haber ver!
+
+            if (combatManager != null)
+            {
+                combatManager.isWeaponEquipped = true;
+            }
+
             Debug.Log(itemToEquip.itemName + " kuþanýldý!");
         }
     }

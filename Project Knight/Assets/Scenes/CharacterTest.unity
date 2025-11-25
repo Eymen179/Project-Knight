@@ -288343,6 +288343,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1212147288}
+    - target: {fileID: 4111467257433067282, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
+      propertyPath: jumpForce
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4158575843346003488, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
       propertyPath: m_Mesh
       value: 

@@ -10,6 +10,7 @@ public class PlayerCombatManager : MonoBehaviour
     [SerializeField] private InputActionReference attack;
     [SerializeField] private InputActionReference block;
 
+    public bool isWeaponEquipped = false;
     // YENÝ (Opsiyonel): Saldýrý sýrasýnda hareketi kýsýtlamak için
     // ThirdPersonMovement script'inize eriþim
     // private ThirdPersonMovement movementScript;
@@ -24,7 +25,7 @@ public class PlayerCombatManager : MonoBehaviour
         _animator.SetBool("isBlocking", isBlocking);
 
         // "Attack" eylemine (Sol Týk) BU FRAME basýldý mý?
-        if (attack.action.WasPressedThisFrame() && !isBlocking)
+        if (isWeaponEquipped && attack.action.WasPressedThisFrame() && !isBlocking)
         {
             // Animator'e "Attack" adýndaki tetiði gönder
             _animator.SetTrigger("attack");
