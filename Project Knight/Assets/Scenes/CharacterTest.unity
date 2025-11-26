@@ -17343,15 +17343,15 @@ MonoBehaviour:
   Radius: 10
   Orbits:
     Top:
-      Radius: 2
-      Height: 5
+      Radius: 1.4
+      Height: 3
     Center:
-      Radius: 2.74
-      Height: 2.25
+      Radius: 2.75
+      Height: 1.5
     Bottom:
-      Radius: 2.5
+      Radius: 1.5
       Height: 0.1
-    SplineCurvature: 0.5
+    SplineCurvature: 0.2
   RecenteringTarget: 3
   HorizontalAxis:
     Value: 0
@@ -17434,8 +17434,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157733497}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16327128, y: 0.055542126, z: -0.009206777, w: 0.98497355}
-  m_LocalPosition: {x: 0, y: 2.31, z: -2.74}
+  m_LocalRotation: {x: 0.034213606, y: 0.056064285, z: -0.0019223143, w: 0.997839}
+  m_LocalPosition: {x: 0, y: 1.56, z: -2.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17633,8 +17633,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 270, y: 100}
+  m_SizeDelta: {x: 450, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &209448717
 MonoBehaviour:
@@ -17656,7 +17656,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: E
+  m_text: 'E Al
+
+    ItemName
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -17690,8 +17694,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -123770,24 +123774,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &962707334 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5297853814898509929, guid: b41f1f57ec51b4d48a5b86ea4e37a531, type: 3}
-  m_PrefabInstance: {fileID: 1244408575}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &962707335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 962707334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4f4bcd56e554a43a4db455de8b701b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: e4833f629b62f6c4e8857ca9b391c488, type: 2}
 --- !u!43 &966685505
 Mesh:
   m_ObjectHideFlags: 0
@@ -242731,10 +242717,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5297853814898509929, guid: b41f1f57ec51b4d48a5b86ea4e37a531, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 962707335}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b41f1f57ec51b4d48a5b86ea4e37a531, type: 3}
 --- !u!1 &1268586160
 GameObject:
@@ -284566,8 +284549,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773904585}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16327131, y: 0.055542134, z: -0.009206782, w: 0.9849735}
-  m_LocalPosition: {x: 0, y: 2.31, z: -2.74}
+  m_LocalRotation: {x: 0.034213614, y: 0.05606429, z: -0.0019223159, w: 0.997839}
+  m_LocalPosition: {x: 0, y: 1.56, z: -2.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -288319,10 +288302,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1484495195}
-    - target: {fileID: 2799355474717646600, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2853479030343940051, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -288331,10 +288310,6 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1773904587}
-    - target: {fileID: 2951291548822836713, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
-      propertyPath: interactionDistance
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 4046647340192437659, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -288343,10 +288318,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1212147288}
-    - target: {fileID: 4111467257433067282, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
-      propertyPath: jumpForce
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 4158575843346003488, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
       propertyPath: m_Mesh
       value: 

@@ -14,6 +14,8 @@ public class EquipmentManager : MonoBehaviour
     private PlayerMovement playerMovement; // PlayerMovement script'ine referans
     private PlayerCombatManager combatManager;
 
+    private Item currentItemInHand;
+
     private bool isWeaponEquipped = false; // Senin 'pressCounter' mantýðý için toggle
 
     void Start() // YENÝ EKLENDÝ
@@ -75,6 +77,8 @@ public class EquipmentManager : MonoBehaviour
             currentEquippedWeapon.transform.localPosition = Vector3.zero;
             currentEquippedWeapon.transform.localRotation = Quaternion.identity;
 
+            currentItemInHand = itemToEquip;
+
             // Durumu ve animasyonu güncelle
             isWeaponEquipped = true;
             playerMovement.SetEquippedState(true); // PlayerMovement'a haber ver!
@@ -97,12 +101,40 @@ public class EquipmentManager : MonoBehaviour
             currentEquippedWeapon = null;
         }
 
+        currentItemInHand = null;
+
         // Durumu ve animasyonu güncelle
         isWeaponEquipped = false;
         playerMovement.SetEquippedState(false); // PlayerMovement'a haber ver!
         Debug.Log("Silah býrakýldý.");
+        /* deneme*/
+        if (combatManager != null)
+        {
+            combatManager.isWeaponEquipped = false;
+        }
     }
 
-    // --- ESKÝ FONKSÝYON SÝLÝNDÝ: Artýk EquipWeaponFromSlot ve UnequipWeapon kullanýyoruz ---
-    // void EquipFromSlot() { ... } 
+    // --- YENÝ KRÝTÝK FONKSÝYON: DOÐRULAMA SÝSTEMÝ ---
+    // Bu fonksiyonu eþyalarýn yeri deðiþtiðinde çaðýracaðýz.
+    public void ValidateEquipment()
+    {
+        // Eðer elimizde silah yoksa kontrole gerek yok
+        if (!isWeaponEquipped) return;
+
+        // 1. Kýlýç Slotu tamamen boþaldýysa -> Silahý Býrak
+        if (toolbarSwordSlot.transform.childCount == 0)
+        {
+            UnequipWeapon();
+            return;
+        }
+
+        // 2. Kýlýç Slotunda eþya var AMA elimizdekiyle ayný deðilse (Swap yapýldýysa)
+        InventoryItem itemInSlot = toolbarSwordSlot.transform.GetChild(0).GetComponent<InventoryItem>();
+        if (itemInSlot.item != currentItemInHand)
+        {
+            // Önce eskisini býrak, sonra yenisini (varsa) kuþan
+            UnequipWeapon();
+            EquipWeaponFromSlot();
+        }
+    }
 }

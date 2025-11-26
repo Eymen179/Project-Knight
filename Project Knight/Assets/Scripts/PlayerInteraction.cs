@@ -31,28 +31,45 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (UIManager.Instance.txtPrompt) UIManager.Instance.txtPrompt.gameObject.SetActive(false);
     }
-
-    void Update()
+    /*void Update()
     {
-        // Raycast ve UI gösterme mantýðý Update içinde kalmalý
-        // Çünkü her frame nereye baktýðýmýzý bilmemiz gerekiyor.
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 
         ItemPickup detectedItem = null;
+
+        // Raycast bir þeye çarptý mý?
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
         {
+            // --- YENÝ EKLENEN KISIM: KENDÝNE BAKMA KONTROLÜ ---
+
+            // Çarptýðýmýz obje (hit.transform), benim (transform) alt objem mi?
+            // "IsChildOf" fonksiyonu, objenin hiyerarþide bu objenin altýnda olup olmadýðýný kontrol eder.
+            // Elindeki kýlýç senin "handTransform"unun altýnda olduðu için bu TRUE döner.
+            if (hit.transform.IsChildOf(transform))
+            {
+                // Eðer kendi parçamýza bakýyorsak, hiçbir þey yapma ve bu frame'i pas geç.
+                // detectedItem null kalmaya devam edecek, böylece yazý çýkmayacak/kapanacak.
+                goto SkipInteraction;
+            }
+
+            // --- KONTROL BÝTÝÞÝ ---
+
             if (hit.collider.TryGetComponent<ItemPickup>(out ItemPickup item))
             {
                 detectedItem = item;
             }
         }
 
+    // Goto etiketi: Kendi parçamýza bakýyorsak kod buraya atlayacak
+    SkipInteraction:
+
+        // ... (Kodun geri kalaný ayný, UI güncelleme ve E tuþu kontrolü) ...
         if (detectedItem != currentItem)
         {
             currentItem = detectedItem;
             if (currentItem != null)
             {
-                UIManager.Instance.txtPrompt.text = $"[E] {currentItem.item.itemName} Al";
+                UIManager.Instance.txtPrompt.text = $"[E] Al \n{currentItem.item.itemName}";
                 UIManager.Instance.txtPrompt.gameObject.SetActive(true);
             }
             else
@@ -61,8 +78,49 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
-        // 6. Eski Input kontrolü buradan kaldýrýldý.
-        // if (currentItem != null && Input.GetKeyDown(KeyCode.E)) ...
+        // Not: Yeni Input sistemine geçtiðimiz için buradaki Input.GetKeyDown kýsmý zaten silinmiþti
+        // veya OnInteractPerformed kullanýyorduk. Orayý ellemiyoruz.
+    }*/
+    void Update()
+    {
+        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+
+        ItemPickup detectedItem = null;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
+        {
+            // 1. KONTROL: Baktýðýmýz þey kendi vücudumuzun (elimizin) parçasý DEÐÝLSE devam et
+            if (!hit.transform.IsChildOf(transform))
+            {
+                if (hit.collider.TryGetComponent<ItemPickup>(out ItemPickup item))
+                {
+                    detectedItem = item;
+                }
+            }
+        }
+
+        // 2. KONTROL: UI Güncelleme Mantýðý (Düzeltilen Kýsým)
+
+        // Eðer geçerli bir eþya algýlandýysa...
+        if (detectedItem != null)
+        {
+            // Ve bu eþya bir önceki baktýðýmýzdan farklýysa...
+            if (detectedItem != currentItem)
+            {
+                currentItem = detectedItem;
+                UIManager.Instance.txtPrompt.text = $"[E] Al \n{currentItem.item.itemName}";
+                UIManager.Instance.txtPrompt.gameObject.SetActive(true);
+            }
+        }
+        else // Eðer hiçbir eþya algýlanmadýysa (veya eþya az önce silindiyse)...
+        {
+            // Referansý temizle ve yazýyý zorla kapat
+            currentItem = null;
+            UIManager.Instance.txtPrompt.gameObject.SetActive(false);
+        }
+
+        // Not: Yeni input sistemine geçtiðimiz için burada tuþ kontrolü yok,
+        // OnInteractPerformed fonksiyonu o iþi yapýyor.
     }
 
     // 7. Tuþa basýldýðýnda (event tetiklendiðinde) çalýþacak fonksiyon

@@ -43,11 +43,40 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         transform.position = Input.mousePosition;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    /*public void OnEndDrag(PointerEventData eventData)
     {
         image.raycastTarget = true;
         countText.raycastTarget = true;
         transform.SetParent(parentAfterDrag); // Býrakýldýðý yeni slota (veya eskisine) geri dön
         transform.localPosition = Vector3.zero; // Slotun tam ortasýna yerleþ
+    }*/
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        image.raycastTarget = true;
+        countText.raycastTarget = true;
+
+        // YENÝ: Mouse herhangi bir UI objesinin üzerinde DEÐÝLSE (yani dünyaya býrakýldýysa)
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            // InventoryManager üzerinden yere atma iþlemini baþlat
+            InventoryManager.Instance.DropItem(this);
+
+            // UI objesi yok olacaðý veya sayýsý azalacaðý için parent iþlemine gerek kalmayabilir
+            // Ama sayý azalýrsa eski yerine dönsün diye yine de parent atamasý yapýyoruz:
+            transform.SetParent(parentAfterDrag);
+            transform.localPosition = Vector3.zero;
+        }
+        else
+        {
+            // Eðer UI üzerine (baþka slota veya panele) býrakýldýysa normal iþlem
+            transform.SetParent(parentAfterDrag);
+            transform.localPosition = Vector3.zero;
+        }
+        /*kutsal*/
+        EquipmentManager equipmentManager = FindFirstObjectByType<EquipmentManager>();
+        if (equipmentManager != null)
+        {
+            equipmentManager.ValidateEquipment();
+        }
     }
 }
