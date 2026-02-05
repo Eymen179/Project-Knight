@@ -34,11 +34,6 @@ public class PlayerMovement : MonoBehaviour
     // Bu değişkeni EquipmentManager güncelleyecek
     private bool isEquipped;
 
-    // --- SİLİNDİ: Bu script artık "equip" input'unu dinlemeyecek ---
-    // [SerializeField] private InputActionReference equip;
-    // private int pressCounter = 0;
-    // public GameObject sword;
-
 
     void Start()
     {
@@ -46,61 +41,78 @@ public class PlayerMovement : MonoBehaviour
         _animator = GetComponent<Animator>();
         mainCameraTransform = Camera.main.transform;
     }
-
-    void Update() // Input ve Animasyon
+    void Update()
     {
-        // --- SİLİNDİ: Kılıç kuşanma input'u buradan kaldırıldı ---
-        /*
-        if (equip.action.WasPressedThisFrame())
-        {
-            // ... (tüm eski kod silindi) ...
-        }
-        */
+        // Update sadece "Yönetici" gibi davranır.
+        // Detayları bilmez, sadece ilgili departmanlara (metotlara) emir verir.
 
+        CheckGroundStatus(); // Yerde miyiz kontrol et
+        HandleInput();       // Tuşlara basılıyor mu?
+        HandleJump();        // Zıplama isteği var mı?
+        UpdateAnimations();  // Animasyon parametrelerini güncelle
+    }
+
+    void FixedUpdate()
+    {
+        // Fizik işlemleri de kendi metotlarına ayrılır
+        ApplyMovement();     // Hareketi uygula
+        ApplyRotation();     // Dönüşü uygula
+    }
+
+    // --- ALT METOTLAR (Detay İşçiler) ---
+
+    private void CheckGroundStatus()
+    {
         bool wasGrounded = isGrounded;
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
-        _animator.SetBool("isGrounded", isGrounded);
 
+        // Yere inme (Landing) mantığı
         if (isGrounded && !wasGrounded)
         {
             _animator.SetTrigger("land");
         }
+    }
 
+    private void HandleInput()
+    {
         _moveDirection = move.action.ReadValue<Vector2>();
+    }
 
+    private void HandleJump()
+    {
         if (jump.action.WasPressedThisFrame() && isGrounded)
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-            // --- GÜNCELLENDİ: Sadece 'isEquipped' durumunu kontrol eder ---
-            if (isEquipped) // Bu değişken artık EquipmentManager tarafından ayarlanacak
-            {
+            if (isEquipped)
                 _animator.SetTrigger("jumpWithSword");
-            }
             else
-            {
                 _animator.SetTrigger("jump");
-            }
         }
+    }
+
+    private void UpdateAnimations()
+    {
+        _animator.SetBool("isGrounded", isGrounded);
 
         float inputMagnitude = _moveDirection.magnitude;
         bool isRunning = run.action.IsPressed();
         float animationSpeed = inputMagnitude * (isRunning ? 1f : 0.5f);
+
         _animator.SetFloat("speed", animationSpeed);
     }
 
-    void FixedUpdate()
+    private void ApplyMovement()
     {
-        // ... (FixedUpdate içeriği aynı kaldı, değişiklik yok) ...
-        bool isRunning = run.action.IsPressed();
-        float currentSpeed = isRunning ? runSpeed : walkSpeed;
-
         if (_moveDirection == Vector2.zero)
         {
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             return;
         }
+
+        bool isRunning = run.action.IsPressed();
+        float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
         Vector3 camForward = mainCameraTransform.forward;
         Vector3 camRight = mainCameraTransform.right;
@@ -113,6 +125,20 @@ public class PlayerMovement : MonoBehaviour
         Vector3 targetVelocity = moveDirection * currentSpeed;
 
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
+    }
+
+    private void ApplyRotation()
+    {
+        if (_moveDirection == Vector2.zero) return;
+
+        Vector3 camForward = mainCameraTransform.forward;
+        Vector3 camRight = mainCameraTransform.right;
+        camForward.y = 0f;
+        camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 moveDirection = (camForward * _moveDirection.y + camRight * _moveDirection.x).normalized;
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
@@ -134,8 +160,4 @@ public class PlayerMovement : MonoBehaviour
             _animator.SetTrigger("dropSword");
         }
     }
-
-    // --- Bu fonksiyonlar artık kullanılmıyor, silebilirsin ---
-    // void NoSwordAnimations() { }
-    // void WithSwordAnimations() { }
 }

@@ -68,8 +68,7 @@ public class InventoryManager : MonoBehaviour
         // Envanter açýldýðýnda fareyi serbest býrak, kapandýðýnda kilitle
         if (isInventoryOpen)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            CursorVisibility(true);
 
             player.GetComponent<PlayerCombatManager>().enabled = false;
             player.GetComponent<PlayerMovement>().enabled = false;
@@ -78,8 +77,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            CursorVisibility(false);
 
             player.GetComponent<PlayerCombatManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;
@@ -180,5 +178,10 @@ public class InventoryManager : MonoBehaviour
         {
             equipmentManager.ValidateEquipment();
         }
+    }
+    public void CursorVisibility(bool isVisible)
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = isVisible;
     }
 }

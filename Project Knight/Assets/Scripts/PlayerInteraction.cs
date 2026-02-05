@@ -12,6 +12,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private ItemPickup currentItem;
 
+    private ItemPickup detectedItem;
     private void OnEnable()
     {
         // 3. Eylemi (Action) etkinleþtir
@@ -34,9 +35,15 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
+        DetectInteractable();
+
+        UpdateInteractionUI();
+    }
+    public void DetectInteractable()
+    {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 
-        ItemPickup detectedItem = null;
+        detectedItem = null;
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
         {
@@ -49,7 +56,9 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
         }
-
+    }
+    public void UpdateInteractionUI()
+    {
         // 2. KONTROL: UI Güncelleme Mantýðý (Düzeltilen Kýsým)
 
         // Eðer geçerli bir eþya algýlandýysa...
@@ -73,7 +82,6 @@ public class PlayerInteraction : MonoBehaviour
         // Not: Yeni input sistemine geçtiðimiz için burada tuþ kontrolü yok,
         // OnInteractPerformed fonksiyonu o iþi yapýyor.
     }
-
     // 7. Tuþa basýldýðýnda (event tetiklendiðinde) çalýþacak fonksiyon
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {

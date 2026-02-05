@@ -17434,7 +17434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157733497}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.034213606, y: 0.056064285, z: -0.0019223143, w: 0.997839}
+  m_LocalRotation: {x: 0.03421358, y: 0.05606428, z: -0.0019223104, w: 0.997839}
   m_LocalPosition: {x: 0, y: 1.56, z: -2.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -284549,7 +284549,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773904585}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.034213614, y: 0.05606429, z: -0.0019223159, w: 0.997839}
+  m_LocalRotation: {x: 0.034213584, y: 0.05606429, z: -0.0019223143, w: 0.997839}
   m_LocalPosition: {x: 0, y: 1.56, z: -2.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -288310,6 +288310,10 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1773904587}
+    - target: {fileID: 3983786215687607330, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
+      propertyPath: attackInputThreshold
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4046647340192437659, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
       propertyPath: m_Mesh
       value: 

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
   m_Name: Crystal
   m_EditorClassIdentifier: 
-  itemName: 
-  description: 
+  itemName: DemoCrsytal
+  description: DemoCrsytal
   inventorySprite: {fileID: 21300000, guid: 7aaf7237903bb1043a932689e7c00f9c, type: 3}
   itemObject: {fileID: 7063743252289416628, guid: f9368726f996fae4a9cedf84c01a2ff0, type: 3}
   attackDamage: 5

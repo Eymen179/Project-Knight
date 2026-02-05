@@ -10,5 +10,7 @@ public class ComboManagerBehaviour : StateMachineBehaviour
     {
         // Animator'deki "comboStep" parametresini bizim belirlediðimiz deðere ayarla
         animator.SetInteger("comboStep", comboStepValue);
+
+        animator.ResetTrigger("attack");
     }
 }
