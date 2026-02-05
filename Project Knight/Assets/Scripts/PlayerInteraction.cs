@@ -31,56 +31,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (UIManager.Instance.txtPrompt) UIManager.Instance.txtPrompt.gameObject.SetActive(false);
     }
-    /*void Update()
-    {
-        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 
-        ItemPickup detectedItem = null;
-
-        // Raycast bir þeye çarptý mý?
-        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
-        {
-            // --- YENÝ EKLENEN KISIM: KENDÝNE BAKMA KONTROLÜ ---
-
-            // Çarptýðýmýz obje (hit.transform), benim (transform) alt objem mi?
-            // "IsChildOf" fonksiyonu, objenin hiyerarþide bu objenin altýnda olup olmadýðýný kontrol eder.
-            // Elindeki kýlýç senin "handTransform"unun altýnda olduðu için bu TRUE döner.
-            if (hit.transform.IsChildOf(transform))
-            {
-                // Eðer kendi parçamýza bakýyorsak, hiçbir þey yapma ve bu frame'i pas geç.
-                // detectedItem null kalmaya devam edecek, böylece yazý çýkmayacak/kapanacak.
-                goto SkipInteraction;
-            }
-
-            // --- KONTROL BÝTÝÞÝ ---
-
-            if (hit.collider.TryGetComponent<ItemPickup>(out ItemPickup item))
-            {
-                detectedItem = item;
-            }
-        }
-
-    // Goto etiketi: Kendi parçamýza bakýyorsak kod buraya atlayacak
-    SkipInteraction:
-
-        // ... (Kodun geri kalaný ayný, UI güncelleme ve E tuþu kontrolü) ...
-        if (detectedItem != currentItem)
-        {
-            currentItem = detectedItem;
-            if (currentItem != null)
-            {
-                UIManager.Instance.txtPrompt.text = $"[E] Al \n{currentItem.item.itemName}";
-                UIManager.Instance.txtPrompt.gameObject.SetActive(true);
-            }
-            else
-            {
-                UIManager.Instance.txtPrompt.gameObject.SetActive(false);
-            }
-        }
-
-        // Not: Yeni Input sistemine geçtiðimiz için buradaki Input.GetKeyDown kýsmý zaten silinmiþti
-        // veya OnInteractPerformed kullanýyorduk. Orayý ellemiyoruz.
-    }*/
     void Update()
     {
         Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
