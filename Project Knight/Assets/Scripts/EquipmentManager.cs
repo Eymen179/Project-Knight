@@ -79,6 +79,26 @@ public class EquipmentManager : MonoBehaviour
 
             currentItemInHand = itemToEquip;
 
+            // --- BURASI YENÝ EKLENDÝ ---
+            // Oluþturulan silahta SwordDamage scripti var mý diye bak
+            SwordDamage damageScript = currentEquippedWeapon.GetComponent<SwordDamage>();
+
+            if (damageScript != null)
+            {
+                // Varsa, sahibinin kim olduðunu söyle (Bu scriptin olduðu obje Player'dýr)
+                // GetComponent<Animator>() diyerek Player üzerindeki animator'ý gönderiyoruz.
+                damageScript.Setup(GetComponent<Animator>(), transform);
+            }
+            else
+            {
+                // Belki kýlýç prefab'ýnýn en üstünde deðil de child objelerinde collider vardýr?
+                // O zamanInChildren ile arayabilirsin.
+                damageScript = currentEquippedWeapon.GetComponentInChildren<SwordDamage>();
+                if (damageScript != null)
+                    damageScript.Setup(GetComponent<Animator>(), transform);
+            }
+            // ---------------------------
+
             // Durumu ve animasyonu güncelle
             isWeaponEquipped = true;
             playerMovement.SetEquippedState(true); // PlayerMovement'a haber ver!
