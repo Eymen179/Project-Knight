@@ -157,6 +157,7 @@ public class InventoryManager : MonoBehaviour
             if (!droppedObject.GetComponent<Rigidbody>())
             {
                 Rigidbody rb = droppedObject.AddComponent<Rigidbody>();
+                //rb.isKinematic = true;
                 rb.AddForce(playerTransform.forward * 3f, ForceMode.Impulse); // Hafifçe ileri fýrlat
             }
         }
