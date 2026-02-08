@@ -14,10 +14,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI txtCount;
     public TextMeshProUGUI txtPrompt;
 
-    [Header("NPC UI")]
-    public Slider healthSlider;
-    public TextMeshProUGUI txtHealth;
-
     private void Awake()
     {
         Instance = this;

@@ -88,6 +88,14 @@ public class EquipmentManager : MonoBehaviour
                 combatManager.isWeaponEquipped = true;
             }
 
+            //Saldýrý hýzý ayarý
+            float speedMultiplier = itemToEquip.attackSpeed / 10f;
+            // Animator'e deðeri gönder
+            // (PlayerMovement veya CombatManager üzerinden Animator'e ulaþtýðýný varsayýyorum)
+            GetComponent<Animator>().SetFloat("fAttackSpeed", speedMultiplier);
+
+            Debug.Log($"Saldýrý Hýzý Ayarlandý: {speedMultiplier}x");
+
             Debug.Log(itemToEquip.itemName + " kuþanýldý!");
         }
     }

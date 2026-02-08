@@ -1,10 +1,16 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
 {
     [Header("Veri")]
-    public EnemyStats stats; // Scriptable Object'i buraya sürükle
+    public EnemyStats stats;
+
+    // YENÝ: UIManager yerine kendi slider ve text'imizi kullanacaðýz
+    [Header("NPC UI")]
+    public Slider healthSlider;      // NPC'nin kendi Canvas'ýndaki Slider
+    public TextMeshProUGUI healthText; // NPC'nin kendi Canvas'ýndaki Text
 
     private int currentHealth;
 
@@ -17,17 +23,26 @@ public class EnemyHealth : MonoBehaviour
         }
         else
         {
-            currentHealth = 100; // Varsayýlan güvenlik deðeri
+            currentHealth = 100;
             Debug.LogWarning(gameObject.name + " üzerinde EnemyStats eksik!");
+        }
+
+        // Baþlangýçta UI'ý ayarla
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = 1f; // Slider deðer aralýðýný 0-1 yapýyoruz
+            healthSlider.value = 1f;
         }
 
         UpdateUI();
     }
 
-    // Hasar alma fonksiyonu (Dýþarýdan çaðrýlacak)
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;
+
+        // Can eksiye düþmesin
+        if (currentHealth < 0) currentHealth = 0;
 
         Debug.Log($"{stats?.enemyName} hasar aldý: -{damageAmount}. Kalan Can: {currentHealth}");
 
@@ -41,20 +56,27 @@ public class EnemyHealth : MonoBehaviour
 
     private void UpdateUI()
     {
-        if(UIManager.Instance.healthSlider != null && stats != null)
+        // Artýk UIManager deðil, kendi referanslarýmýzý kontrol ediyoruz
+        if (stats != null)
         {
-            float fillValue = (float)currentHealth / stats.maxHealth;
-            UIManager.Instance.healthSlider.value = fillValue;
+            // 1. Slider Güncelleme
+            if (healthSlider != null)
+            {
+                float fillValue = (float)currentHealth / stats.maxHealth;
+                healthSlider.value = fillValue;
+            }
 
-            UIManager.Instance.txtHealth.text = currentHealth.ToString() + "/" + stats.maxHealth;
+            // 2. Text Güncelleme
+            if (healthText != null)
+            {
+                healthText.text = currentHealth.ToString() + "/" + stats.maxHealth;
+            }
         }
     }
 
     private void Die()
     {
         Debug.Log(gameObject.name + " öldü!");
-        // Þimdilik sadece objeyi yok edelim veya kapatýp havuza atalým
-        // Ýleride buraya ragdoll fiziði eklenebilir.
         Destroy(gameObject);
     }
 }

@@ -8,6 +8,7 @@ public class PlayerAttackSystem : MonoBehaviour
     public LayerMask enemyLayers; // Sadece "Enemy" veya "NPC" layer'ýna vurmasý için
 
     private EquipmentManager equipmentManager;
+    private Item itemInHand;
 
     void Start()
     {
@@ -17,14 +18,15 @@ public class PlayerAttackSystem : MonoBehaviour
     // BU FONKSÝYONU ANIMATION EVENT ÝLE ÇAÐIRACAÐIZ
     public void DealDamage()
     {
+        itemInHand = equipmentManager.currentItemInHand;
+
         // Basitleþtirilmiþ eriþim (EquipmentManager'dan veriyi çekiyoruz):
         int damageToDeal = 10; // Varsayýlan yumruk hasarý
 
-        if (equipmentManager.currentItemInHand != null)
+        if (itemInHand != null)
         {
-            damageToDeal = equipmentManager.currentItemInHand.attackDamage;
+            damageToDeal = DamageCalculate(damageToDeal);
         }
-
         // 2. Alaný Tara (OverlapSphere)
         // AttackPoint merkezli bir küre çiz ve içindeki colliderlarý bul
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
@@ -44,9 +46,20 @@ public class PlayerAttackSystem : MonoBehaviour
             }
         }
     }
+    private int DamageCalculate(int damageToDeal)
+    {
+        int multiplierChance = Random.Range(0, 100 / itemInHand.attackDamageMultiplierChance);
+
+        if(multiplierChance == 1)
+        {
+            return (int)(itemInHand.attackDamage * itemInHand.attackDamageMultiplier);
+        }
+
+        return itemInHand.attackDamage;
+    }
 
     // Editörde saldýrý menzilini görmek için yardýmcý çizim
-    void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;

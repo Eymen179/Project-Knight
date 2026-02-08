@@ -17,7 +17,7 @@ public class Item : ScriptableObject
     public int attackSpeed;
 
     public float attackDamageMultiplier;
-    public float attackSpeedMultiplier;
+    public int attackDamageMultiplierChance;
 
     public int armor;
     public int health;
