@@ -4,33 +4,37 @@ using UnityEngine.InputSystem; // 1. Yeni Input Sistemi için bu satýrý ekle
 
 public class PlayerInteraction : MonoBehaviour
 {
+    [Header("Ayarlar")]
     public Camera playerCamera;
     public float interactionDistance = 3f;
+    public float interactionRadius = 0.5f; // Ray'in kalýnlýðý (Küre yarýçapý)
 
-    // 2. [E] tuþu için Input Action referansý
+    // Hangi katmanlarýn etkileþime girebileceðini seç (Örn: Default, Interactable)
+    // Player katmanýný BURADA SEÇMEMELÝSÝN.
+    public LayerMask interactableLayers;
+
+    [Header("Input")]
     [SerializeField] private InputActionReference interactAction;
 
-    private ItemPickup currentItem;
+    // O an odaklandýðýmýz (baktýðýmýz) eþya
+    private ItemPickup currentFocusItem;
 
-    private ItemPickup detectedItem;
     private void OnEnable()
     {
-        // 3. Eylemi (Action) etkinleþtir
         interactAction.action.Enable();
-        // 4. "performed" (tuþa basýldýðýnda) event'ine OnInteractPerformed fonksiyonunu baðla
         interactAction.action.performed += OnInteractPerformed;
     }
 
     private void OnDisable()
     {
-        // 5. Eylemi devre dýþý býrak ve event baðlantýsýný kaldýr (hafýza sýzýntýsýný önler)
         interactAction.action.Disable();
         interactAction.action.performed -= OnInteractPerformed;
     }
 
     void Start()
     {
-        if (UIManager.Instance.txtPrompt) UIManager.Instance.txtPrompt.gameObject.SetActive(false);
+        if (UIManager.Instance && UIManager.Instance.txtPrompt)
+            UIManager.Instance.txtPrompt.gameObject.SetActive(false);
     }
 
     void Update()
@@ -39,22 +43,39 @@ public class PlayerInteraction : MonoBehaviour
 
         UpdateInteractionUI();
     }
-    public void DetectInteractable()
+
+    private void DetectInteractable()
     {
-        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        // Ekranýn tam ortasýndan bir ýþýn oluþtur
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
 
-        detectedItem = null;
+        // SPHERECAST: Raycast'in kalýn hali.
+        // ray: Merkez ýþýn
+        // interactionRadius: Kalýnlýk
+        // out hit: Çarpma bilgisi
+        // interactionDistance: Mesafe
+        // interactableLayers: Sadece bu katmanlarý gör (Player'ý görmezden gelmek için)
+        bool hitSomething = Physics.SphereCast(ray, interactionRadius, out hit, interactionDistance, interactableLayers);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance))
+        if (hitSomething)
         {
-            // 1. KONTROL: Baktýðýmýz þey kendi vücudumuzun (elimizin) parçasý DEÐÝLSE devam et
-            if (!hit.transform.IsChildOf(transform))
+            // Çarptýðýmýz objede ItemPickup scripti var mý?
+            if (hit.collider.TryGetComponent<ItemPickup>(out ItemPickup item))
             {
-                if (hit.collider.TryGetComponent<ItemPickup>(out ItemPickup item))
+                // Eðer yeni bir eþyaya baktýysak UI güncelle
+                if (currentFocusItem != item)
                 {
-                    detectedItem = item;
+                    currentFocusItem = item;
                 }
+                return; // Bulduk, fonksiyondan çýkabiliriz
             }
+        }
+
+        // Eðer buraya geldiysek; ya bir þeye çarpmadýk ya da çarptýðýmýz þey eþya deðil.
+        if (currentFocusItem != null)
+        {
+            currentFocusItem = null;
         }
     }
     public void UpdateInteractionUI()
@@ -62,33 +83,45 @@ public class PlayerInteraction : MonoBehaviour
         // 2. KONTROL: UI Güncelleme Mantýðý (Düzeltilen Kýsým)
 
         // Eðer geçerli bir eþya algýlandýysa...
-        if (detectedItem != null)
+        if (currentFocusItem != null)
         {
-            // Ve bu eþya bir önceki baktýðýmýzdan farklýysa...
-            if (detectedItem != currentItem)
-            {
-                currentItem = detectedItem;
-                UIManager.Instance.txtPrompt.text = $"[E] Al \n{currentItem.item.itemName}";
-                UIManager.Instance.txtPrompt.gameObject.SetActive(true);
-            }
+            UIManager.Instance.txtPrompt.text = $"[E] Al \n{currentFocusItem.item.itemName}";
+            UIManager.Instance.txtPrompt.gameObject.SetActive(true);
         }
         else // Eðer hiçbir eþya algýlanmadýysa (veya eþya az önce silindiyse)...
         {
             // Referansý temizle ve yazýyý zorla kapat
-            currentItem = null;
+            currentFocusItem = null;
             UIManager.Instance.txtPrompt.gameObject.SetActive(false);
         }
 
         // Not: Yeni input sistemine geçtiðimiz için burada tuþ kontrolü yok,
         // OnInteractPerformed fonksiyonu o iþi yapýyor.
     }
-    // 7. Tuþa basýldýðýnda (event tetiklendiðinde) çalýþacak fonksiyon
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        // Sadece o an baktýðýmýz bir eþya varsa toplama iþlemi yap
-        if (currentItem != null)
+        if (currentFocusItem != null)
         {
-            currentItem.Pickup();
+            currentFocusItem.Pickup();
+
+            // Eþyayý aldýktan sonra UI'ý hemen kapatmak için referansý temizle
+            // Çünkü obje yok olacak (Destroy edilecek)
+            currentFocusItem = null;
         }
+    }
+
+    // Editörde SphereCast'in çapýný ve menzilini görmek için (Hata ayýklama)
+    private void OnDrawGizmos()
+    {
+        if (playerCamera == null) return;
+
+        Gizmos.color = Color.yellow;
+        Vector3 origin = playerCamera.transform.position;
+        Vector3 direction = playerCamera.transform.forward * interactionDistance;
+
+        // SphereCast'i temsil eden çizgi
+        Gizmos.DrawRay(origin, direction);
+        // Varýþ noktasýndaki küre (tahmini)
+        Gizmos.DrawWireSphere(origin + direction, interactionRadius);
     }
 }

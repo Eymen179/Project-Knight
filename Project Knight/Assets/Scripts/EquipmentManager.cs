@@ -88,6 +88,13 @@ public class EquipmentManager : MonoBehaviour
                 combatManager.isWeaponEquipped = true;
             }
 
+            // --- BURASI EKLENECEK ---
+            // Eline aldýðýn silahý "Player" layer'ýna (veya Ignore Raycast'e) çekmelisin.
+            // Böylece PlayerInteraction scripti (Raycast) bu silahý GÖRMEZDEN GELÝR.
+            int playerLayer = LayerMask.NameToLayer("Player"); // Veya "Ignore Raycast"
+            InventoryManager.SetLayerRecursively(currentEquippedWeapon, playerLayer);
+            // ------------------------
+
             //Saldýrý hýzý ayarý
             float speedMultiplier = itemToEquip.attackSpeed / 10f;
             // Animator'e deðeri gönder

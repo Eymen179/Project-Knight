@@ -284121,7 +284121,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_Name
-      value: 4SideDiamond
+      value: TestCrystal
       objectReference: {fileID: 0}
     - target: {fileID: 8963637341440938041, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_LocalPosition.x

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1508800609142402083}
   - component: {fileID: 4908045423256271217}
   - component: {fileID: 8330293171512384510}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TrialSword
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -36,7 +36,7 @@ public class EnemyHealth : MonoBehaviour
 
         UpdateUI();
     }
-
+    //Animation Event
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount;

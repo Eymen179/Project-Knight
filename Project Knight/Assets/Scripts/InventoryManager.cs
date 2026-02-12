@@ -140,7 +140,7 @@ public class InventoryManager : MonoBehaviour
             Vector3 dropPosition = playerTransform.position + (playerTransform.forward * 1.5f) + (Vector3.up * 1f);
 
             // Prefab'ý sahneye oluþtur (Instantiate)
-            GameObject droppedObject = Instantiate(itemToDrop.itemObject, dropPosition, Quaternion.identity);
+            GameObject droppedObject = Instantiate(itemToDrop.itemObject, dropPosition, Quaternion.identity);           
 
             // 3. Oluþan objenin 'ItemPickup' scriptini ayarla
             // Böylece yerde duran objenin hangi eþya olduðunu bilecek ve tekrar alabileceðiz.
@@ -152,6 +152,12 @@ public class InventoryManager : MonoBehaviour
             {
                 Debug.LogWarning("DÝKKAT: Attýðýn prefab'ýn üzerinde ItemPickup scripti yok! Tekrar toplanamaz.");
             }
+
+            // 3. LAYER AYARI (KRÝTÝK KISIM):
+            // Yere attýðýmýz þey "Interactable" olmalý ki Raycast onu görebilsin.
+            // "Interactable" yerine senin layer ismin neyse onu yaz (Interactable, Default vs.)
+            int interactableLayer = LayerMask.NameToLayer("Interactable");
+            SetLayerRecursively(droppedObject, interactableLayer);
 
             // 4. Fizik ekle (Eðer prefabda Rigidbody yoksa havada asýlý kalmasýn)
             if (!droppedObject.GetComponent<Rigidbody>())
@@ -184,5 +190,19 @@ public class InventoryManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = isVisible;
+    }
+    // Bu fonksiyonu EquipmentManager'da da kullanacaðýz, o yüzden public ve static yapabilirsin
+    // veya her iki scriptin içine de kopyalayabilirsin. Ben static öneririm.
+    public static void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            if (child == null) continue;
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 }
