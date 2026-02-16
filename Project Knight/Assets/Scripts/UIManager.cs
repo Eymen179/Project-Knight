@@ -14,6 +14,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI txtCount;
     public TextMeshProUGUI txtPrompt;
 
+    public Slider playerHealthSlider;
+
     private void Awake()
     {
         Instance = this;
