@@ -18,6 +18,9 @@ public class EquipmentManager : MonoBehaviour
 
     private bool isWeaponEquipped = false; // Senin 'pressCounter' mantýðý için toggle
 
+    //Saldýrý Hýzý
+    [HideInInspector] public float speedMultiplier = 1f;
+
     void Start() // YENÝ EKLENDÝ
     {
         // EquipmentManager ve PlayerMovement ayný obje üzerindeyse
@@ -96,7 +99,7 @@ public class EquipmentManager : MonoBehaviour
             // ------------------------
 
             //Saldýrý hýzý ayarý
-            float speedMultiplier = itemToEquip.attackSpeed / 10f;
+            speedMultiplier = itemToEquip.attackSpeed / 10f;
             // Animator'e deðeri gönder
             // (PlayerMovement veya CombatManager üzerinden Animator'e ulaþtýðýný varsayýyorum)
             GetComponent<Animator>().SetFloat("fAttackSpeed", speedMultiplier);

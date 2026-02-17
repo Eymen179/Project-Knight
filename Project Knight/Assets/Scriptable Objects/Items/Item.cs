@@ -24,6 +24,8 @@ public class Item : ScriptableObject
     public int healthRegenerationAmount;
     public int healthRegenerationSpeed;
 
+    public int effectDuration;
+
     [Header("Inventory")]
     public bool isStackable = true;
 

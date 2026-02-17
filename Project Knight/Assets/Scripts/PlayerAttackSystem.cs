@@ -7,6 +7,9 @@ public class PlayerAttackSystem : MonoBehaviour
     public float attackRange = 1.0f; // Vuruþ menzili (yarýçap)
     public LayerMask enemyLayers; // Sadece "Enemy" veya "NPC" layer'ýna vurmasý için
 
+    // Basitleþtirilmiþ eriþim (EquipmentManager'dan veriyi çekiyoruz):
+    [HideInInspector] public int damageToDeal = 10; // Varsayýlan yumruk hasarý
+
     private EquipmentManager equipmentManager;
     private Item itemInHand;
 
@@ -19,9 +22,6 @@ public class PlayerAttackSystem : MonoBehaviour
     public void DealDamage()
     {
         itemInHand = equipmentManager.currentItemInHand;
-
-        // Basitleþtirilmiþ eriþim (EquipmentManager'dan veriyi çekiyoruz):
-        int damageToDeal = 10; // Varsayýlan yumruk hasarý
 
         if (itemInHand != null)
         {
@@ -48,11 +48,16 @@ public class PlayerAttackSystem : MonoBehaviour
     }
     private int DamageCalculate(int damageToDeal)
     {
-        int multiplierChance = Random.Range(0, 100 / itemInHand.attackDamageMultiplierChance);
+        int randomValue = Random.Range(1, 101);
 
-        if(multiplierChance == 1)
+        // Þans deðerin (chance) 75 ise; 1'den 75'e kadar olan sayýlar kazanýr.
+        // Eðer þansýn 0 ise; 1 <= 0 olamayacaðý için asla girmez.
+        if (randomValue <= itemInHand.attackDamageMultiplierChance)
         {
-            return (int)(itemInHand.attackDamage * itemInHand.attackDamageMultiplier);
+            Debug.Log($"Kritik Vuruþ! (Zar: {randomValue} <= Þans: {itemInHand.attackDamageMultiplierChance})");
+
+            // Hasarý multiplier ile çarpýp tam sayýya çeviriyoruz
+            return Mathf.RoundToInt(damageToDeal * itemInHand.attackDamageMultiplier);
         }
 
         return itemInHand.attackDamage;
