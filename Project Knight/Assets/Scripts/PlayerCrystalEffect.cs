@@ -4,27 +4,25 @@ using UnityEngine.InputSystem;
 
 public class PlayerCrystalEffect : MonoBehaviour
 {
+    [Header("Input ve Slotlar")]
     [SerializeField] private InputActionReference[] inventorySlotActions;
-
     [SerializeField] private InventorySlot[] inventorySlots;
 
+    [Header("Referanslar")]
     private PlayerAttackSystem playerAttackSystem;
     private EquipmentManager equipmentManager;
 
     void Start()
     {
-        if(inventorySlotActions.Length != inventorySlots.Length)
+        // Validasyon
+        if (inventorySlotActions.Length != inventorySlots.Length)
         {
-            Debug.LogError("inventorySlotActions ve inventorySlots dizileri ayný uzunlukta olmalýdýr!");
+            Debug.LogError("HATA: Input sayýsý ile Slot sayýsý eþit deðil!");
             return;
         }
+
         playerAttackSystem = GetComponent<PlayerAttackSystem>();
         equipmentManager = GetComponent<EquipmentManager>();
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     private void OnEnable()
     {
@@ -33,66 +31,116 @@ public class PlayerCrystalEffect : MonoBehaviour
             if (inputs != null)
             {
                 inputs.action.Enable();
-                // Olayý baðla
                 inputs.action.performed += UseCrystalPerformed;
             }
         }
     }
-
     private void OnDisable()
     {
         foreach (var inputs in inventorySlotActions)
         {
             if (inputs != null)
             {
-                // Olay baðýný kopar (Çok önemli! Yoksa hafýza sýzýntýsý olur)
                 inputs.action.performed -= UseCrystalPerformed;
                 inputs.action.Disable();
             }
         }
     }
-
-    // Tüm tuþlar bu fonksiyona düþer
     private void UseCrystalPerformed(InputAction.CallbackContext context)
     {
-        // Örnek: Hangi input olduðunu bulup ona göre iþlem yapma
+        // Hangi tuþa basýldýðýný bul
         for (int i = 0; i < inventorySlotActions.Length; i++)
         {
             if (inventorySlotActions[i].action == context.action)
             {
+                // O slot dolu mu?
                 if (inventorySlots[i].transform.childCount > 0)
                 {
-                    ApplyCrystalEffect(inventorySlots[i]);
+                    // Slottaki InventoryItem bileþenini al
+                    InventoryItem itemInSlot = inventorySlots[i].transform.GetChild(0).GetComponent<InventoryItem>();
+
+                    // Eðer bu bir "Other" (yani kristal/iksir) tipindeyse kullan
+                    if (itemInSlot.item.itemType == Item.ItemType.Other)
+                    {
+                        ConsumeItemAndApplyEffect(itemInSlot);
+                    }
                 }
                 else
                 {
-                    //Ses Efekti daha sonra eklenecek.
+                    // Boþ slota basýldý (Ses efekti buraya)
+                    Debug.Log("Slot Boþ!");
                 }
+                break; // Döngüden çýk
             }
         }
     }
 
-    private void ApplyCrystalEffect(InventorySlot inventorySlot)
+    private void ConsumeItemAndApplyEffect(InventoryItem inventoryItem)
     {
-        InventoryItem crystalInSlot = inventorySlot.transform.GetChild(0).GetComponent<InventoryItem>();
-        Item crystalToUse = crystalInSlot.item;
+        Item crystalToUse = inventoryItem.item;
 
-        if(crystalToUse.effectDuration != 0)
+        // 1. Efekti Baþlat
+        if (crystalToUse.effectDuration > 0)
         {
-            StartCoroutine(EffectDuration());
+            // Süreli efekt
+            StartCoroutine(EffectRoutine(crystalToUse, crystalToUse.effectDuration));
         }
         else
         {
-            playerAttackSystem.damageToDeal += crystalToUse.attackDamage;
-            playerAttackSystem
-            equipmentManager.speedMultiplier += (crystalToUse.attackSpeed / 10);
-            //Player can sistemleri ileride eklenecek.
+            // Kalýcý efekt (Kalýcýlýk için PlayerPrefs sistemi buraya entegre edilecek)
+            ApplyEffect(crystalToUse, true);
+        }
+
+        // 2. Eþyayý Tüket (Envanterden Silme Ýþlemi)
+        // Sayýyý düþür
+        inventoryItem.count--;
+
+        if (inventoryItem.count <= 0)
+        {
+            // Eðer sayý bittiyse objeyi yok et
+            Destroy(inventoryItem.gameObject);
+        }
+        else
+        {
+            // Bitmediyse sayýyý güncelle
+            inventoryItem.RefreshCount();
         }
     }
 
-    IEnumerator EffectDuration()
+    // Coroutine isimlendirmesi "Routine" ile biterse daha anlaþýlýr olur
+    IEnumerator EffectRoutine(Item crystal, float duration)
     {
+        // Efekti ver
+        ApplyEffect(crystal, true);
+        Debug.Log($"{crystal.itemName} etkisi baþladý! ({duration} sn)");
 
+        yield return new WaitForSeconds(duration);
+
+        // Efekti geri al
+        ApplyEffect(crystal, false);
+        Debug.Log($"{crystal.itemName} etkisi bitti.");
+    }
+
+    // Int (1/0) yerine Bool (true/false) kullanýmý
+    private void ApplyEffect(Item crystal, bool isApplying)
+    {
+        // Çarpan faktörü: True ise 1 (Ekle), False ise -1 (Çýkar)
+        int factor = isApplying ? 1 : -1;
+
+        if (playerAttackSystem != null)
+        {
+            playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
+            playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
+            playerAttackSystem.bonusCritMultiplier += (crystal.attackDamageMultiplier * factor);
+        }
+
+        if (equipmentManager != null)
+        {
+            // Saldýrý hýzý int olduðu için float'a çeviriyoruz (/10f)
+            equipmentManager.bonusAttackSpeed += (crystal.attackSpeed * factor);
+
+            // EquipmentManager'a hýzý güncellemesini söyle
+            equipmentManager.UpdateAttackSpeed();
+        }
     }
 }
-

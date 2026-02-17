@@ -14,9 +14,10 @@ public class Item : ScriptableObject
 
     [Header("Attributes")]
     public int attackDamage;
-    public int attackSpeed;
+    public float attackSpeed;
 
     public float attackDamageMultiplier;
+    [Range(0, 100)]
     public int attackDamageMultiplierChance;
 
     public int armor;
@@ -24,7 +25,7 @@ public class Item : ScriptableObject
     public int healthRegenerationAmount;
     public int healthRegenerationSpeed;
 
-    public int effectDuration;
+    public float effectDuration;
 
     [Header("Inventory")]
     public bool isStackable = true;

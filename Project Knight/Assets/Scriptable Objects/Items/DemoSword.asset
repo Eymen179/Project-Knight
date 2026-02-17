@@ -17,12 +17,13 @@ MonoBehaviour:
   inventorySprite: {fileID: 21300000, guid: d63a65504133b47be9fc962f16d85ada, type: 3}
   itemObject: {fileID: 5417060874148783842, guid: 0dff96ab8c5bd8245814ec6415a111d6, type: 3}
   attackDamage: 12
-  attackSpeed: 30
+  attackSpeed: 1.8
   attackDamageMultiplier: 1.5
   attackDamageMultiplierChance: 50
   armor: 1
   health: 0
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
+  effectDuration: 0
   isStackable: 0
   itemType: 0

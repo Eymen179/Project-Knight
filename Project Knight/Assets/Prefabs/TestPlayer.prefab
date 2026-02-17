@@ -5943,6 +5943,7 @@ GameObject:
   - component: {fileID: 4111467257433067282}
   - component: {fileID: 3983786215687607330}
   - component: {fileID: 2336608342076872670}
+  - component: {fileID: 3070366169438511244}
   - component: {fileID: 2951291548822836713}
   - component: {fileID: 7614926754355730480}
   - component: {fileID: 2158258455121960284}
@@ -6078,6 +6079,29 @@ MonoBehaviour:
   enemyLayers:
     serializedVersion: 2
     m_Bits: 128
+  damageToDeal: 10
+  increaseAttackMultiplierChance: 0
+  increaseDamageMultiplier: 0
+--- !u!114 &3070366169438511244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7138731666537130983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf77a218dc521741b5b5a678fd40b0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventorySlotActions:
+  - {fileID: -8527655877296109735, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - {fileID: -208584230341770854, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - {fileID: -187078299943742736, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  inventorySlots:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &2951291548822836713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6113,6 +6137,7 @@ MonoBehaviour:
   handTransform: {fileID: 4580779376766810118}
   equipSlot1Action: {fileID: 5744103657989934638, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   currentItemInHand: {fileID: 0}
+  speedMultiplier: 1
 --- !u!65 &2158258455121960284
 BoxCollider:
   m_ObjectHideFlags: 0

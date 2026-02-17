@@ -289161,6 +289161,18 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 1773904587}
+    - target: {fileID: 3070366169438511244, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
+      propertyPath: 'inventorySlots.Array.data[0]'
+      value: 
+      objectReference: {fileID: 9169710077056312961}
+    - target: {fileID: 3070366169438511244, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
+      propertyPath: 'inventorySlots.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3948915585471970278}
+    - target: {fileID: 3070366169438511244, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
+      propertyPath: 'inventorySlots.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4662754210433565232}
     - target: {fileID: 4046647340192437659, guid: 3a6a3c07b1f5810469b2c4ebfa02f4b6, type: 3}
       propertyPath: m_Mesh
       value: 

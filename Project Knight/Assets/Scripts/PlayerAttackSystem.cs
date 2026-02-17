@@ -3,64 +3,82 @@ using UnityEngine;
 public class PlayerAttackSystem : MonoBehaviour
 {
     [Header("Ayarlar")]
-    public Transform attackPoint; // Az önce oluþturduðun objeyi buraya sürükle
-    public float attackRange = 1.0f; // Vuruþ menzili (yarýçap)
-    public LayerMask enemyLayers; // Sadece "Enemy" veya "NPC" layer'ýna vurmasý için
-
-    // Basitleþtirilmiþ eriþim (EquipmentManager'dan veriyi çekiyoruz):
-    [HideInInspector] public int damageToDeal = 10; // Varsayýlan yumruk hasarý
+    public Transform attackPoint;
+    public float attackRange = 1.0f;
+    public LayerMask enemyLayers;
 
     private EquipmentManager equipmentManager;
     private Item itemInHand;
+
+    // --- YENÝ EKLENEN BONUS DEÐÝÞKENLERÝ (Public yapýyoruz ki CrystalEffect eriþsin) ---
+    [Header("Active Buffs/Effects")]
+    public int bonusDamage = 0;                 // Kristalden gelen ekstra hasar
+    public float bonusCritMultiplier = 0f;      // Kristalden gelen ekstra kritik çarpaný
+    public int bonusCritChance = 0;             // Kristalden gelen ekstra kritik þansý
+    // ---------------------------------------------------------------------------------
 
     void Start()
     {
         equipmentManager = GetComponent<EquipmentManager>();
     }
 
-    // BU FONKSÝYONU ANIMATION EVENT ÝLE ÇAÐIRACAÐIZ
     public void DealDamage()
     {
-        itemInHand = equipmentManager.currentItemInHand;
-
-        if (itemInHand != null)
+        // 1. ÖNCE ELÝMÝZDEKÝ SÝLAHI GÜNCELLEYELÝM (Eksik Olan Kýsým)
+        if (equipmentManager != null)
         {
-            damageToDeal = DamageCalculate(damageToDeal);
+            // EquipmentManager'dan güncel eþyayý alýyoruz
+            itemInHand = equipmentManager.currentItemInHand;
         }
-        // 2. Alaný Tara (OverlapSphere)
-        // AttackPoint merkezli bir küre çiz ve içindeki colliderlarý bul
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
+        // 1. Hasarý EquipmentManager'dan al
+        int baseDamage = 1;
+        if (equipmentManager != null)
+        {
+            baseDamage = equipmentManager.GetCurrentWeaponDamage();
+        }
 
-        // 3. Bulunanlara Hasar Ver
+        // 2. Bonus hasarý ekle (Kristal etkisi burada devreye giriyor)
+        int totalDamage = baseDamage + bonusDamage;
+
+        // 3. Kritik hesaplamaya gönder
+        int finalDamage = DamageCalculate(totalDamage);
+
+        // ... (OverlapSphere ve Vuruþ kodlarý aynen kalacak) ...
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
         foreach (Collider enemy in hitEnemies)
         {
-            // Kendimize vurmayalým
-            if (enemy.transform.root == transform) continue;
-
+            if (enemy.gameObject == gameObject) continue;
             EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
             if (enemyHealth != null)
             {
-                enemyHealth.TakeDamage(damageToDeal);
-
-                // Ýsteðe baðlý: Vuruþ efekti/sesi burada çalýnabilir
+                enemyHealth.TakeDamage(finalDamage);
             }
         }
     }
-    private int DamageCalculate(int damageToDeal)
+
+    private int DamageCalculate(int currentDamage)
     {
+        if (itemInHand == null) return currentDamage;
+
+        // Þans hesaplarken bonus þansý da ekle
+        // Örn: Kýlýç %10 + Kristal %20 = %30 þans
+        int totalChance = itemInHand.attackDamageMultiplierChance + bonusCritChance;
+
+        if (totalChance > 100) totalChance = 100;
+
         int randomValue = Random.Range(1, 101);
 
-        // Þans deðerin (chance) 75 ise; 1'den 75'e kadar olan sayýlar kazanýr.
-        // Eðer þansýn 0 ise; 1 <= 0 olamayacaðý için asla girmez.
-        if (randomValue <= itemInHand.attackDamageMultiplierChance)
+        if (randomValue <= totalChance)
         {
-            Debug.Log($"Kritik Vuruþ! (Zar: {randomValue} <= Þans: {itemInHand.attackDamageMultiplierChance})");
+            Debug.Log("Kritik Vuruþ!");
 
-            // Hasarý multiplier ile çarpýp tam sayýya çeviriyoruz
-            return Mathf.RoundToInt(damageToDeal * itemInHand.attackDamageMultiplier);
+            // Çarpan hesaplarken bonus çarpaný da ekle
+            float totalMultiplier = itemInHand.attackDamageMultiplier + bonusCritMultiplier;
+
+            return Mathf.RoundToInt(currentDamage * totalMultiplier);
         }
 
-        return itemInHand.attackDamage;
+        return currentDamage;
     }
 
     // Editörde saldýrý menzilini görmek için yardýmcý çizim

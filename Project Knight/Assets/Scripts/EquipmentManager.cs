@@ -19,7 +19,7 @@ public class EquipmentManager : MonoBehaviour
     private bool isWeaponEquipped = false; // Senin 'pressCounter' mantýðý için toggle
 
     //Saldýrý Hýzý
-    [HideInInspector] public float speedMultiplier = 1f;
+    [HideInInspector] public float bonusAttackSpeed = 0f;
 
     void Start() // YENÝ EKLENDÝ
     {
@@ -99,12 +99,7 @@ public class EquipmentManager : MonoBehaviour
             // ------------------------
 
             //Saldýrý hýzý ayarý
-            speedMultiplier = itemToEquip.attackSpeed / 10f;
-            // Animator'e deðeri gönder
-            // (PlayerMovement veya CombatManager üzerinden Animator'e ulaþtýðýný varsayýyorum)
-            GetComponent<Animator>().SetFloat("fAttackSpeed", speedMultiplier);
-
-            Debug.Log($"Saldýrý Hýzý Ayarlandý: {speedMultiplier}x");
+            UpdateAttackSpeed();
 
             Debug.Log(itemToEquip.itemName + " kuþanýldý!");
         }
@@ -154,5 +149,28 @@ public class EquipmentManager : MonoBehaviour
             UnequipWeapon();
             EquipWeaponFromSlot();
         }
+    }
+    // YENÝ: Hýz güncelleme fonksiyonu (Kristal kullanýnca da bunu çaðýracaðýz)
+    public void UpdateAttackSpeed()
+    {
+        if (currentItemInHand == null) return;
+
+        // Formül: (Silah Hýzý / 10) + Bonus Hýz
+        float baseSpeed = currentItemInHand.attackSpeed;
+        float totalSpeed = baseSpeed + bonusAttackSpeed;
+
+        GetComponent<Animator>().SetFloat("fAttackSpeed", totalSpeed);
+        Debug.Log($"Yeni Saldýrý Hýzý: {totalSpeed} (Silah: {baseSpeed} + Bonus: {bonusAttackSpeed})");
+    }
+    public int GetCurrentWeaponDamage()
+    {
+        // Eðer elimizde bir eþya varsa ve bu eþyanýn bir hasar deðeri varsa döndür
+        if (currentItemInHand != null)
+        {
+            return currentItemInHand.attackDamage;
+        }
+
+        // Eðer elimiz boþsa veya hasarsýz bir eþya varsa (Yumruk hasarý)
+        return 1; // Ýstersen burayý 5 yapabilirsin.
     }
 }
