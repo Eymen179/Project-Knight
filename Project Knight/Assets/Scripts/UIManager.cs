@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI txtPrompt;
 
     public Slider playerHealthSlider;
+    public Image crosshair;
 
     private void Awake()
     {

@@ -25973,6 +25973,7 @@ MonoBehaviour:
   txtCount: {fileID: 0}
   txtPrompt: {fileID: 209448717}
   playerHealthSlider: {fileID: 943659845}
+  crosshair: {fileID: 23204536}
 --- !u!4 &428704659
 Transform:
   m_ObjectHideFlags: 0
