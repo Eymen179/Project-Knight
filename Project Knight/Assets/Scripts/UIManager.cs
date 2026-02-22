@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
     public Slider playerHealthSlider;
     public Image crosshair;
 
+    [Header("In-Game UI/Crystal Effects")]
+    public GameObject pnlCrystalEffectStatus;
+    public TextMeshProUGUI txtEffectDuration;
+    public TextMeshProUGUI txtEffects;
+
     private void Awake()
     {
         Instance = this;

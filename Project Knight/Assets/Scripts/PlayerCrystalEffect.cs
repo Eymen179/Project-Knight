@@ -108,7 +108,7 @@ public class PlayerCrystalEffect : MonoBehaviour
     }
 
     // Coroutine isimlendirmesi "Routine" ile biterse daha anlaþýlýr olur
-    IEnumerator EffectRoutine(Item crystal, float duration)
+    /*IEnumerator EffectRoutine(Item crystal, float duration)
     {
         // Efekti ver
         ApplyEffect(crystal, true);
@@ -127,6 +127,9 @@ public class PlayerCrystalEffect : MonoBehaviour
         // Çarpan faktörü: True ise 1 (Ekle), False ise -1 (Çýkar)
         int factor = isApplying ? 1 : -1;
 
+        //UI Aktifligi
+        UIManager.Instance.pnlCrystalEffectStatus.SetActive(isApplying);
+
         if (playerAttackSystem != null)
         {
             playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
@@ -141,6 +144,102 @@ public class PlayerCrystalEffect : MonoBehaviour
 
             // EquipmentManager'a hýzý güncellemesini söyle
             equipmentManager.UpdateAttackSpeed();
+        }
+
+        if(factor > 0)
+        {
+
+        }
+    }*/
+
+    // GÜNCELLENDÝ: Geri sayým sayacý eklendi
+    IEnumerator EffectRoutine(Item crystal, float duration)
+    {
+        // Efekti ver ve UI'ý ayarla
+        ApplyEffect(crystal, true);
+        Debug.Log($"{crystal.itemName} etkisi baþladý! ({duration} sn)");
+
+        float remainingTime = duration;
+
+        // Kalan süre 0'dan büyük olduðu sürece döngüyü çalýþtýr
+        while (remainingTime > 0)
+        {
+            // UI Güncellemesi (Örn: "5.0", "4.9")
+            if (UIManager.Instance != null && UIManager.Instance.txtEffectDuration != null)
+            {
+                // "F1" formatý virgülden sonra tek hane gösterir (Örn: 5.0)
+                UIManager.Instance.txtEffectDuration.text = remainingTime.ToString("F1");
+            }
+
+            // Zamaný eksilt
+            remainingTime -= Time.deltaTime;
+
+            // Bir sonraki frame'e (kareye) kadar bekle
+            yield return null;
+        }
+
+        // Süre bittiðinde efekti geri al
+        ApplyEffect(crystal, false);
+        Debug.Log($"{crystal.itemName} etkisi bitti.");
+    }
+
+    // GÜNCELLENDÝ: Dinamik metin üretimi eklendi
+    private void ApplyEffect(Item crystal, bool isApplying)
+    {
+        // Çarpan faktörü: True ise 1 (Ekle), False ise -1 (Çýkar)
+        int factor = isApplying ? 1 : -1;
+
+        if (playerAttackSystem != null)
+        {
+            playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
+            playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
+            playerAttackSystem.bonusCritMultiplier += (crystal.attackDamageMultiplier * factor);
+        }
+
+        if (equipmentManager != null)
+        {
+            // Saldýrý hýzý int olduðu için float'a çeviriyoruz (/10f)
+            equipmentManager.bonusAttackSpeed += (crystal.attackSpeed / 10f * factor);
+            equipmentManager.UpdateAttackSpeed();
+        }
+
+        // --- UI GÜNCELLEME KISMI ---
+        // Sadece süreli efektler için UI panelini aç/kapat
+        if (crystal.effectDuration > 0 && UIManager.Instance != null)
+        {
+            UIManager.Instance.pnlCrystalEffectStatus.SetActive(isApplying);
+
+            // Sadece efekt baþlarken yazýlarý oluþturalým (biterken panel kapanacaðý için gerek yok)
+            if (isApplying)
+            {
+                string effectDetails = "";
+
+                // Özellik 0'dan farklýysa metne ekle. 
+                // Pozitif sayýlarda baþýna "+" koymak için (crystal.X > 0 ? "+" : "") mantýðý kullanýyoruz.
+                // Negatif sayýlarda eksi iþareti zaten otomatik olarak yazdýrýlýr.
+
+                if (crystal.attackDamage != 0)
+                    effectDetails += $"Attack Damage {(crystal.attackDamage > 0 ? "+" : "")}{crystal.attackDamage}\n";
+
+                if (crystal.attackSpeed != 0)
+                    effectDetails += $"Attack Speed {(crystal.attackSpeed > 0 ? "+" : "")}{crystal.attackSpeed}\n";
+
+                if (crystal.attackDamageMultiplierChance != 0)
+                    effectDetails += $"Crit Chance {(crystal.attackDamageMultiplierChance > 0 ? "+" : "")}{crystal.attackDamageMultiplierChance}%\n";
+
+                if (crystal.attackDamageMultiplier != 0)
+                    effectDetails += $"Crit Multiplier {(crystal.attackDamageMultiplier > 0 ? "+" : "")}{crystal.attackDamageMultiplier}\n";
+
+                // Ýleride zýrh, can vs. eklediðinde buraya ayný kalýpla ekleyebilirsin:
+                // if (crystal.armor != 0)
+                //    effectDetails += $"Armor {(crystal.armor > 0 ? "+" : "")}{crystal.armor}\n";
+
+                // Oluþturulan dinamik metni UI'a gönder
+                if (UIManager.Instance.txtEffects != null)
+                {
+                    UIManager.Instance.txtEffects.text = effectDetails;
+                }
+            }
         }
     }
 }
