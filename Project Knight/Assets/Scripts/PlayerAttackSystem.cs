@@ -82,7 +82,7 @@ public class PlayerAttackSystem : MonoBehaviour
     }
 
     // Editörde saldýrý menzilini görmek için yardýmcý çizim
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;

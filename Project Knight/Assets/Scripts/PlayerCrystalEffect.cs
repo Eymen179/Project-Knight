@@ -12,6 +12,7 @@ public class PlayerCrystalEffect : MonoBehaviour
     private PlayerAttackSystem playerAttackSystem;
     private EquipmentManager equipmentManager;
 
+    private bool isCrystalActive = false;
     void Start()
     {
         // Validasyon
@@ -48,6 +49,12 @@ public class PlayerCrystalEffect : MonoBehaviour
     }
     private void UseCrystalPerformed(InputAction.CallbackContext context)
     {
+        if (isCrystalActive)
+        {
+            Debug.Log("Kristal Efekti Aktif!");
+            // Ýleride buraya hata sesi ekleyebilirsin.
+            return;
+        }
         // Hangi tuþa basýldýðýný bul
         for (int i = 0; i < inventorySlotActions.Length; i++)
         {
@@ -106,57 +113,15 @@ public class PlayerCrystalEffect : MonoBehaviour
             inventoryItem.RefreshCount();
         }
     }
-
-    // Coroutine isimlendirmesi "Routine" ile biterse daha anlaþýlýr olur
-    /*IEnumerator EffectRoutine(Item crystal, float duration)
-    {
-        // Efekti ver
-        ApplyEffect(crystal, true);
-        Debug.Log($"{crystal.itemName} etkisi baþladý! ({duration} sn)");
-
-        yield return new WaitForSeconds(duration);
-
-        // Efekti geri al
-        ApplyEffect(crystal, false);
-        Debug.Log($"{crystal.itemName} etkisi bitti.");
-    }
-
-    // Int (1/0) yerine Bool (true/false) kullanýmý
-    private void ApplyEffect(Item crystal, bool isApplying)
-    {
-        // Çarpan faktörü: True ise 1 (Ekle), False ise -1 (Çýkar)
-        int factor = isApplying ? 1 : -1;
-
-        //UI Aktifligi
-        UIManager.Instance.pnlCrystalEffectStatus.SetActive(isApplying);
-
-        if (playerAttackSystem != null)
-        {
-            playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
-            playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
-            playerAttackSystem.bonusCritMultiplier += (crystal.attackDamageMultiplier * factor);
-        }
-
-        if (equipmentManager != null)
-        {
-            // Saldýrý hýzý int olduðu için float'a çeviriyoruz (/10f)
-            equipmentManager.bonusAttackSpeed += (crystal.attackSpeed * factor);
-
-            // EquipmentManager'a hýzý güncellemesini söyle
-            equipmentManager.UpdateAttackSpeed();
-        }
-
-        if(factor > 0)
-        {
-
-        }
-    }*/
-
     // GÜNCELLENDÝ: Geri sayým sayacý eklendi
     IEnumerator EffectRoutine(Item crystal, float duration)
     {
         // Efekti ver ve UI'ý ayarla
         ApplyEffect(crystal, true);
+
+        //Efekt aktifken baþka kristal kullanýlamaz.
+        SetCrsytalUsability(false);
+
         Debug.Log($"{crystal.itemName} etkisi baþladý! ({duration} sn)");
 
         float remainingTime = duration;
@@ -180,6 +145,10 @@ public class PlayerCrystalEffect : MonoBehaviour
 
         // Süre bittiðinde efekti geri al
         ApplyEffect(crystal, false);
+
+        //Efekt bittiðinde yeni kristal kullanýmý açýlýr.
+        SetCrsytalUsability(true);
+
         Debug.Log($"{crystal.itemName} etkisi bitti.");
     }
 
@@ -219,16 +188,16 @@ public class PlayerCrystalEffect : MonoBehaviour
                 // Negatif sayýlarda eksi iþareti zaten otomatik olarak yazdýrýlýr.
 
                 if (crystal.attackDamage != 0)
-                    effectDetails += $"Attack Damage {(crystal.attackDamage > 0 ? "+" : "")}{crystal.attackDamage}\n";
+                    effectDetails += $"Attack Damage +{crystal.attackDamage}\n";
 
                 if (crystal.attackSpeed != 0)
-                    effectDetails += $"Attack Speed {(crystal.attackSpeed > 0 ? "+" : "")}{crystal.attackSpeed}\n";
+                    effectDetails += $"Attack Speed +{crystal.attackSpeed}\n";
 
                 if (crystal.attackDamageMultiplierChance != 0)
-                    effectDetails += $"Crit Chance {(crystal.attackDamageMultiplierChance > 0 ? "+" : "")}{crystal.attackDamageMultiplierChance}%\n";
+                    effectDetails += $"Crit Chance +{crystal.attackDamageMultiplierChance}%\n";
 
                 if (crystal.attackDamageMultiplier != 0)
-                    effectDetails += $"Crit Multiplier {(crystal.attackDamageMultiplier > 0 ? "+" : "")}{crystal.attackDamageMultiplier}\n";
+                    effectDetails += $"Crit Multiplier +{crystal.attackDamageMultiplier}\n";
 
                 // Ýleride zýrh, can vs. eklediðinde buraya ayný kalýpla ekleyebilirsin:
                 // if (crystal.armor != 0)
@@ -241,5 +210,9 @@ public class PlayerCrystalEffect : MonoBehaviour
                 }
             }
         }
+    }
+    private void SetCrsytalUsability(bool isUsable)
+    {
+        isCrystalActive = !isUsable;
     }
 }
