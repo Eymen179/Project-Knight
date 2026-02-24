@@ -199,9 +199,17 @@ public class PlayerCrystalEffect : MonoBehaviour
                 if (crystal.attackDamageMultiplier != 0)
                     effectDetails += $"Crit Multiplier +{crystal.attackDamageMultiplier}\n";
 
-                // Ýleride zýrh, can vs. eklediðinde buraya ayný kalýpla ekleyebilirsin:
-                // if (crystal.armor != 0)
-                //    effectDetails += $"Armor {(crystal.armor > 0 ? "+" : "")}{crystal.armor}\n";
+                if (crystal.armor != 0)
+                    effectDetails += $"Armor +{crystal.armor}\n";
+
+                if (crystal.health != 0)
+                    effectDetails += $"Health +{crystal.health}\n";
+
+                if (crystal.healthRegenerationAmount != 0)
+                    effectDetails += $"Health Regen +{crystal.healthRegenerationAmount}\n";
+
+                if (crystal.healthRegenerationSpeed != 0)
+                    effectDetails += $"Health Regen Speed +{crystal.healthRegenerationSpeed}\n";
 
                 // Oluþturulan dinamik metni UI'a gönder
                 if (UIManager.Instance.txtEffects != null)

@@ -13,4 +13,11 @@ public class ComboManagerBehaviour : StateMachineBehaviour
 
         animator.ResetTrigger("attack");
     }
+    // YENÝ EKLENDÝ: Bu durumdan çýkarken çalýþýr
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        // Çýkarken hafýzada kalan sahte bir týklama varsa onu yok et.
+        // Böylece kombo bitip Idle'a dönünce anlamsýzca tekrar saldýrmaz.
+        animator.ResetTrigger("attack");
+    }
 }

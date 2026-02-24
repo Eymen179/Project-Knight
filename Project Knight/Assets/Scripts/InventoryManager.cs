@@ -199,7 +199,7 @@ public class InventoryManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        UIManager.Instance.crosshair.gameObject.SetActive(isVisible);
+        UIManager.Instance.crosshair.gameObject.SetActive(!isVisible);
     }
     // Bu fonksiyonu EquipmentManager'da da kullanacaðýz, o yüzden public ve static yapabilirsin
     // veya her iki scriptin içine de kopyalayabilirsin. Ben static öneririm.

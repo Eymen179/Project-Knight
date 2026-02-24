@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
+  m_Name: TestCrystal1
+  m_EditorClassIdentifier: 
+  itemName: Test Crystal1
+  description: Test Crystal1
+  inventorySprite: {fileID: 0}
+  itemObject: {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
+  attackDamage: 0
+  attackSpeed: 0
+  attackDamageMultiplier: 0
+  attackDamageMultiplierChance: 0
+  armor: 0
+  health: 0
+  healthRegenerationAmount: 1
+  healthRegenerationSpeed: 1
+  effectDuration: 5
+  isStackable: 0
+  itemType: 1

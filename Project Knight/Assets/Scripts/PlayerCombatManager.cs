@@ -3,34 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerCombatManager : MonoBehaviour
 {
-    /*// Animator'e eriþim için
-    private Animator _animator;
-
-    // Yeni Input System'den "Attack" eylemini almak için
-    [SerializeField] private InputActionReference attack;
-    [SerializeField] private InputActionReference block;
-
-    public bool isWeaponEquipped = false;
-    // YENÝ (Opsiyonel): Saldýrý sýrasýnda hareketi kýsýtlamak için
-    // ThirdPersonMovement script'inize eriþim
-    // private ThirdPersonMovement movementScript;
-    void Start()
-    {
-        _animator = GetComponent<Animator>();
-    }
-    void Update()
-    {
-        bool isBlocking = block.action.IsPressed();
-
-        _animator.SetBool("isBlocking", isBlocking);
-
-        // "Attack" eylemine (Sol Týk) BU FRAME basýldý mý?
-        if (isWeaponEquipped && attack.action.WasPressedThisFrame() && !isBlocking)
-        {
-            // Animator'e "Attack" adýndaki tetiði gönder
-            _animator.SetTrigger("attack");
-        }
-    }*/
     private Animator _animator;
 
     [SerializeField] private InputActionReference attack;
@@ -41,6 +13,9 @@ public class PlayerCombatManager : MonoBehaviour
     // Animasyonun % kaçýnda input kabul edelim? (0.75 = %75)
     [SerializeField] private float attackInputThreshold = 0.75f;
 
+    // YENÝ: Saldýrý animasyonlarýnýn bulunduðu Layer'ýn numarasý (AttackLayer = 1)
+    private int attackLayerIndex = 1;
+
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -50,6 +25,7 @@ public class PlayerCombatManager : MonoBehaviour
     {
         ApplyAttackInputs();
     }
+
     public void ApplyAttackInputs()
     {
         // Bloklama kontrolü
@@ -62,9 +38,12 @@ public class PlayerCombatManager : MonoBehaviour
         // Sol týk basýldý mý?
         if (attack.action.WasPressedThisFrame())
         {
-            if (_animator.IsInTransition(0)) return;
-            // O anki animasyon durumunu al (Layer 0 = Base Layer)
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(1);
+            // 1. KRÝTÝK DÜZELTME: 0 yerine 1. katmanýn (AttackLayer) geçiþini kontrol et!
+            // Eðer halihazýrda Attack1'den Attack2'ye geçiþ yapýlýyorsa týký reddet.
+            if (_animator.IsInTransition(attackLayerIndex)) return;
+
+            // O anki animasyon durumunu al
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(attackLayerIndex);
 
             // EÐER þu an zaten bir saldýrý animasyonu içindeysek...
             if (stateInfo.IsTag("Attack"))
@@ -77,13 +56,12 @@ public class PlayerCombatManager : MonoBehaviour
                 }
             }
 
-            // Yukarýdaki engele takýlmadýysak saldýrýyý tetikle
-            _animator.SetTrigger("attack");
+            // 2. KRÝTÝK DÜZELTME: Önceki birikmiþ triggerlarý sil!
+            // Bu sayede spam yapsan bile kuyrukta sadece tek bir tetik kalýr.
+            _animator.ResetTrigger("attack");
 
-            // Ekstra Önlem: Trigger birikmesini önlemek için önceki triggerlarý resetle.
-            // Bu, spam yapýldýðýnda animasyon kuyruðunun þiþmesini engeller.
-            /*_animator.ResetTrigger("attack");
-            _animator.SetTrigger("attack");*/
+            // Þimdi yeni saldýrýyý tetikle
+            _animator.SetTrigger("attack");
         }
     }
 }

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
+  m_Name: TestSword5
+  m_EditorClassIdentifier: 
+  itemName: Test Sword5
+  description: Test Sword5
+  inventorySprite: {fileID: 21300000, guid: c274ac55b31b64a31bb25c9b3ac0e329, type: 3}
+  itemObject: {fileID: 4773016135309469420, guid: ab187f2e888aa3140a012f7075fdd850, type: 3}
+  attackDamage: 40
+  attackSpeed: 0.75
+  attackDamageMultiplier: 2
+  attackDamageMultiplierChance: 5
+  armor: 0
+  health: 0
+  healthRegenerationAmount: 0
+  healthRegenerationSpeed: 0
+  effectDuration: 0
+  isStackable: 0
+  itemType: 0

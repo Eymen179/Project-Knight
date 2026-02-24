@@ -17,6 +17,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         item = newItem;
         image.sprite = newItem.inventorySprite;
+
         RefreshCount();
     }
 
