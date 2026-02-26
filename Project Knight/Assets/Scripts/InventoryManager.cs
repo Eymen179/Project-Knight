@@ -65,7 +65,7 @@ public class InventoryManager : MonoBehaviour
         isInventoryOpen = !isInventoryOpen;
         mainInventoryGroup.SetActive(isInventoryOpen);
 
-        // Envanter açýldýðýnda fareyi serbest býrak, kapandýðýnda kilitle
+        // Envanter açýldýðýnda fareyi serbest býrak, karakter özelliklerini ve aktif animasyonu durdur.
         if (isInventoryOpen)
         {
             CursorVisibility(true);
@@ -73,9 +73,11 @@ public class InventoryManager : MonoBehaviour
             player.GetComponent<PlayerCombatManager>().enabled = false;
             player.GetComponent<PlayerMovement>().enabled = false;
 
+            player.GetComponent<Animator>().SetFloat("speed", 0f);
+
             UIManager.Instance.toolBarBarrier.enabled = true;
         }
-        else
+        else// Envanter açýldýðýnda fareyi kilitle, karakter özelliklerini geri aktif et.
         {
             CursorVisibility(false);
 
