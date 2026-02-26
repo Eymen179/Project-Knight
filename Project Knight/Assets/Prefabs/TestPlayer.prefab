@@ -6079,9 +6079,9 @@ MonoBehaviour:
   enemyLayers:
     serializedVersion: 2
     m_Bits: 128
-  damageToDeal: 10
-  increaseAttackMultiplierChance: 0
-  increaseDamageMultiplier: 0
+  bonusDamage: 0
+  bonusCritMultiplier: 0
+  bonusCritChance: 0
 --- !u!114 &3070366169438511244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6137,7 +6137,7 @@ MonoBehaviour:
   handTransform: {fileID: 4580779376766810118}
   equipSlot1Action: {fileID: 5744103657989934638, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   currentItemInHand: {fileID: 0}
-  speedMultiplier: 1
+  bonusAttackSpeed: 0
 --- !u!65 &2158258455121960284
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6157,7 +6157,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 1.5, z: 0.3}
+  m_Size: {x: 0.5, y: 1.5, z: 0.5}
   m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!54 &624685016422401966
 Rigidbody:
