@@ -45,10 +45,11 @@ public class PlayerAttackSystem : MonoBehaviour
 
         // ... (OverlapSphere ve Vuruþ kodlarý aynen kalacak) ...
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
+
         foreach (Collider enemy in hitEnemies)
         {
             if (enemy.gameObject == gameObject) continue;
-            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+            EnemyHealth enemyHealth = enemy.GetComponentInParent<EnemyHealth>();
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(finalDamage);

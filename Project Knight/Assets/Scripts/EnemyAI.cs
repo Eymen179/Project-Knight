@@ -1,0 +1,231 @@
+using UnityEngine;
+using UnityEngine.AI;
+
+public class EnemyAI : MonoBehaviour
+{
+    public enum AIState { Patrol, Chase, Attack, Return }
+
+    [Header("Referanslar & Ayarlar")]
+    public EnemyStats stats;
+    public AIState currentState = AIState.Patrol;
+
+    private NavMeshAgent agent;
+    private Transform playerTarget;
+    private Animator _animator;
+
+    // Hafýza ve Bölge Deðiþkenleri
+    private Vector3 startPosition;       // Doðduðu/Beklediði merkez nokta
+    private float memoryTimer;           // Oyuncuyu görmediðinde geri sayan sayaç
+    private float patrolWaitTimer;       // Rastgele gezinirken bekleme süresi
+
+    // Görüþ (Line of Sight) için katman ayarý (Duvarlarýn arkasýný görmemesi için)
+    // Eðer bir harita eklersen duvarlarý "Obstacle" gibi bir katmana alabilirsin.
+    [SerializeField] private LayerMask obstacleMask;
+
+    void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
+
+        if (stats != null)
+        {
+            agent.speed = stats.moveSpeed;
+        }
+
+        // Merkez konumunu kaydet
+        startPosition = transform.position;
+
+        PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+        if (player != null) playerTarget = player.transform;
+    }
+
+    void Update()
+    {
+        if (playerTarget == null || stats == null) return;
+
+        // 1. Oyuncuyu Görüyor mu? (Açý, Mesafe ve Duvar Kontrolü)
+        bool canSeePlayer = CanSeePlayer();
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
+
+        // --- DURUM MAKÝNESÝ (STATE MACHINE) ---
+
+        if (canSeePlayer)
+        {
+            // Oyuncuyu görüyorsa hafýzayý tazele ve saldýrmaya/kovalamaya baþla
+            memoryTimer = stats.memoryTime;
+
+            if (distanceToPlayer <= stats.attackRange)
+            {
+                SwitchState(AIState.Attack);
+            }
+            else
+            {
+                SwitchState(AIState.Chase);
+            }
+        }
+        else
+        {
+            // Oyuncuyu GÖRMÜYORSA
+            if (currentState == AIState.Chase || currentState == AIState.Attack)
+            {
+                // Hafýza süresi bitene kadar takip etmeye çalýþ
+                memoryTimer -= Time.deltaTime;
+                if (memoryTimer <= 0)
+                {
+                    // Hafýza bitti, pes et ve merkeze dön
+                    SwitchState(AIState.Return);
+                }
+            }
+        }
+
+        // Bulunduðumuz duruma göre eylemleri yap
+        ExecuteCurrentState();
+    }
+
+    private void SwitchState(AIState newState)
+    {
+        if (currentState == newState) return;
+        currentState = newState;
+    }
+
+    private void ExecuteCurrentState()
+    {
+        switch (currentState)
+        {
+            case AIState.Patrol:
+                PatrolBehavior();
+                break;
+            case AIState.Chase:
+                ChaseBehavior();
+                break;
+            case AIState.Attack:
+                AttackBehavior();
+                break;
+            case AIState.Return:
+                ReturnBehavior();
+                break;
+        }
+    }
+
+    // --- YAPAY ZEKA DAVRANIÞLARI ---
+
+    private void PatrolBehavior()
+    {
+        // Hedefe ulaþtýysa veya hiç hedefi yoksa bekle
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            patrolWaitTimer -= Time.deltaTime;
+
+            if (patrolWaitTimer <= 0)
+            {
+                // Rastgele yeni bir nokta bul ve oraya git
+                Vector3 randomPoint = GetRandomPoint(startPosition, stats.wanderRadius);
+                agent.SetDestination(randomPoint);
+                agent.isStopped = false;
+                patrolWaitTimer = Random.Range(2f, 5f); // 2 ile 5 saniye arasý bekle
+            }
+        }
+    }
+
+    private void ChaseBehavior()
+    {
+        agent.isStopped = false;
+        agent.SetDestination(playerTarget.position);
+    }
+
+    private void AttackBehavior()
+    {
+        agent.isStopped = true;
+        FaceTarget(playerTarget.position);
+
+        // Burada saldýrý animasyonunu veya hasar kodunu tetikleyebilirsin
+    }
+
+    private void ReturnBehavior()
+    {
+        // Baþlangýç merkezine geri dön
+        agent.isStopped = false;
+        agent.SetDestination(startPosition);
+
+        // Merkeze ulaþtýysa tekrar devriyeye (Patrol) baþla
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            SwitchState(AIState.Patrol);
+        }
+    }
+
+    // --- YARDIMCI METOTLAR ---
+
+    // Düþmanýn gözü: Açý ve Engel kontrolü
+    private bool CanSeePlayer()
+    {
+        Vector3 dirToPlayer = (playerTarget.position - transform.position).normalized;
+        float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
+
+        // 1. Mesafe Kontrolü
+        if (distanceToPlayer > stats.chaseRange) return false;
+
+        // 2. Görüþ Açýsý Kontrolü (Önündeki x derecelik koni içinde mi?)
+        float angleToPlayer = Vector3.Angle(transform.forward, dirToPlayer);
+        if (angleToPlayer < stats.fovAngle / 2f)
+        {
+            // 3. Duvar/Engel Kontrolü (Raycast ile)
+            // Lazer ýþýnýný düþmanýn göz hizasýndan (Vector3.up) atýyoruz
+            if (!Physics.Raycast(transform.position + Vector3.up, dirToPlayer, distanceToPlayer, obstacleMask))
+            {
+                // Çarpýþma yoksa oyuncuyu net görüyor demektir
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // NavMesh üzerinde rastgele geçerli bir nokta bulur
+    private Vector3 GetRandomPoint(Vector3 center, float range)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * range;
+        randomDirection += center;
+
+        NavMeshHit hit;
+        // Seçilen rastgele nokta NavMesh'e uygun mu diye kontrol et (SamplePosition)
+        if (NavMesh.SamplePosition(randomDirection, out hit, range, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return center; // Bulamazsa olduðu yerde kalsýn
+    }
+
+    private void FaceTarget(Vector3 targetPos)
+    {
+        Vector3 direction = (targetPos - transform.position).normalized;
+        direction.y = 0;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    }
+
+    // Test ortamýnda görüþ açýsýný (FOV Konisi) ve Devriye alanýný çizdirelim
+    private void OnDrawGizmos()
+    {
+        if (stats == null) return;
+
+        // Devriye (Wander) Alaný
+        Gizmos.color = new Color(0, 1, 0, 0.3f); // Yarý saydam yeþil
+        Gizmos.DrawWireSphere(Application.isPlaying ? startPosition : transform.position, stats.wanderRadius);
+
+        // Görüþ Açýsý Çizgileri
+        Gizmos.color = Color.yellow;
+        Vector3 forward = transform.forward * stats.chaseRange;
+
+        Quaternion leftRayRotation = Quaternion.AngleAxis(-stats.fovAngle / 2f, Vector3.up);
+        Quaternion rightRayRotation = Quaternion.AngleAxis(stats.fovAngle / 2f, Vector3.up);
+        Quaternion middleRayRotation = Quaternion.AngleAxis(0, Vector3.up);
+
+        Vector3 leftRayDirection = leftRayRotation * forward;
+        Vector3 rightRayDirection = rightRayRotation * forward;
+        Vector3 middleRayDirection = middleRayRotation * forward;
+
+        Gizmos.DrawRay(transform.position + Vector3.up, leftRayDirection);
+        Gizmos.DrawRay(transform.position + Vector3.up, rightRayDirection);
+        Gizmos.DrawRay(transform.position + Vector3.up, middleRayDirection);
+    }
+}

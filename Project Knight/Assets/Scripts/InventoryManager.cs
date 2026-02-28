@@ -127,7 +127,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // --- YENÝ: Eþya Yere Atma Sistemi ---
-    public void DropItem(InventoryItem itemUI)
+    /*public void DropItem(InventoryItem itemUI)
     {
         // 1. Hangi itemi atýyoruz?
         Item itemToDrop = itemUI.item;
@@ -182,6 +182,80 @@ public class InventoryManager : MonoBehaviour
         }
 
         /*kutsal*/
+        /*EquipmentManager equipmentManager = FindFirstObjectByType<EquipmentManager>();
+        if (equipmentManager != null)
+        {
+            equipmentManager.ValidateEquipment();
+        }*/
+    /*}*/
+    public void DropItem(InventoryItem itemUI)
+    {
+        Item itemToDrop = itemUI.item;
+
+        if (itemToDrop.itemObject != null)
+        {
+            Transform playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
+
+            // 1. Eþyanýn ilk çýkýþ noktasýný (Karakterin biraz önü) belirle
+            Vector3 dropPosition = playerTransform.position + (playerTransform.forward * 1.5f) + (Vector3.up * 1f);
+
+            // 2. YERÝ BUL (Minecraft stili için kritik)
+            // Eðer oyuncu zýplarken eþyayý atarsa havada asýlý kalmasýn diye aþaðý doðru 10 metrelik bir ýþýn atýyoruz
+            if (Physics.Raycast(dropPosition, Vector3.down, out RaycastHit hit, 10f))
+            {
+                // Yeri bulursak, eþyanýn merkezini yerin tam 0.5 metre yukarýsýna sabitliyoruz
+                dropPosition = hit.point + (Vector3.up * 0.5f);
+            }
+
+            // 3. Eþyayý sahnede oluþtur
+            GameObject droppedObject = Instantiate(itemToDrop.itemObject, dropPosition, Quaternion.identity);           
+
+            if (droppedObject.TryGetComponent<ItemPickup>(out ItemPickup pickupScript))
+            {
+                pickupScript.item = itemToDrop;
+            }
+            else
+            {
+                Debug.LogWarning("DÝKKAT: Attýðýn prefab'ýn üzerinde ItemPickup scripti yok!");
+            }
+
+            // Layer ayarý
+            int interactableLayer = LayerMask.NameToLayer("Interactable");
+            SetLayerRecursively(droppedObject, interactableLayer);
+
+            // 4. FÝZÝÐÝ ÝPTAL ET, ANÝMASYONU BAÞLAT
+            // Artýk fýrlatma (AddForce) istemiyoruz. Eðer prefabda Rigidbody varsa siliyoruz.
+            Rigidbody rb = droppedObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                Destroy(rb); // Fizik motoruyla iþimiz yok, SimpleGemsAnim halledecek
+            }
+
+            // Objede süzülme scripti yoksa otomatik ekle ve ayarlarýný aç
+            if (!droppedObject.TryGetComponent<Benjathemaker.SimpleGemsAnim>(out Benjathemaker.SimpleGemsAnim anim))
+            {
+                anim = droppedObject.AddComponent<Benjathemaker.SimpleGemsAnim>();
+            }
+            
+            // Animasyon özelliklerini kod üzerinden aktif et
+            anim.isRotating = true;
+            anim.rotateY = true;
+            anim.isFloating = true;
+            anim.floatHeight = 0.25f; // Ne kadar yukarý/aþaðý sekeceði
+            anim.floatSpeed = 0.4f;    // Sekme hýzý
+        }
+
+        // 5. UI Güncellemesi
+        itemUI.count--;
+        if (itemUI.count <= 0)
+        {
+            Destroy(itemUI.gameObject); 
+        }
+        else
+        {
+            itemUI.RefreshCount(); 
+        }
+
         EquipmentManager equipmentManager = FindFirstObjectByType<EquipmentManager>();
         if (equipmentManager != null)
         {

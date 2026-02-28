@@ -80,6 +80,20 @@ public class EquipmentManager : MonoBehaviour
             currentEquippedWeapon.transform.localPosition = Vector3.zero;
             currentEquippedWeapon.transform.localRotation = Quaternion.identity;
 
+            // --- YENÝ EKLENEN KRÝTÝK DÜZELTME ---
+            // 1. Kýlýç elimizdeyken süzülme animasyonuna ihtiyacýmýz yok, scripti sil:
+            if (currentEquippedWeapon.TryGetComponent<Benjathemaker.SimpleGemsAnim>(out Benjathemaker.SimpleGemsAnim floatAnim))
+            {
+                Destroy(floatAnim);
+            }
+            // --- YENÝ EKLENEN KRÝTÝK KISIM: KILICIN FÝZÝÐÝNÝ YOK ET ---
+            // Kýlýcýn kendisinde veya alt objelerinde (býçak, kabza vs.) bulunan tüm Collider'larý bul ve sil.
+            Collider[] weaponColliders = currentEquippedWeapon.GetComponentsInChildren<Collider>();
+            foreach (Collider col in weaponColliders)
+            {
+                col.enabled = false;
+            }
+            // ---------------------------------------------------------
             currentItemInHand = itemToEquip;
 
             // Durumu ve animasyonu güncelle
