@@ -22,6 +22,10 @@ public class EnemyAI : MonoBehaviour
     // Eðer bir harita eklersen duvarlarý "Obstacle" gibi bir katmana alabilirsin.
     [SerializeField] private LayerMask obstacleMask;
 
+    public Color redColor;
+    public Color greenColor;
+    public Color yellowColor;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -213,7 +217,14 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(Application.isPlaying ? startPosition : transform.position, stats.wanderRadius);
 
         // Görüþ Açýsý Çizgileri
-        Gizmos.color = Color.yellow;
+        if (currentState == AIState.Patrol)
+            Gizmos.color = greenColor;
+        else if (currentState == AIState.Chase)
+            Gizmos.color = redColor;
+        else if (currentState == AIState.Attack)
+            Gizmos.color = redColor;
+        else if (currentState == AIState.Return)
+            Gizmos.color = yellowColor;
         Vector3 forward = transform.forward * stats.chaseRange;
 
         Quaternion leftRayRotation = Quaternion.AngleAxis(-stats.fovAngle / 2f, Vector3.up);

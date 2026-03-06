@@ -18,7 +18,7 @@ MonoBehaviour:
   attackDamage: 10
   attackCooldown: 1.5
   attackRange: 1.5
-  chaseRange: 5
-  fovAngle: 120
+  chaseRange: 10
+  fovAngle: 90
   wanderRadius: 10
   memoryTime: 4
