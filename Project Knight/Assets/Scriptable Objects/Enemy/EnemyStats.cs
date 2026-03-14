@@ -6,7 +6,9 @@ public class EnemyStats : ScriptableObject
     [Header("Base Stats")]
     public string enemyName;
     public int maxHealth = 100;
-    public float moveSpeed = 3f;
+    // GÜNCELLENDÝ: Hýz ikiye ayrýldý
+    public float patrolSpeed = 2f; // Devriye atarken yürüme hýzý
+    public float chaseSpeed = 5f;  // Kovalarken ve merkeze dönerken koþma hýzý
 
     [Header("Combat Stats")]
     public int attackDamage = 10;

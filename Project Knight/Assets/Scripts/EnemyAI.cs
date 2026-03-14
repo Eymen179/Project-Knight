@@ -36,7 +36,7 @@ public class EnemyAI : MonoBehaviour
 
         if (stats != null)
         {
-            agent.speed = stats.moveSpeed;
+            agent.speed = stats.patrolSpeed;
         }
 
         // Merkez konumunu kaydet
@@ -120,51 +120,72 @@ public class EnemyAI : MonoBehaviour
 
     private void PatrolBehavior()
     {
+        // Devriye atarken yürüme hýzýna geç
+        agent.speed = stats.patrolSpeed;
+
         // Hedefe ulaþtýysa veya hiç hedefi yoksa bekle
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
+            // Beklerken (Hareketsizken) Idle animasyonu
+            if (_animator != null) _animator.SetFloat("speed", 0f);
+
             patrolWaitTimer -= Time.deltaTime;
 
             if (patrolWaitTimer <= 0)
             {
-                // Rastgele yeni bir nokta bul ve oraya git
+                // Yeni noktaya doðru yürümeye baþla
                 Vector3 randomPoint = GetRandomPoint(startPosition, stats.wanderRadius);
                 agent.SetDestination(randomPoint);
                 agent.isStopped = false;
-                patrolWaitTimer = Random.Range(2f, 5f); // 2 ile 5 saniye arasý bekle
+                patrolWaitTimer = Random.Range(2f, 5f);
             }
+        }
+        else
+        {
+            // Yürüyüþ halindeyse Walk animasyonu (0.5 deðeri Walk'u tetikler)
+            if (_animator != null) _animator.SetFloat("speed", 0.5f);
         }
     }
 
     private void ChaseBehavior()
     {
+        // Oyuncuyu kovalarken koþma hýzýna geç
+        agent.speed = stats.chaseSpeed;
         agent.isStopped = false;
         agent.SetDestination(playerTarget.position);
+
+        // Run (Koþma) animasyonu (1.0 deðeri Sprint'i tetikler)
+        if (_animator != null) _animator.SetFloat("speed", 1f);
     }
 
     private void AttackBehavior()
     {
+        // Saldýrýrken dur
         agent.isStopped = true;
         FaceTarget(playerTarget.position);
 
+        // Durduðu için Idle animasyonuna geçsin (Sonra Attack animasyonu üstüne binecek)
+        if (_animator != null) _animator.SetFloat("speed", 0f);
+
         if (Time.time >= nextAttackTime)
         {
-            // 1. Sadece animasyonu tetikle (Hasar verme iþlemini Animation Event yapacak)
             if (_animator != null)
             {
                 _animator.SetTrigger("attack");
             }
-
-            // 2. Bekleme süresini sýfýrla
             nextAttackTime = Time.time + stats.attackCooldown;
         }
     }
 
     private void ReturnBehavior()
     {
-        // Baþlangýç merkezine geri dön
+        // Merkeze dönerken koþma hýzýna geç
+        agent.speed = stats.chaseSpeed;
         agent.isStopped = false;
         agent.SetDestination(startPosition);
+
+        // Run (Koþma) animasyonunu oynat
+        if (_animator != null) _animator.SetFloat("speed", 1f);
 
         // Merkeze ulaþtýysa tekrar devriyeye (Patrol) baþla
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
