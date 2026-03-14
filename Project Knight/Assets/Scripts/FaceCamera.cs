@@ -16,10 +16,12 @@ public class FaceCamera : MonoBehaviour
     {
         if (mainCamera != null)
         {
-            // YÖNTEM 1: Tamamen kameraya kilitli (En iyisi)
-            // Canvas'ýn yönünü, kameranýn baktýðý yönle ayný yap.
-            // Bu sayede UI her zaman ekran düzlemine paralel durur.
-            transform.rotation = mainCamera.transform.rotation;
+            // Kameranýn o anki dönüþ açýlarýný (Euler) alýyoruz
+            Vector3 cameraAngles = mainCamera.transform.rotation.eulerAngles;
+
+            // X (öne/arkaya eðilme) ve Z (saða/sola yatma) açýlarýný 0'da sabitliyoruz.
+            // Sadece Y (kendi etrafýnda dönme) açýsýný kameraya eþitliyoruz.
+            transform.rotation = Quaternion.Euler(0f, cameraAngles.y, 0f);
         }
     }
 }

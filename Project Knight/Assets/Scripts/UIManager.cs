@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI txtPrompt;
 
     public Slider playerHealthSlider;
+    public TextMeshProUGUI txtHealth;
     public Image crosshair;
 
     [Header("In-Game UI/Crystal Effects")]
@@ -31,6 +32,12 @@ public class UIManager : MonoBehaviour
         mainInventoryGroup.SetActive(false);
 
         toolBarBarrier.enabled = true;
+
+        if (playerHealthSlider != null)
+        {
+            playerHealthSlider.maxValue = 1f; // Slider deðer aralýðýný 0-1 yapýyoruz
+            playerHealthSlider.value = 1f;
+        }
     }
 
 }

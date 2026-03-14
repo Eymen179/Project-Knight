@@ -26,6 +26,9 @@ public class EnemyAI : MonoBehaviour
     public Color greenColor;
     public Color yellowColor;
 
+    private EnemyAttackSystem attackSystem;
+    private float nextAttackTime = 0f; // Saldýrý bekleme süresi (Cooldown) için sayaç
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -41,6 +44,8 @@ public class EnemyAI : MonoBehaviour
 
         PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
         if (player != null) playerTarget = player.transform;
+
+        attackSystem = GetComponent<EnemyAttackSystem>();
     }
 
     void Update()
@@ -142,7 +147,17 @@ public class EnemyAI : MonoBehaviour
         agent.isStopped = true;
         FaceTarget(playerTarget.position);
 
-        // Burada saldýrý animasyonunu veya hasar kodunu tetikleyebilirsin
+        if (Time.time >= nextAttackTime)
+        {
+            // 1. Sadece animasyonu tetikle (Hasar verme iþlemini Animation Event yapacak)
+            if (_animator != null)
+            {
+                _animator.SetTrigger("attack");
+            }
+
+            // 2. Bekleme süresini sýfýrla
+            nextAttackTime = Time.time + stats.attackCooldown;
+        }
     }
 
     private void ReturnBehavior()
