@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class EnemyHealth : MonoBehaviour
@@ -14,8 +15,14 @@ public class EnemyHealth : MonoBehaviour
 
     private int currentHealth;
 
+    private Animator animator;
+
+    private bool isDead = false;
+
     void Start()
     {
+        animator = GetComponent<Animator>();
+
         // Baþlangýç canýný statlardan al
         if (stats != null)
         {
@@ -39,6 +46,17 @@ public class EnemyHealth : MonoBehaviour
     //Animation Event
     public void TakeDamage(int damageAmount)
     {
+        if (isDead) return; // Öldüyse daha fazla hasar alma
+
+        // --- 1. BLOK KONTROLÜ ---
+        // Eðer AI blok yapmaya karar vermiþse ve animasyon aktifse
+        if (animator != null && animator.GetBool("isBlocking"))
+        {
+            Debug.Log($"{stats?.enemyName} saldýrýný ustaca BLOKLADI!");
+
+            return; // Hasar almadan fonksiyondan çýk
+        }
+
         currentHealth -= damageAmount;
 
         // Can eksiye düþmesin
@@ -76,6 +94,8 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        isDead = true;
+
         Debug.Log(gameObject.name + " öldü!");
         Destroy(gameObject);
     }

@@ -15,6 +15,9 @@ public class EnemyStats : ScriptableObject
     public float attackCooldown = 1.5f;
     public float attackRange = 2f;  // Vurma menzili
 
+    [Range(0, 100)]
+    public int blockChance = 30;
+
     [Header("Vision & AI Senses")]
     public float chaseRange = 10f;  // Ne kadar uzaðý görebildiði
     [Range(0, 360)]

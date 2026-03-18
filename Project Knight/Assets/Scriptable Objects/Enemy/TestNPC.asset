@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: TestNPC
   maxHealth: 100
-  moveSpeed: 3.5
+  patrolSpeed: 2
+  chaseSpeed: 5
   attackDamage: 10
   attackCooldown: 1.5
-  attackRange: 1
+  attackRange: 2
+  blockChance: 50
   chaseRange: 10
   fovAngle: 90
   wanderRadius: 10

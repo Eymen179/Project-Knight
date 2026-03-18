@@ -29,6 +29,9 @@ public class EnemyAI : MonoBehaviour
     private EnemyAttackSystem attackSystem;
     private float nextAttackTime = 0f; // Saldýrý bekleme süresi (Cooldown) için sayaç
 
+    private bool isBlocking = false;
+    private float blockTimer = 0f;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -149,31 +152,63 @@ public class EnemyAI : MonoBehaviour
 
     private void ChaseBehavior()
     {
-        // Oyuncuyu kovalarken koþma hýzýna geç
+        // Eðer NPC blok yaparken sen menzilden kaçarsan, bloku hemen indirsin
+        if (isBlocking)
+        {
+            isBlocking = false;
+            if (_animator != null) _animator.SetBool("isBlocking", false);
+        }
+
         agent.speed = stats.chaseSpeed;
         agent.isStopped = false;
         agent.SetDestination(playerTarget.position);
 
-        // Run (Koþma) animasyonu (1.0 deðeri Sprint'i tetikler)
         if (_animator != null) _animator.SetFloat("speed", 1f);
     }
 
     private void AttackBehavior()
     {
-        // Saldýrýrken dur
         agent.isStopped = true;
         FaceTarget(playerTarget.position);
 
-        // Durduðu için Idle animasyonuna geçsin (Sonra Attack animasyonu üstüne binecek)
         if (_animator != null) _animator.SetFloat("speed", 0f);
 
+        // 1. DURUM: Eðer NPC þu an gardýný almýþ (Blok) durumdaysa
+        if (isBlocking)
+        {
+            blockTimer -= Time.deltaTime; // Blok süresinden düþ
+
+            if (blockTimer <= 0)
+            {
+                // Süre doldu, gardýný indir
+                isBlocking = false;
+                if (_animator != null) _animator.SetBool("isBlocking", false);
+
+                // Blok bitince anýnda saldýrmasýn diye yarým saniye nefes alma payý
+                nextAttackTime = Time.time + 0.5f;
+            }
+            return; // Blok halindeyken aþaðýdaki saldýrý kodlarýný OKUMA
+        }
+
+        // 2. DURUM: Bekleme süresi bitti, yeni bir hamle yapma vakti
         if (Time.time >= nextAttackTime)
         {
-            if (_animator != null)
+            // KARAR ANI: Rastgele bir sayý tut (0-100 arasý)
+            int decision = Random.Range(0, 100);
+
+            if (decision < stats.blockChance)
             {
-                _animator.SetTrigger("attack");
+                // --- BLOK YAPMAYA KARAR VERDÝ ---
+                isBlocking = true;
+                blockTimer = Random.Range(1.5f, 3.5f); // 1.5 ile 3.5 saniye arasý blokta kalacak
+                if (_animator != null) _animator.SetBool("isBlocking", true);
             }
-            nextAttackTime = Time.time + stats.attackCooldown;
+            else
+            {
+                // --- SALDIRMAYA KARAR VERDÝ ---
+                if (_animator != null) _animator.SetTrigger("attack");
+                nextAttackTime = Time.time + stats.attackCooldown;
+            }
         }
     }
 
