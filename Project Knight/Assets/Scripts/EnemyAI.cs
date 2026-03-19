@@ -32,8 +32,12 @@ public class EnemyAI : MonoBehaviour
     private bool isBlocking = false;
     private float blockTimer = 0f;
 
+    private EnemyHealth enemyHealth;
+
     void Start()
     {
+        enemyHealth = GetComponent<EnemyHealth>();
+
         agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
 
@@ -87,6 +91,11 @@ public class EnemyAI : MonoBehaviour
                     // Hafýza bitti, pes et ve merkeze dön
                     SwitchState(AIState.Return);
                 }
+            }
+            if(currentState == AIState.Patrol && enemyHealth.currentHealth != enemyHealth.healthBeforeDamage)
+            {
+                // Devriye halindeyken oyuncuyu görmezse rastgele gezinmeye devam et
+                SwitchState(AIState.Chase);
             }
         }
 
