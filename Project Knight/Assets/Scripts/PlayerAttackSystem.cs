@@ -4,7 +4,6 @@ public class PlayerAttackSystem : MonoBehaviour
 {
     [Header("Ayarlar")]
     public Transform attackPoint;
-    public float attackRange = 1.0f;
     public LayerMask enemyLayers;
 
     private EquipmentManager equipmentManager;
@@ -44,7 +43,7 @@ public class PlayerAttackSystem : MonoBehaviour
         int finalDamage = DamageCalculate(totalDamage);
 
         // ... (OverlapSphere ve Vuruþ kodlarý aynen kalacak) ...
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayers);
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, itemInHand.attackRange, enemyLayers);
 
         foreach (Collider enemy in hitEnemies)
         {
@@ -85,8 +84,10 @@ public class PlayerAttackSystem : MonoBehaviour
     // Editörde saldýrý menzilini görmek için yardýmcý çizim
     private void OnDrawGizmos()
     {
+        float gizmosRange = 1f;
+        if (itemInHand != null) gizmosRange = itemInHand.attackRange;
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(attackPoint.position, gizmosRange);
     }
 }

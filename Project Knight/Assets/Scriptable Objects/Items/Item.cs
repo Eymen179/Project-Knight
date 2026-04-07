@@ -15,6 +15,7 @@ public class Item : ScriptableObject
     [Header("Attributes")]
     public int attackDamage;
     public float attackSpeed;
+    public float attackRange = 1.0f;
 
     public float attackDamageMultiplier;
     [Range(0, 100)]

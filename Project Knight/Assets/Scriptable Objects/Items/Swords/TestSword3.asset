@@ -18,6 +18,7 @@ MonoBehaviour:
   itemObject: {fileID: 8093621624597195523, guid: 78e466f0cf5ad684e86923ab3d3a521d, type: 3}
   attackDamage: 15
   attackSpeed: 1.5
+  attackRange: 1.8
   attackDamageMultiplier: 1.1
   attackDamageMultiplierChance: 5
   armor: 0

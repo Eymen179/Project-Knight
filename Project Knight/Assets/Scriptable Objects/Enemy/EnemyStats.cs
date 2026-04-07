@@ -14,6 +14,7 @@ public class EnemyStats : ScriptableObject
     public int attackDamage = 10;
     public float attackCooldown = 1.5f;
     public float attackRange = 2f;  // Vurma menzili
+    public float attackSpeedMultiplier = 1f; // Saldýrý hýzýný etkileyen çarpan
 
     [Range(0, 100)]
     public int blockChance = 30;

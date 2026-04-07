@@ -15,10 +15,11 @@ MonoBehaviour:
   enemyName: TestNPC
   maxHealth: 100
   patrolSpeed: 2
-  chaseSpeed: 5
+  chaseSpeed: 4
   attackDamage: 10
   attackCooldown: 1.5
   attackRange: 2
+  attackSpeedMultiplier: 1.2
   blockChance: 50
   chaseRange: 10
   fovAngle: 90

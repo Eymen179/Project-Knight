@@ -28,13 +28,13 @@ public class PlayerCombatManager : MonoBehaviour
 
     public void ApplyAttackInputs()
     {
+        if (!isWeaponEquipped) return;
         // Bloklama kontrolü
         bool isBlocking = block.action.IsPressed();
         _animator.SetBool("isBlocking", isBlocking);
 
         // Eðer silah yoksa veya blokluyorsak saldýramayýz
         if (!isWeaponEquipped || isBlocking) return;
-
         // Sol týk basýldý mý?
         if (attack.action.WasPressedThisFrame())
         {

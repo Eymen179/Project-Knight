@@ -59,6 +59,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (playerTarget == null || stats == null) return;
 
+        SetAttackSpeed();
         // 1. Oyuncuyu Görüyor mu? (Açý, Mesafe ve Duvar Kontrolü)
         bool canSeePlayer = CanSeePlayer();
         float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
@@ -209,7 +210,7 @@ public class EnemyAI : MonoBehaviour
             {
                 // --- BLOK YAPMAYA KARAR VERDÝ ---
                 isBlocking = true;
-                blockTimer = Random.Range(1.5f, 3.5f); // 1.5 ile 3.5 saniye arasý blokta kalacak
+                blockTimer = Random.Range(1.5f, 2.5f); // 1.5 ile 3.5 saniye arasý blokta kalacak
                 if (_animator != null) _animator.SetBool("isBlocking", true);
             }
             else
@@ -318,5 +319,9 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawRay(transform.position + Vector3.up, leftRayDirection);
         Gizmos.DrawRay(transform.position + Vector3.up, rightRayDirection);
         Gizmos.DrawRay(transform.position + Vector3.up, middleRayDirection);
+    }
+    public void SetAttackSpeed()
+    {
+        GetComponent<Animator>().SetFloat("NPCAttackSpeed", stats.attackSpeedMultiplier);
     }
 }
