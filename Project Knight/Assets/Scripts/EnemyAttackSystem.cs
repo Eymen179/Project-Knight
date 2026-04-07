@@ -5,7 +5,6 @@ public class EnemyAttackSystem : MonoBehaviour
     [Header("Saldýrý Ayarlarý")]
     public EnemyStats stats;           // Hasar deðerini buradan alacak
     public Transform attackPoint;      // NPC'nin önündeki görünmez vuruþ noktasý
-    public float attackRange = 1.2f;   // Vuruþ küresinin büyüklüðü
     public LayerMask playerLayer;      // Sadece 'Player' katmanýný arayacak
 
     // Bu fonksiyonu þimdilik test için, ileride ise Animation Event'ten çaðýracaðýz
@@ -13,7 +12,7 @@ public class EnemyAttackSystem : MonoBehaviour
     {
         if (stats == null || attackPoint == null) return;
 
-        Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, attackRange, playerLayer);
+        Collider[] hitPlayers = Physics.OverlapSphere(attackPoint.position, stats.attackRange, playerLayer);
 
         foreach (Collider playerCol in hitPlayers)
         {
@@ -33,6 +32,6 @@ public class EnemyAttackSystem : MonoBehaviour
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(attackPoint.position, stats.attackRange);
     }
 }
