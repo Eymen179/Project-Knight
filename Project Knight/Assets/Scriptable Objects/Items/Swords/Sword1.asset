@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
-  m_Name: Crystal
+  m_Name: Sword1
   m_EditorClassIdentifier: 
-  itemName: DemoCrsytal
-  description: DemoCrsytal
-  inventorySprite: {fileID: 21300000, guid: 7aaf7237903bb1043a932689e7c00f9c, type: 3}
-  itemObject: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
-  attackDamage: 0
-  attackSpeed: 1.5
-  attackDamageMultiplier: 1.5
-  attackDamageMultiplierChance: 40
-  armor: 0
+  itemName: Sword1
+  description: Sword1
+  inventorySprite: {fileID: 21300000, guid: 761b543896fdb7b419770bf6a64e86da, type: 3}
+  itemObject: {fileID: 540710416655916467, guid: 2eb55cf26c1974a4387227fbb78425ba, type: 3}
+  attackDamage: 24
+  attackSpeed: 1.15
+  attackRange: 1.05
+  attackDamageMultiplier: 1.4
+  attackDamageMultiplierChance: 15
   health: 0
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
-  effectDuration: 15
+  effectDuration: 0
   isStackable: 0
-  itemType: 1
+  itemType: 0

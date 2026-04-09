@@ -11,6 +11,7 @@ public class PlayerCrystalEffect : MonoBehaviour
     [Header("Referanslar")]
     private PlayerAttackSystem playerAttackSystem;
     private EquipmentManager equipmentManager;
+    private PlayerHealth playerHealth; // YENÝ EKLENDÝ
 
     private bool isCrystalActive = false;
     void Start()
@@ -22,6 +23,7 @@ public class PlayerCrystalEffect : MonoBehaviour
             return;
         }
 
+        playerHealth = GetComponent<PlayerHealth>(); // YENÝ EKLENDÝ
         playerAttackSystem = GetComponent<PlayerAttackSystem>();
         equipmentManager = GetComponent<EquipmentManager>();
     }
@@ -125,6 +127,7 @@ public class PlayerCrystalEffect : MonoBehaviour
         Debug.Log($"{crystal.itemName} etkisi baþladý! ({duration} sn)");
 
         float remainingTime = duration;
+        float regenTimer = 0f; // YENÝ: Yenilenme hýzý için sayaç
 
         // Kalan süre 0'dan büyük olduðu sürece döngüyü çalýþtýr
         while (remainingTime > 0)
@@ -135,7 +138,22 @@ public class PlayerCrystalEffect : MonoBehaviour
                 // "F1" formatý virgülden sonra tek hane gösterir (Örn: 5.0)
                 UIManager.Instance.txtEffectDuration.text = remainingTime.ToString("F1");
             }
+            // --- 2. YENÝ: CAN YENÝLEME MANTIÐI ---
+            // Eðer kristalin bir yenileme miktarý ve hýzý varsa çalýþýr
+            if (crystal.healthRegenerationAmount > 0 && crystal.healthRegenerationSpeed > 0 && playerHealth != null)
+            {
+                // Sayacý her karede artýr
+                regenTimer += Time.deltaTime;
 
+                // Eðer sayaç, belirlenen hýza ulaþtýysa (örn: her 2 saniyede bir)
+                if (regenTimer >= crystal.healthRegenerationSpeed)
+                {
+                    // Caný doldur ve sayacý sýfýrla ki tekrar saymaya baþlasýn
+                    playerHealth.Heal(crystal.healthRegenerationAmount);
+                    regenTimer = 0f;
+                }
+            }
+            // -------------------------------------
             // Zamaný eksilt
             remainingTime -= Time.deltaTime;
 
@@ -158,20 +176,29 @@ public class PlayerCrystalEffect : MonoBehaviour
         // Çarpan faktörü: True ise 1 (Ekle), False ise -1 (Çýkar)
         int factor = isApplying ? 1 : -1;
 
+        //Saldiri hasari, kritik sansi, kritik carpani efekt ayarlari
         if (playerAttackSystem != null)
         {
             playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
             playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
             playerAttackSystem.bonusCritMultiplier += (crystal.attackDamageMultiplier * factor);
         }
-
+        //Saldiri hizi efekt ayari
         if (equipmentManager != null)
         {
-            // Saldýrý hýzý int olduðu için float'a çeviriyoruz (/10f)
             equipmentManager.bonusAttackSpeed += (crystal.attackSpeed / 10f * factor);
             equipmentManager.UpdateAttackSpeed();
         }
-
+        //Can doldurma efekt ayari
+        if (isApplying && crystal.health != 0 && playerHealth != null)
+        {
+            playerHealth.Heal(crystal.health);
+        }
+        //Can yenileme efekt ayari
+        /*if (isApplying && crystal.healthRegenerationAmount != 0 && crystal.healthRegenerationSpeed != 0 && playerHealth != null)
+        {
+            playerHealth.Heal(crystal.healthRegenerationAmount * crystal.healthRegenerationSpeed);
+        }*/
         // --- UI GÜNCELLEME KISMI ---
         // Sadece süreli efektler için UI panelini aç/kapat
         if (crystal.effectDuration > 0 && UIManager.Instance != null)
@@ -198,9 +225,6 @@ public class PlayerCrystalEffect : MonoBehaviour
 
                 if (crystal.attackDamageMultiplier != 0)
                     effectDetails += $"Crit Multiplier +{crystal.attackDamageMultiplier}\n";
-
-                if (crystal.armor != 0)
-                    effectDetails += $"Armor +{crystal.armor}\n";
 
                 if (crystal.health != 0)
                     effectDetails += $"Health +{crystal.health}\n";

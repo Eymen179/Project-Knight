@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
-  m_Name: TestCrystal4
+  m_Name: Sword4
   m_EditorClassIdentifier: 
-  itemName: Test Crystal4
-  description: Test Crystal4
-  inventorySprite: {fileID: 0}
-  itemObject: {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
-  attackDamage: 0
-  attackSpeed: 0
-  attackDamageMultiplier: 2.5
-  attackDamageMultiplierChance: 5
-  armor: 0
+  itemName: Sword4
+  description: Sword4
+  inventorySprite: {fileID: 21300000, guid: 4210945a3d4b826448b9e67f505cb2d7, type: 3}
+  itemObject: {fileID: 7197357189080380709, guid: 501055a0692efb24dbf5d73bb662f3d6, type: 3}
+  attackDamage: 18
+  attackSpeed: 1.6
+  attackRange: 1.4
+  attackDamageMultiplier: 1.75
+  attackDamageMultiplierChance: 10
   health: 0
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
-  effectDuration: 25
+  effectDuration: 0
   isStackable: 0
-  itemType: 1
+  itemType: 0

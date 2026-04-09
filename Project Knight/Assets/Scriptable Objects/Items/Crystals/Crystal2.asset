@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
-  m_Name: TestCrystal2
+  m_Name: Crystal2
   m_EditorClassIdentifier: 
   itemName: Test Crystal2
   description: Test Crystal2
-  inventorySprite: {fileID: 0}
+  inventorySprite: {fileID: 21300000, guid: 9bce6eea096662745add298904230172, type: 3}
   itemObject: {fileID: 2573013051975258517, guid: a8edcbbe8068cf84fbb6c13ff7e23d11, type: 3}
   attackDamage: 10
   attackSpeed: 0.2
-  attackDamageMultiplier: 0.1
+  attackRange: 0
+  attackDamageMultiplier: 0.5
   attackDamageMultiplierChance: 0
-  armor: 0
   health: 0
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0

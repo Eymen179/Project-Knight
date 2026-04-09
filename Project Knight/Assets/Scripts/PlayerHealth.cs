@@ -44,6 +44,21 @@ public class PlayerHealth : MonoBehaviour
             }
         }
     }
+    // --- YENÝ EKLENEN ÝYÝLEÞME FONKSÝYONU ---
+    public void Heal(int healAmount)
+    {
+        if (isDead) return; // Öldüyse can basýlamaz
+
+        currentHealth += healAmount;
+
+        // Canýmýz maksimum caný geçmesin
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+        UpdateUI();
+        Debug.Log($"Oyuncu Ýyileþti! (+{healAmount}) Mevcut Can: {currentHealth}");
+    }
     public void TakeDamage(int damageAmount)
     {
         if (isDead) return;

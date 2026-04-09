@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
-  m_Name: TestCrystal1
+  m_Name: Crystal1
   m_EditorClassIdentifier: 
   itemName: Test Crystal1
   description: Test Crystal1
-  inventorySprite: {fileID: 0}
+  inventorySprite: {fileID: 21300000, guid: 1681ef140f3509c44be421ed44a7dc2c, type: 3}
   itemObject: {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
   attackDamage: 0
   attackSpeed: 0
+  attackRange: 0
   attackDamageMultiplier: 0
   attackDamageMultiplierChance: 0
-  armor: 0
-  health: 0
-  healthRegenerationAmount: 1
-  healthRegenerationSpeed: 1
-  effectDuration: 5
+  health: 25
+  healthRegenerationAmount: 0
+  healthRegenerationSpeed: 0
+  effectDuration: 0
   isStackable: 0
   itemType: 1

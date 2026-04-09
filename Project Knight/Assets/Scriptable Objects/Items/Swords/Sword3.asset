@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
-  m_Name: TestSword5
+  m_Name: Sword3
   m_EditorClassIdentifier: 
-  itemName: Test Sword5
-  description: Test Sword5
-  inventorySprite: {fileID: 21300000, guid: c274ac55b31b64a31bb25c9b3ac0e329, type: 3}
-  itemObject: {fileID: 4773016135309469420, guid: ab187f2e888aa3140a012f7075fdd850, type: 3}
-  attackDamage: 40
-  attackSpeed: 0.75
-  attackRange: 2
-  attackDamageMultiplier: 2
-  attackDamageMultiplierChance: 5
-  armor: 0
+  itemName: Sword3
+  description: Sword3
+  inventorySprite: {fileID: 21300000, guid: ac7970a424f83ec44a41409c44a5dae1, type: 3}
+  itemObject: {fileID: 8093621624597195523, guid: 78e466f0cf5ad684e86923ab3d3a521d, type: 3}
+  attackDamage: 20
+  attackSpeed: 1.05
+  attackRange: 1.8
+  attackDamageMultiplier: 1.15
+  attackDamageMultiplierChance: 25
   health: 0
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0

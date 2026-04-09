@@ -21,7 +21,6 @@ public class Item : ScriptableObject
     [Range(0, 100)]
     public int attackDamageMultiplierChance;
 
-    public int armor;
     public int health;
     public int healthRegenerationAmount;
     public int healthRegenerationSpeed;

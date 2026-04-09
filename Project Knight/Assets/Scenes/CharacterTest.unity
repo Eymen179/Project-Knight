@@ -1018,7 +1018,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2573013051975258517, guid: a8edcbbe8068cf84fbb6c13ff7e23d11, type: 3}
       propertyPath: m_Name
-      value: TestCrystal2
+      value: Crystal2
       objectReference: {fileID: 0}
     - target: {fileID: 2954076657739991855, guid: a8edcbbe8068cf84fbb6c13ff7e23d11, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1275,7 +1275,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
       propertyPath: m_Name
-      value: TestCrystal1
+      value: Crystal1
       objectReference: {fileID: 0}
     - target: {fileID: 7587621701567231758, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1409,7 +1409,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_Name
-      value: TestCrystal (1)
+      value: Crystal6
       objectReference: {fileID: 0}
     - target: {fileID: 8963637341440938041, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1993,7 +1993,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
       propertyPath: m_Name
-      value: TestCrystal4
+      value: Crystal4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2010,7 +2010,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 543725697735843016, guid: e4f09d077073d594b9df5eb84380c2db, type: 3}
       propertyPath: m_Name
-      value: TestCrystal5
+      value: Crystal5
       objectReference: {fileID: 0}
     - target: {fileID: 918843213056018034, guid: e4f09d077073d594b9df5eb84380c2db, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2067,7 +2067,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 152753561844906315, guid: a22f2dd12c61a4f4e8a391c98303fbe8, type: 3}
       propertyPath: m_Name
-      value: TestCrystal3
+      value: Crystal3
       objectReference: {fileID: 0}
     - target: {fileID: 672549420742517745, guid: a22f2dd12c61a4f4e8a391c98303fbe8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2369,7 +2369,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_Name
-      value: TestCrystal (3)
+      value: Crystal6
       objectReference: {fileID: 0}
     - target: {fileID: 8963637341440938041, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2901,7 +2901,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_Name
-      value: TestCrystal (2)
+      value: Crystal6
       objectReference: {fileID: 0}
     - target: {fileID: 8963637341440938041, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2921,7 +2921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8963637341440938041, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8963637341440938041, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_LocalRotation.y
@@ -3180,7 +3180,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_Name
-      value: TestCrystal
+      value: Crystal6
       objectReference: {fileID: 0}
     - target: {fileID: 8963637341440938041, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3291,7 +3291,7 @@ Camera:
   field of view: 71.7774
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -4829,7 +4829,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7197357189080380709, guid: 501055a0692efb24dbf5d73bb662f3d6, type: 3}
       propertyPath: m_Name
-      value: TestSword4
+      value: Sword4
       objectReference: {fileID: 0}
     - target: {fileID: 8634431331040424939, guid: 501055a0692efb24dbf5d73bb662f3d6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5854,7 +5854,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4773016135309469420, guid: ab187f2e888aa3140a012f7075fdd850, type: 3}
       propertyPath: m_Name
-      value: TestSword5
+      value: Sword5
       objectReference: {fileID: 0}
     - target: {fileID: 7848291204003312724, guid: ab187f2e888aa3140a012f7075fdd850, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5911,11 +5911,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 540710416655916467, guid: 2eb55cf26c1974a4387227fbb78425ba, type: 3}
       propertyPath: m_Name
-      value: TestSword1
+      value: Sword1
       objectReference: {fileID: 0}
     - target: {fileID: 6525556876860642439, guid: 2eb55cf26c1974a4387227fbb78425ba, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.6814232
+      value: 1.24
       objectReference: {fileID: 0}
     - target: {fileID: 6525556876860642439, guid: 2eb55cf26c1974a4387227fbb78425ba, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6926,7 +6926,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1055435584106440202, guid: 91e32195f4a6f6b4b93528572a8b4fc2, type: 3}
       propertyPath: m_Name
-      value: TestSword2
+      value: Sword2
       objectReference: {fileID: 0}
     - target: {fileID: 4145207537180876173, guid: 91e32195f4a6f6b4b93528572a8b4fc2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7051,7 +7051,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8093621624597195523, guid: 78e466f0cf5ad684e86923ab3d3a521d, type: 3}
       propertyPath: m_Name
-      value: TestSword3
+      value: Sword3
       objectReference: {fileID: 0}
     - target: {fileID: 8759533093949331444, guid: 78e466f0cf5ad684e86923ab3d3a521d, type: 3}
       propertyPath: m_LocalPosition.x
