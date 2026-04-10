@@ -1,2 +1,2 @@
 # Project Knight
-Bitirmee Projesi
+Makine Öğrenmesi içeren, Unity ile yapılan oyun projesi
