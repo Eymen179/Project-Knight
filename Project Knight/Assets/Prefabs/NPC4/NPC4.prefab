@@ -2907,7 +2907,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 1
+  m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300000, guid: 9afb405c5d27ea240bb15a777ab9ef99, type: 2}
   m_Bones:
@@ -6178,9 +6178,9 @@ SkinnedMeshRenderer:
   - 0
   m_RootBone: {fileID: 6911349579501893831}
   m_AABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
-  m_DirtyAABB: 1
+    m_Center: {x: 0.00000020861626, y: 1.0114692, z: -0.24180631}
+    m_Extent: {x: 0.9450258, y: 1.0274099, z: 0.46970707}
+  m_DirtyAABB: 0
 --- !u!1 &6274248761204265718
 GameObject:
   m_ObjectHideFlags: 0
