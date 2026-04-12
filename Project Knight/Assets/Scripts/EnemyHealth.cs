@@ -155,45 +155,96 @@ public class EnemyHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        Debug.Log(gameObject.name + " havaya uçarak yere yýðýldý!");
 
-        // 1. Yürümeyi ve Yapay Zekayý Kapat
         GetComponent<EnemyAI>().enabled = false;
         GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
-
-        // 2. Animasyonu Kapat (Böylece karakter o anki pozunda kaskatý kesilir)
         if (animator != null) animator.enabled = false;
 
-        // 3. FÝZÝK MOTORUNU DEVREYE SOK
-        // Hatýrlarsan NavMesh ile çakýþmasýn diye Rigidbody'yi "Is Kinematic" yapmýþtýk.
-        // Þimdi öldüðü için yerçekimini ve fizik kurallarýný geri açýyoruz.
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.isKinematic = false; // Fizik motoru uyandý!
-            rb.freezeRotation = false; // Dönmeyi serbest býrak (takla atmasý için)
-            // Oyuncuyu bul ve baktýðý yönü hesapla
+            rb.isKinematic = false;
+            rb.freezeRotation = false;
             PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
             if (player != null)
             {
-                // Oyuncunun ileri yönü + Y ekseninde (yukarý) bir miktar kuvvet
                 Vector3 knockbackDirection = player.transform.forward + (Vector3.up * 0.8f);
-
-                // Düþmaný fýrlat (10f fýrlatma gücüdür, kendine göre artýrýp azaltabilirsin)
                 rb.AddForce(knockbackDirection.normalized * 10f, ForceMode.Impulse);
-
-                // Havada çuval gibi takla atmasý için rastgele bir dönme kuvveti (Tork) ekle
                 rb.AddTorque(player.transform.right * 5f, ForceMode.Impulse);
             }
         }
 
-        // Ölü bedene takýlýp kalmayalým diye Layer'ýný deðiþtir (Ýsteðe baðlý)
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-
-        // UI Can barýný gizle
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
 
-        // Cesedi 5 saniye sonra sahneden temizle
-        Destroy(gameObject, 5f);
+        // ESKÝ KOD: Destroy(gameObject, 5f);
+        // YENÝ KOD: 5 saniye sonra kapat ki Spawner bunu görüp yeniden doðursun!
+        StartCoroutine(DeactivateAfterSeconds(5f));
+    }
+
+    private IEnumerator DeactivateAfterSeconds(float time)
+    {
+        yield return new WaitForSeconds(time);
+        gameObject.SetActive(false); // Obje kapanýr, havuza geri döner
+    }
+
+    // SPAWNER'IN ÇAÐIRDIÐI SIFIRLAMA (RESET) METODU
+    // SPAWNER'IN ÇAÐIRDIÐI SIFIRLAMA (RESET) METODU
+    public void ResetNPC()
+    {
+        isDead = false;
+        isStunned = false;
+        currentBlockCount = maxBlockCount;
+
+        if (stats != null)
+        {
+            currentHealth = stats.maxHealth;
+            healthBeforeDamage = currentHealth; // <--- ÝÞTE EKSÝK OLAN HAYAT KURTARICI SATIR!
+        }
+
+        gameObject.layer = LayerMask.NameToLayer("NPC");
+
+        // --- 1. ÇÖZÜM: KINEMATIC UYARISINI GÝDERME ---
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            // Eðer obje havuzda kaskatý haldeyse (Kinematic ise) hýzýný sýfýrlamaya çalýþma!
+            // Sadece öldüðünde fizikselleþtiyse hýzýný sýfýrla.
+            if (!rb.isKinematic)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            rb.isKinematic = true;
+            rb.freezeRotation = true;
+        }
+        // ---------------------------------------------
+
+        if (animator != null)
+        {
+            animator.enabled = true;
+            // Animasyonu zorla Idle (Bekleme) durumuna al ki koþuda takýlý kalmasýn
+            animator.SetFloat("speed", 0f);
+        }
+
+        if (healthSlider != null) healthSlider.gameObject.SetActive(true);
+        UpdateUI();
+
+        // --- 2. ÇÖZÜM: NAVMESH AGENT'I ZEMÝNE ÇÝVÝLEME (WARP) ---
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.enabled = true;
+            // Iþýnlanma sonrasý ajanýn kafasý karýþmasýn diye onu zorla bulunduðu konuma baðlarýz
+            agent.Warp(transform.position);
+        }
+
+        EnemyAI ai = GetComponent<EnemyAI>();
+        if (ai != null)
+        {
+            ai.enabled = true;
+            ai.ResetAI();
+        }
+        // --------------------------------------------------------
     }
 }

@@ -287,7 +287,34 @@ public class EnemyAI : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
+    // SPAWNER'IN ÇAÐIRDIÐI BEYÝN SIFIRLAMA METODU
+    public void ResetAI()
+    {
+        currentState = AIState.Patrol; // Tekrar devriyeye baþla
+        memoryTimer = 0f;
+        patrolWaitTimer = 0f; // YENÝ: Uyanýr uyanmaz boþ boþ beklemesin, anýnda devriyeye baþlasýn
 
+        startPosition = transform.position;
+
+        // DÝKKAT: playerTarget = null; SATIRINI TAMAMEN KALDIRDIK!
+        // Çünkü Update döngümüzün çalýþmasý için playerTarget'ýn kim olduðunu bilmek zorunda.
+
+        if (agent != null && agent.isActiveAndEnabled)
+        {
+            // Eðer zemine tutunabildiyse eski rotasýný sil
+            if (agent.isOnNavMesh)
+            {
+                agent.ResetPath();
+                agent.velocity = Vector3.zero;
+                ExecuteCurrentState(); // Yeni duruma göre hareket etmeye baþla
+                Debug.Log("Current state: " + currentState.ToString());
+            }
+
+            // Yürümeyi serbest býrak ve hýzýný ayarla
+            agent.isStopped = false;
+            if (stats != null) agent.speed = stats.patrolSpeed;
+        }
+    }
     // Test ortamýnda görüþ açýsýný (FOV Konisi) ve Devriye alanýný çizdirelim
     private void OnDrawGizmos()
     {

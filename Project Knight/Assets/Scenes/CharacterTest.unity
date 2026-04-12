@@ -228,6 +228,7 @@ MonoBehaviour:
   - {fileID: 100345826}
   NPCCount: 5
   respawnDelay: 1
+  activationDistance: 50
 --- !u!4 &100345826
 Transform:
   m_ObjectHideFlags: 0
@@ -768,6 +769,7 @@ MonoBehaviour:
   - {fileID: 252586789}
   NPCCount: 5
   respawnDelay: 1
+  activationDistance: 50
 --- !u!4 &252586789
 Transform:
   m_ObjectHideFlags: 0
@@ -2450,6 +2452,7 @@ MonoBehaviour:
   - {fileID: 1374581474}
   NPCCount: 5
   respawnDelay: 1
+  activationDistance: 50
 --- !u!4 &1374581474
 Transform:
   m_ObjectHideFlags: 0
@@ -2740,6 +2743,7 @@ MonoBehaviour:
   - {fileID: 1519997655}
   NPCCount: 5
   respawnDelay: 1
+  activationDistance: 50
 --- !u!4 &1519997655
 Transform:
   m_ObjectHideFlags: 0
@@ -3155,6 +3159,7 @@ MonoBehaviour:
   - {fileID: 1689556415}
   NPCCount: 5
   respawnDelay: 1
+  activationDistance: 50
 --- !u!4 &1689556415
 Transform:
   m_ObjectHideFlags: 0
