@@ -135,6 +135,7 @@ namespace Synty.SidekickCharacters
         private Dictionary<CharacterPartType, Dictionary<string, string>> _partLibrary;
         private Dictionary<CharacterPartType, List<SidekickPart>> _allPartsLibrary;
         private Dictionary<string, List<string>> _partOutfitMap;
+        private Dictionary<PopupField<string>, bool> _partLockMap;
         private Dictionary<CharacterPartType, PartTypeControls> _partSelectionDictionary;
         private Foldout _partsFoldout;
         private Dictionary<SidekickSpecies, List<string>> _partSpeciesMap;
@@ -2087,18 +2088,18 @@ namespace Synty.SidekickCharacters
                     }
 
                     break;
-                // case ColorPartType.Elements:
-                //     List<SidekickColorProperty> elementProperties = SidekickColorProperty.GetAllByGroup(_dbManager, ColorGroup.Elements);
-                //     foreach (SidekickColorProperty property in elementProperties)
-                //     {
-                //         Vector2 uv = new Vector2(property.U, property.V);
-                //         if ((_currentUVList.Contains(uv) || _showAllColourProperties == true) && !propertiesToShow.Contains(property))
-                //         {
-                //             propertiesToShow.Add(property);
-                //         }
-                //     }
-                //
-                //     break;
+                case ColorPartType.Elements:
+                    List<SidekickColorProperty> elementProperties = SidekickColorProperty.GetAllByGroup(_dbManager, ColorGroup.Elements);
+                    foreach (SidekickColorProperty property in elementProperties)
+                    {
+                        Vector2 uv = new Vector2(property.U, property.V);
+                        if ((_currentUVList.Contains(uv) || _showAllColourProperties == true) && !propertiesToShow.Contains(property))
+                        {
+                            propertiesToShow.Add(property);
+                        }
+                    }
+
+                    break;
                 case ColorPartType.CharacterHead:
                     List<SidekickColorProperty> headProperties = new List<SidekickColorProperty>();
                     foreach (ColorPartType type in ColorPartType.CharacterHead.GetPartTypes())
@@ -2256,6 +2257,70 @@ namespace Synty.SidekickCharacters
                         tooltip = tooltipText
                     };
                     _colorSelectionRowView.Add(groupLabel);
+
+                    VisualElement headerContainer = new VisualElement()
+                    {
+                        style =
+                        {
+                            flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row),
+                            fontSize = 10,
+                            unityFontStyleAndWeight = new StyleEnum<FontStyle>(FontStyle.Bold)
+                        }
+                    };
+
+                    Label colorHeader = new Label("Color")
+                    {
+                        style =
+                        {
+                            width = 103,
+                            marginLeft = 155
+                        }
+                    };
+                    Label metallicHeader = new Label("Metallic")
+                    {
+                        style =
+                        {
+                            width = 66
+                        }
+                    };
+                    Label smoothnessHeader = new Label("Smoothness")
+                    {
+                        style =
+                        {
+                            width = 66
+                        }
+                    };
+                    Label reflectionHeader = new Label("Reflection")
+                    {
+                        style =
+                        {
+                            width = 66
+                        }
+                    };
+                    Label emissionHeader = new Label("Emission")
+                    {
+                        style =
+                        {
+                            width = 66
+                        }
+                    };
+                    Label opacityHeader = new Label("Opacity")
+                    {
+                        style =
+                        {
+                            width = 66
+                        }
+                    };
+
+                    headerContainer.Add(colorHeader);
+                    // headerContainer.Add(metallicHeader);
+                    // headerContainer.Add(smoothnessHeader);
+                    // headerContainer.Add(reflectionHeader);
+                    // headerContainer.Add(emissionHeader);
+                    // headerContainer.Add(opacityHeader);
+
+                    _colorSelectionRowView.Add(headerContainer);
+
                     foreach (SidekickColorProperty property in properties)
                     {
                         foreach (SidekickColorRow row in _visibleColorRows.Where(row => row.ColorProperty.ID == property.ID))
@@ -2368,11 +2433,11 @@ namespace Synty.SidekickCharacters
                     ColorProperty = property,
                     // TODO remove null checks when we know we have textures
                     NiceColor = mainColor?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceColor ?? Color.red,
-                    NiceMetallic = metallic?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceMetallic ?? Color.red,
-                    NiceSmoothness = smoothness?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceSmoothness ?? Color.red,
-                    NiceReflection = reflection?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceReflection ?? Color.red,
-                    NiceEmission = emission?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceEmission ?? Color.red,
-                    NiceOpacity = opacity?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceOpacity ?? Color.red
+                    // NiceMetallic = metallic?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceMetallic ?? Color.red,
+                    // NiceSmoothness = smoothness?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceSmoothness ?? Color.red,
+                    // NiceReflection = reflection?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceReflection ?? Color.red,
+                    // NiceEmission = emission?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceEmission ?? Color.red,
+                    // NiceOpacity = opacity?.GetPixel(property.U * 2, property.V * 2) ?? existingRow?.NiceOpacity ?? Color.red
                 };
 
                 newRow.Save(_dbManager);
@@ -2449,7 +2514,7 @@ namespace Synty.SidekickCharacters
             //     tooltip = colorRow.ColorProperty.Name + " Metallic",
             //     style =
             //     {
-            //         width = 50
+            //         width = 60
             //     }
             // };
             // rowContent.Add(metallicField);
@@ -2457,7 +2522,7 @@ namespace Synty.SidekickCharacters
             //     evt =>
             //     {
             //         colorRow.NiceMetallic = evt.newValue;
-            //         UpdateColor(ColorType.Metallic, colorRow);
+            //         _sidekickRuntime.UpdateColor(ColorType.Metallic, colorRow);
             //     }
             // );
             //
@@ -2467,7 +2532,7 @@ namespace Synty.SidekickCharacters
             //     tooltip = colorRow.ColorProperty.Name + " Smoothness",
             //     style =
             //     {
-            //         width = 50
+            //         width = 60
             //     }
             // };
             // rowContent.Add(smoothnessField);
@@ -2475,7 +2540,7 @@ namespace Synty.SidekickCharacters
             //     evt =>
             //     {
             //         colorRow.NiceSmoothness = evt.newValue;
-            //         UpdateColor(ColorType.Smoothness, colorRow);
+            //         _sidekickRuntime.UpdateColor(ColorType.Smoothness, colorRow);
             //     }
             // );
             //
@@ -2485,7 +2550,7 @@ namespace Synty.SidekickCharacters
             //     tooltip = colorRow.ColorProperty.Name + " Reflection",
             //     style =
             //     {
-            //         width = 50
+            //         width = 60
             //     }
             // };
             // rowContent.Add(reflectionField);
@@ -2493,7 +2558,7 @@ namespace Synty.SidekickCharacters
             //     evt =>
             //     {
             //         colorRow.NiceReflection = evt.newValue;
-            //         UpdateColor(ColorType.Reflection, colorRow);
+            //         _sidekickRuntime.UpdateColor(ColorType.Reflection, colorRow);
             //     }
             // );
             //
@@ -2503,7 +2568,7 @@ namespace Synty.SidekickCharacters
             //     tooltip = colorRow.ColorProperty.Name + " Emission",
             //     style =
             //     {
-            //         width = 50
+            //         width = 60
             //     }
             // };
             // rowContent.Add(emissionField);
@@ -2511,7 +2576,7 @@ namespace Synty.SidekickCharacters
             //     evt =>
             //     {
             //         colorRow.NiceEmission = evt.newValue;
-            //         UpdateColor(ColorType.Emission, colorRow);
+            //         _sidekickRuntime.UpdateColor(ColorType.Emission, colorRow);
             //     }
             // );
             //
@@ -2521,7 +2586,7 @@ namespace Synty.SidekickCharacters
             //     tooltip = colorRow.ColorProperty.Name + " Opacity",
             //     style =
             //     {
-            //         width = 50
+            //         width = 60
             //     }
             // };
             // rowContent.Add(opacityField);
@@ -2529,10 +2594,10 @@ namespace Synty.SidekickCharacters
             //     evt =>
             //     {
             //         colorRow.NiceOpacity = evt.newValue;
-            //         UpdateColor(ColorType.Opacity, colorRow);
+            //         _sidekickRuntime.UpdateColor(ColorType.Opacity, colorRow);
             //     }
             // );
-            //
+
             // Button randomButton = new Button
             // {
             //     text = "R",
@@ -3514,6 +3579,7 @@ namespace Synty.SidekickCharacters
 
             _availablePartList = new List<SidekickPart>();
             _partSelectionDictionary = new Dictionary<CharacterPartType, PartTypeControls>();
+            _partLockMap = new Dictionary<PopupField<string>, bool>();
 
             Foldout speciesFoldout = new Foldout
             {
@@ -3734,13 +3800,17 @@ namespace Synty.SidekickCharacters
                     foreach (CharacterPartType value in partGroup.GetPartTypes())
                     {
                         PartTypeControls dropdown = _partSelectionDictionary[value];
-                        if (dropdown.PartDropdown.choices.Count > 1)
+                        bool locked = _partLockMap[dropdown.PartDropdown];
+                        if (!locked)
                         {
-                            dropdown.RandomisePartDropdownValue();
-                        }
-                        else
-                        {
-                            dropdown.SetPartDropdownValue("None");
+                            if (dropdown.PartDropdown.choices.Count > 1)
+                            {
+                                dropdown.RandomisePartDropdownValue();
+                            }
+                            else
+                            {
+                                dropdown.SetPartDropdownValue("None");
+                            }
                         }
                     }
                 };
@@ -3777,6 +3847,28 @@ namespace Synty.SidekickCharacters
                 },
                 tooltip = type.GetTooltipForPartType()
             };
+
+            Image lockImage = new Image
+            {
+                image = EditorGUIUtility.IconContent("LockIcon", "|Lock Part").image,
+                scaleMode = ScaleMode.ScaleToFit,
+                style =
+                {
+                    alignSelf = new StyleEnum<Align>(Align.Center),
+                    width = 15,
+                    height = 15,
+                    paddingTop = 2
+                }
+            };
+
+            Button lockButton = new Button()
+            {
+                tooltip = "Remove this part"
+            };
+
+            lockButton.Add(
+                lockImage
+            );
 
             Button removeButton = new Button()
             {
@@ -3901,6 +3993,36 @@ namespace Synty.SidekickCharacters
                 }
             );
 
+            _partLockMap[partSelection] = false;
+
+            lockButton.clickable.clicked += delegate
+            {
+                bool newValue = !_partLockMap[partSelection];
+                _partLockMap[partSelection] = newValue;
+
+                if (newValue)
+                {
+                    partSelection.SetEnabled(false);
+                    removeButton.SetEnabled(false);
+                    nextButton.SetEnabled(false);
+                    previousButton.SetEnabled(false);
+                    randomButton.SetEnabled(false);
+                    lockImage.image = EditorGUIUtility.IconContent("LockIcon-On", "|Unlock Part").image;
+                    lockButton.style.backgroundColor = new Color(0.2f, 0.2f, 0.2f);
+                }
+                else
+                {
+                    partSelection.SetEnabled(true);
+                    removeButton.SetEnabled(true);
+                    nextButton.SetEnabled(true);
+                    previousButton.SetEnabled(true);
+                    randomButton.SetEnabled(true);
+                    PartSelectionChangeEvent(new ChangeEvent<string>(), type, controls);
+                    lockImage.image = EditorGUIUtility.IconContent("LockIcon", "|Lock Part").image;
+                    lockButton.style.backgroundColor = new Color(0.345098f, 0.345098f, 0.345098f);
+                }
+            };
+
             if (_processingSpeciesChange)
             {
                 ChangeEvent<string> changeEvent = ChangeEvent<string>.GetPooled(_previousPartSelections[type], currentSelection);
@@ -3950,6 +4072,7 @@ namespace Synty.SidekickCharacters
             };
 
             partContainer.Add(partTypeTitle);
+            partContainer.Add(lockButton);
             partContainer.Add(removeButton);
             partContainer.Add(previousButton);
             partContainer.Add(nextButton);
@@ -4402,6 +4525,8 @@ namespace Synty.SidekickCharacters
         /// <returns>A PartUpdateResult with the results of the update.</returns>
         private UpdateResult UpdatePartDropdown(PartTypeControls currentField, string partName, string errorMessage, bool hasErrors)
         {
+            _partLockMap[currentField.PartDropdown] = false;
+
             if (partName == "None" || _allParts.Any(part => part.Name == partName))
             {
                 if (!currentField.PartDropdown.choices.Contains(partName) && PartUtils.IsBaseSpeciesPart(partName))
@@ -4799,11 +4924,9 @@ namespace Synty.SidekickCharacters
                 AssetDatabase.CreateAsset(sharedMesh, meshPath);
             }
 
-
             Animator animator = rootGameObject.GetComponentInChildren<Animator>();
             Avatar existingAvatar = animator.avatar;
-            // Avatar newAvatar = Instantiate(existingAvatar);
-            Avatar newAvatar = AvatarBuilder.BuildHumanAvatar(rootGameObject.transform.Find("root").gameObject, existingAvatar.humanDescription);
+            Avatar newAvatar = Instantiate(existingAvatar);
             animator.avatar = newAvatar;
             string avatarPath = Path.Combine(meshDirectory, baseFilename + "-avatar.asset");
             // If the user has chosen to overwrite the prefab, delete the existing assets to replace them.

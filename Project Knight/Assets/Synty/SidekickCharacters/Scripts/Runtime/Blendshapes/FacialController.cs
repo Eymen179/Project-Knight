@@ -693,7 +693,7 @@ namespace Synty.SidekickCharacters
                         string blendName = pair.Key;
                         int index = blendName.LastIndexOf('.');
                         string blendEnd = blendName.Substring(index, blendName.Length - index);
-                        float weight = meshRenderer.GetBlendShapeWeight(pair.Value);
+                        float weight = meshRenderer.GetBlendShapeWeight(pair.Value) / 100f;
 
                         #region BLEND_ACTIONS
 
@@ -704,7 +704,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrlFrownBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrlFrownBlendValue + -weight) / 2;
+                                        float newWeight = (_ebrlFrownBlendValue + -weight) / 2f;
                                         _ebrlFrownBlendValue = newWeight;
                                     }
                                     else
@@ -719,7 +719,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrlFrownBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrlFrownBlendValue + weight) / 2;
+                                        float newWeight = (_ebrlFrownBlendValue + weight) / 2f;
                                         _ebrlFrownBlendValue = newWeight;
                                     }
                                     else
@@ -734,7 +734,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrlInnerBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrlInnerBlendValue + -weight) / 2;
+                                        float newWeight = (_ebrlInnerBlendValue + -weight) / 2f;
                                         _ebrlInnerBlendValue = newWeight;
                                     }
                                     else
@@ -749,7 +749,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrlInnerBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrlInnerBlendValue + weight) / 2;
+                                        float newWeight = (_ebrlInnerBlendValue + weight) / 2f;
                                         _ebrlInnerBlendValue = newWeight;
                                     }
                                     else
@@ -764,7 +764,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrlOuterBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrlOuterBlendValue + -weight) / 2;
+                                        float newWeight = (_ebrlOuterBlendValue + -weight) / 2f;
                                         _ebrlOuterBlendValue = newWeight;
                                     }
                                     else
@@ -779,7 +779,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrlOuterBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrlOuterBlendValue + weight) / 2;
+                                        float newWeight = (_ebrlOuterBlendValue + weight) / 2f;
                                         _ebrlOuterBlendValue = newWeight;
                                     }
                                     else
@@ -794,7 +794,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrrFrownBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrrFrownBlendValue + -weight) / 2;
+                                        float newWeight = (_ebrrFrownBlendValue + -weight) / 2f;
                                         _ebrrFrownBlendValue = newWeight;
                                     }
                                     else
@@ -809,7 +809,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrrFrownBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrrFrownBlendValue + weight) / 2;
+                                        float newWeight = (_ebrrFrownBlendValue + weight) / 2f;
                                         _ebrrFrownBlendValue = newWeight;
                                     }
                                     else
@@ -824,7 +824,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrrInnerBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrrInnerBlendValue + -weight) / 2;
+                                        float newWeight = (_ebrrInnerBlendValue + -weight) / 2f;
                                         _ebrrInnerBlendValue = newWeight;
                                     }
                                     else
@@ -839,7 +839,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrrInnerBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrrInnerBlendValue + weight) / 2;
+                                        float newWeight = (_ebrrInnerBlendValue + weight) / 2f;
                                         _ebrrInnerBlendValue = newWeight;
                                     }
                                     else
@@ -854,7 +854,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrrOuterBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrrOuterBlendValue + -weight) / 2;
+                                        float newWeight = (_ebrrOuterBlendValue + -weight) / 2f;
                                         _ebrrOuterBlendValue = newWeight;
                                     }
                                     else
@@ -869,7 +869,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_ebrrOuterBlendValue != 0)
                                     {
-                                        float newWeight = (_ebrrOuterBlendValue + weight) / 2;
+                                        float newWeight = (_ebrrOuterBlendValue + weight) / 2f;
                                         _ebrrOuterBlendValue = newWeight;
                                     }
                                     else
@@ -884,7 +884,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelUpDownBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelUpDownBlendValue + -weight) / 2;
+                                        float newWeight = (_eyelUpDownBlendValue + -weight) / 2f;
                                         _eyelUpDownBlendValue = newWeight;
                                     }
                                     else
@@ -899,7 +899,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelUpDownBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelUpDownBlendValue + weight) / 2;
+                                        float newWeight = (_eyelUpDownBlendValue + weight) / 2f;
                                         _eyelUpDownBlendValue = newWeight;
                                     }
                                     else
@@ -914,7 +914,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelLeftRightBlendValue + -weight) / 2;
+                                        float newWeight = (_eyelLeftRightBlendValue + -weight) / 2f;
                                         _eyelLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -929,7 +929,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelLeftRightBlendValue + weight) / 2;
+                                        float newWeight = (_eyelLeftRightBlendValue + weight) / 2f;
                                         _eyelLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -944,7 +944,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelBlinkBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelBlinkBlendValue + weight) / 2;
+                                        float newWeight = (_eyelBlinkBlendValue + weight) / 2f;
                                         _eyelBlinkBlendValue = newWeight;
                                     }
                                     else
@@ -959,7 +959,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelBlinkBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelBlinkBlendValue + weight) / 2;
+                                        float newWeight = (_eyelBlinkBlendValue + weight) / 2f;
                                         _eyelBlinkBlendValue = newWeight;
                                     }
                                     else
@@ -974,7 +974,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelSquintBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelSquintBlendValue + weight) / 2;
+                                        float newWeight = (_eyelSquintBlendValue + weight) / 2f;
                                         _eyelSquintBlendValue = newWeight;
                                     }
                                     else
@@ -989,7 +989,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelSquintBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelSquintBlendValue + weight) / 2;
+                                        float newWeight = (_eyelSquintBlendValue + weight) / 2f;
                                         _eyelSquintBlendValue = newWeight;
                                     }
                                     else
@@ -1004,7 +1004,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelWideBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelWideBlendValue + weight) / 2;
+                                        float newWeight = (_eyelWideBlendValue + weight) / 2f;
                                         _eyelWideBlendValue = newWeight;
                                     }
                                     else
@@ -1019,7 +1019,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyelWideBlendValue != 0)
                                     {
-                                        float newWeight = (_eyelWideBlendValue + weight) / 2;
+                                        float newWeight = (_eyelWideBlendValue + weight) / 2f;
                                         _eyelWideBlendValue = newWeight;
                                     }
                                     else
@@ -1034,7 +1034,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerUpDownBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerUpDownBlendValue + -weight) / 2;
+                                        float newWeight = (_eyerUpDownBlendValue + -weight) / 2f;
                                         _eyerUpDownBlendValue = newWeight;
                                     }
                                     else
@@ -1049,7 +1049,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerUpDownBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerUpDownBlendValue + weight) / 2;
+                                        float newWeight = (_eyerUpDownBlendValue + weight) / 2f;
                                         _eyerUpDownBlendValue = newWeight;
                                     }
                                     else
@@ -1064,7 +1064,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerLeftRightBlendValue + weight) / 2;
+                                        float newWeight = (_eyerLeftRightBlendValue + weight) / 2f;
                                         _eyerLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1079,7 +1079,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerLeftRightBlendValue + -weight) / 2;
+                                        float newWeight = (_eyerLeftRightBlendValue + -weight) / 2f;
                                         _eyerLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1094,7 +1094,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerBlinkBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerBlinkBlendValue + weight) / 2;
+                                        float newWeight = (_eyerBlinkBlendValue + weight) / 2f;
                                         _eyerBlinkBlendValue = newWeight;
                                     }
                                     else
@@ -1109,7 +1109,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerBlinkBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerBlinkBlendValue + weight) / 2;
+                                        float newWeight = (_eyerBlinkBlendValue + weight) / 2f;
                                         _eyerBlinkBlendValue = newWeight;
                                     }
                                     else
@@ -1124,7 +1124,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerSquintBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerSquintBlendValue + weight) / 2;
+                                        float newWeight = (_eyerSquintBlendValue + weight) / 2f;
                                         _eyerSquintBlendValue = newWeight;
                                     }
                                     else
@@ -1139,7 +1139,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerSquintBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerSquintBlendValue + weight) / 2;
+                                        float newWeight = (_eyerSquintBlendValue + weight) / 2f;
                                         _eyerSquintBlendValue = newWeight;
                                     }
                                     else
@@ -1154,7 +1154,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerWideBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerWideBlendValue + weight) / 2;
+                                        float newWeight = (_eyerWideBlendValue + weight) / 2f;
                                         _eyerWideBlendValue = newWeight;
                                     }
                                     else
@@ -1169,7 +1169,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_eyerWideBlendValue != 0)
                                     {
-                                        float newWeight = (_eyerWideBlendValue + weight) / 2;
+                                        float newWeight = (_eyerWideBlendValue + weight) / 2f;
                                         _eyerWideBlendValue = newWeight;
                                     }
                                     else
@@ -1184,7 +1184,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_noslSneerBlendValue != 0)
                                     {
-                                        float newWeight = (_noslSneerBlendValue + weight) / 2;
+                                        float newWeight = (_noslSneerBlendValue + weight) / 2f;
                                         _noslSneerBlendValue = newWeight;
                                     }
                                     else
@@ -1199,7 +1199,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_nosrSneerBlendValue != 0)
                                     {
-                                        float newWeight = (_nosrSneerBlendValue + weight) / 2;
+                                        float newWeight = (_nosrSneerBlendValue + weight) / 2f;
                                         _nosrSneerBlendValue = newWeight;
                                     }
                                     else
@@ -1214,7 +1214,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_chklHollowPuffBlendValue != 0)
                                     {
-                                        float newWeight = (_chklHollowPuffBlendValue + -weight) / 2;
+                                        float newWeight = (_chklHollowPuffBlendValue + -weight) / 2f;
                                         _chklHollowPuffBlendValue = newWeight;
                                     }
                                     else
@@ -1229,7 +1229,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_chklHollowPuffBlendValue != 0)
                                     {
-                                        float newWeight = (_chklHollowPuffBlendValue + weight) / 2;
+                                        float newWeight = (_chklHollowPuffBlendValue + weight) / 2f;
                                         _chklHollowPuffBlendValue = newWeight;
                                     }
                                     else
@@ -1244,7 +1244,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_chkrHollowPuffBlendValue != 0)
                                     {
-                                        float newWeight = (_chkrHollowPuffBlendValue + -weight) / 2;
+                                        float newWeight = (_chkrHollowPuffBlendValue + -weight) / 2f;
                                         _chkrHollowPuffBlendValue = newWeight;
                                     }
                                     else
@@ -1259,7 +1259,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_chkrHollowPuffBlendValue != 0)
                                     {
-                                        float newWeight = (_chkrHollowPuffBlendValue + weight) / 2;
+                                        float newWeight = (_chkrHollowPuffBlendValue + weight) / 2f;
                                         _chkrHollowPuffBlendValue = newWeight;
                                     }
                                     else
@@ -1274,7 +1274,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_jawOpenCloseBlendValue != 0)
                                     {
-                                        float newWeight = (_jawOpenCloseBlendValue + -weight) / 2;
+                                        float newWeight = (_jawOpenCloseBlendValue + -weight) / 2f;
                                         _jawOpenCloseBlendValue = newWeight;
                                     }
                                     else
@@ -1289,7 +1289,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_jawOpenCloseBlendValue != 0)
                                     {
-                                        float newWeight = (_jawOpenCloseBlendValue + weight) / 2;
+                                        float newWeight = (_jawOpenCloseBlendValue + weight) / 2f;
                                         _jawOpenCloseBlendValue = newWeight;
                                     }
                                     else
@@ -1304,7 +1304,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_jawLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_jawLeftRightBlendValue + -weight) / 2;
+                                        float newWeight = (_jawLeftRightBlendValue + -weight) / 2f;
                                         _jawLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1319,7 +1319,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_jawLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_jawLeftRightBlendValue + weight) / 2;
+                                        float newWeight = (_jawLeftRightBlendValue + weight) / 2f;
                                         _jawLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1334,7 +1334,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_jawBackForwardBlendValue != 0)
                                     {
-                                        float newWeight = (_jawBackForwardBlendValue + -weight) / 2;
+                                        float newWeight = (_jawBackForwardBlendValue + -weight) / 2f;
                                         _jawBackForwardBlendValue = newWeight;
                                     }
                                     else
@@ -1349,7 +1349,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_jawBackForwardBlendValue != 0)
                                     {
-                                        float newWeight = (_jawBackForwardBlendValue + weight) / 2;
+                                        float newWeight = (_jawBackForwardBlendValue + weight) / 2f;
                                         _jawBackForwardBlendValue = newWeight;
                                     }
                                     else
@@ -1364,7 +1364,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_mthLeftRightBlendValue + -weight) / 2;
+                                        float newWeight = (_mthLeftRightBlendValue + -weight) / 2f;
                                         _mthLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1379,7 +1379,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_mthLeftRightBlendValue + weight) / 2;
+                                        float newWeight = (_mthLeftRightBlendValue + weight) / 2f;
                                         _mthLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1394,7 +1394,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthFunnelBlendValue != 0)
                                     {
-                                        float newWeight = (_mthFunnelBlendValue + weight) / 2;
+                                        float newWeight = (_mthFunnelBlendValue + weight) / 2f;
                                         _mthFunnelBlendValue = newWeight;
                                     }
                                     else
@@ -1409,7 +1409,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthPuckerBlendValue != 0)
                                     {
-                                        float newWeight = (_mthPuckerBlendValue + weight) / 2;
+                                        float newWeight = (_mthPuckerBlendValue + weight) / 2f;
                                         _mthPuckerBlendValue = newWeight;
                                     }
                                     else
@@ -1424,7 +1424,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthShrugUpperBlendValue != 0)
                                     {
-                                        float newWeight = (_mthShrugUpperBlendValue + weight) / 2;
+                                        float newWeight = (_mthShrugUpperBlendValue + weight) / 2f;
                                         _mthShrugUpperBlendValue = newWeight;
                                     }
                                     else
@@ -1439,7 +1439,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthShrugLowerBlendValue != 0)
                                     {
-                                        float newWeight = (_mthShrugLowerBlendValue + weight) / 2;
+                                        float newWeight = (_mthShrugLowerBlendValue + weight) / 2f;
                                         _mthShrugLowerBlendValue = newWeight;
                                     }
                                     else
@@ -1454,7 +1454,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthRollUpperBlendValue != 0)
                                     {
-                                        float newWeight = (_mthRollUpperBlendValue + weight) / 2;
+                                        float newWeight = (_mthRollUpperBlendValue + weight) / 2f;
                                         _mthRollUpperBlendValue = newWeight;
                                     }
                                     else
@@ -1469,7 +1469,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthRollOutUpperBlendValue != 0)
                                     {
-                                        float newWeight = (_mthRollOutUpperBlendValue + weight) / 2;
+                                        float newWeight = (_mthRollOutUpperBlendValue + weight) / 2f;
                                         _mthRollOutUpperBlendValue = newWeight;
                                     }
                                     else
@@ -1484,7 +1484,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthRollLowerBlendValue != 0)
                                     {
-                                        float newWeight = (_mthRollLowerBlendValue + weight) / 2;
+                                        float newWeight = (_mthRollLowerBlendValue + weight) / 2f;
                                         _mthRollLowerBlendValue = newWeight;
                                     }
                                     else
@@ -1499,7 +1499,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthRollOutLowerBlendValue != 0)
                                     {
-                                        float newWeight = (_mthRollOutLowerBlendValue + weight) / 2;
+                                        float newWeight = (_mthRollOutLowerBlendValue + weight) / 2f;
                                         _mthRollOutLowerBlendValue = newWeight;
                                     }
                                     else
@@ -1514,7 +1514,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthCloseBlendValue != 0)
                                     {
-                                        float newWeight = (_mthCloseBlendValue + weight) / 2;
+                                        float newWeight = (_mthCloseBlendValue + weight) / 2f;
                                         _mthCloseBlendValue = newWeight;
                                     }
                                     else
@@ -1529,7 +1529,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthlFrownSmileBlendValue != 0)
                                     {
-                                        float newWeight = (_mthlFrownSmileBlendValue + -weight) / 2;
+                                        float newWeight = (_mthlFrownSmileBlendValue + -weight) / 2f;
                                         _mthlFrownSmileBlendValue = newWeight;
                                     }
                                     else
@@ -1544,7 +1544,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthlFrownSmileBlendValue != 0)
                                     {
-                                        float newWeight = (_mthlFrownSmileBlendValue + weight) / 2;
+                                        float newWeight = (_mthlFrownSmileBlendValue + weight) / 2f;
                                         _mthlFrownSmileBlendValue = newWeight;
                                     }
                                     else
@@ -1559,7 +1559,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthlPressStretchBlendValue != 0)
                                     {
-                                        float newWeight = (_mthlPressStretchBlendValue + -weight) / 2;
+                                        float newWeight = (_mthlPressStretchBlendValue + -weight) / 2f;
                                         _mthlPressStretchBlendValue = newWeight;
                                     }
                                     else
@@ -1574,7 +1574,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthlPressStretchBlendValue != 0)
                                     {
-                                        float newWeight = (_mthlPressStretchBlendValue + weight) / 2;
+                                        float newWeight = (_mthlPressStretchBlendValue + weight) / 2f;
                                         _mthlPressStretchBlendValue = newWeight;
                                     }
                                     else
@@ -1589,7 +1589,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthlUpperUpBlendValue != 0)
                                     {
-                                        float newWeight = (_mthlUpperUpBlendValue + weight) / 2;
+                                        float newWeight = (_mthlUpperUpBlendValue + weight) / 2f;
                                         _mthlUpperUpBlendValue = newWeight;
                                     }
                                     else
@@ -1604,7 +1604,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthlLowerDownBlendValue != 0)
                                     {
-                                        float newWeight = (_mthlLowerDownBlendValue + weight) / 2;
+                                        float newWeight = (_mthlLowerDownBlendValue + weight) / 2f;
                                         _mthlLowerDownBlendValue = newWeight;
                                     }
                                     else
@@ -1619,7 +1619,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthrFrownSmileBlendValue != 0)
                                     {
-                                        float newWeight = (_mthrFrownSmileBlendValue + -weight) / 2;
+                                        float newWeight = (_mthrFrownSmileBlendValue + -weight) / 2f;
                                         _mthrFrownSmileBlendValue = newWeight;
                                     }
                                     else
@@ -1634,7 +1634,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthrFrownSmileBlendValue != 0)
                                     {
-                                        float newWeight = (_mthrFrownSmileBlendValue + weight) / 2;
+                                        float newWeight = (_mthrFrownSmileBlendValue + weight) / 2f;
                                         _mthrFrownSmileBlendValue = newWeight;
                                     }
                                     else
@@ -1649,7 +1649,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthrPressStretchBlendValue != 0)
                                     {
-                                        float newWeight = (_mthrPressStretchBlendValue + -weight) / 2;
+                                        float newWeight = (_mthrPressStretchBlendValue + -weight) / 2f;
                                         _mthrPressStretchBlendValue = newWeight;
                                     }
                                     else
@@ -1664,7 +1664,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthrPressStretchBlendValue != 0)
                                     {
-                                        float newWeight = (_mthrPressStretchBlendValue + weight) / 2;
+                                        float newWeight = (_mthrPressStretchBlendValue + weight) / 2f;
                                         _mthrPressStretchBlendValue = newWeight;
                                     }
                                     else
@@ -1679,7 +1679,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthrUpperUpBlendValue != 0)
                                     {
-                                        float newWeight = (_mthrUpperUpBlendValue + weight) / 2;
+                                        float newWeight = (_mthrUpperUpBlendValue + weight) / 2f;
                                         _mthrUpperUpBlendValue = newWeight;
                                     }
                                     else
@@ -1694,7 +1694,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_mthrLowerDownBlendValue != 0)
                                     {
-                                        float newWeight = (_mthrLowerDownBlendValue + weight) / 2;
+                                        float newWeight = (_mthrLowerDownBlendValue + weight) / 2f;
                                         _mthrLowerDownBlendValue = newWeight;
                                     }
                                     else
@@ -1709,7 +1709,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongDownUpBlendValue != 0)
                                     {
-                                        float newWeight = (_tongDownUpBlendValue + -weight) / 2;
+                                        float newWeight = (_tongDownUpBlendValue + -weight) / 2f;
                                         _tongDownUpBlendValue = newWeight;
                                     }
                                     else
@@ -1724,7 +1724,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongDownUpBlendValue != 0)
                                     {
-                                        float newWeight = (_tongDownUpBlendValue + weight) / 2;
+                                        float newWeight = (_tongDownUpBlendValue + weight) / 2f;
                                         _tongDownUpBlendValue = newWeight;
                                     }
                                     else
@@ -1739,7 +1739,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongInOutBlendValue != 0)
                                     {
-                                        float newWeight = (_tongInOutBlendValue + -weight) / 2;
+                                        float newWeight = (_tongInOutBlendValue + -weight) / 2f;
                                         _tongInOutBlendValue = newWeight;
                                     }
                                     else
@@ -1754,7 +1754,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongInOutBlendValue != 0)
                                     {
-                                        float newWeight = (_tongInOutBlendValue + weight) / 2;
+                                        float newWeight = (_tongInOutBlendValue + weight) / 2f;
                                         _tongInOutBlendValue = newWeight;
                                     }
                                     else
@@ -1769,7 +1769,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongLowerRaiseBlendValue != 0)
                                     {
-                                        float newWeight = (_tongLowerRaiseBlendValue + -weight) / 2;
+                                        float newWeight = (_tongLowerRaiseBlendValue + -weight) / 2f;
                                         _tongLowerRaiseBlendValue = newWeight;
                                     }
                                     else
@@ -1784,7 +1784,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongLowerRaiseBlendValue != 0)
                                     {
-                                        float newWeight = (_tongLowerRaiseBlendValue + weight) / 2;
+                                        float newWeight = (_tongLowerRaiseBlendValue + weight) / 2f;
                                         _tongLowerRaiseBlendValue = newWeight;
                                     }
                                     else
@@ -1799,7 +1799,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongTwistLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_tongTwistLeftRightBlendValue + -weight) / 2;
+                                        float newWeight = (_tongTwistLeftRightBlendValue + -weight) / 2f;
                                         _tongTwistLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1814,7 +1814,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongTwistLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_tongTwistLeftRightBlendValue + weight) / 2;
+                                        float newWeight = (_tongTwistLeftRightBlendValue + weight) / 2f;
                                         _tongTwistLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1829,7 +1829,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongCurlDownUpBlendValue != 0)
                                     {
-                                        float newWeight = (_tongCurlDownUpBlendValue + -weight) / 2;
+                                        float newWeight = (_tongCurlDownUpBlendValue + -weight) / 2f;
                                         _tongCurlDownUpBlendValue = newWeight;
                                     }
                                     else
@@ -1844,7 +1844,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongCurlDownUpBlendValue != 0)
                                     {
-                                        float newWeight = (_tongCurlDownUpBlendValue + weight) / 2;
+                                        float newWeight = (_tongCurlDownUpBlendValue + weight) / 2f;
                                         _tongCurlDownUpBlendValue = newWeight;
                                     }
                                     else
@@ -1859,7 +1859,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongCurlLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_tongCurlLeftRightBlendValue + -weight) / 2;
+                                        float newWeight = (_tongCurlLeftRightBlendValue + -weight) / 2f;
                                         _tongCurlLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1874,7 +1874,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongCurlLeftRightBlendValue != 0)
                                     {
-                                        float newWeight = (_tongCurlLeftRightBlendValue + weight) / 2;
+                                        float newWeight = (_tongCurlLeftRightBlendValue + weight) / 2f;
                                         _tongCurlLeftRightBlendValue = newWeight;
                                     }
                                     else
@@ -1889,7 +1889,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongCurlSideDownUpBlendValue != 0)
                                     {
-                                        float newWeight = (_tongCurlSideDownUpBlendValue + -weight) / 2;
+                                        float newWeight = (_tongCurlSideDownUpBlendValue + -weight) / 2f;
                                         _tongCurlSideDownUpBlendValue = newWeight;
                                     }
                                     else
@@ -1904,7 +1904,7 @@ namespace Synty.SidekickCharacters
                                 {
                                     if (_tongCurlSideDownUpBlendValue != 0)
                                     {
-                                        float newWeight = (_tongCurlSideDownUpBlendValue + weight) / 2;
+                                        float newWeight = (_tongCurlSideDownUpBlendValue + weight) / 2f;
                                         _tongCurlSideDownUpBlendValue = newWeight;
                                     }
                                     else

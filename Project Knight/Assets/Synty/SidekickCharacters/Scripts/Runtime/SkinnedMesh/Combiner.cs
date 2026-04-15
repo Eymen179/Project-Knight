@@ -143,6 +143,7 @@ namespace Synty.SidekickCharacters.SkinnedMesh
             newMesh.name = combinedModel.name;
             renderer.rootBone = combinedModel.transform.Find("root");
             renderer.sharedMesh = newMesh;
+            renderer.enabled = true;
             renderer.sharedMesh.bindposes = bindPosesToMerge.ToArray();
             renderer.sharedMaterial = baseMaterial == null ? material : baseMaterial;
             MergeAndGetAllBlendShapeDataOfSkinnedMeshRenderers(skinnedMeshesToCombine.ToArray(), renderer.sharedMesh, renderer);

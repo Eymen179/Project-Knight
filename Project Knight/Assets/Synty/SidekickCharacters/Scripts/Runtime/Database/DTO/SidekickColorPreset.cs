@@ -76,6 +76,26 @@ namespace Synty.SidekickCharacters.Database.DTO
         }
 
         /// <summary>
+        ///     Gets a Color Presets in the database with the matching name if one exists.
+        /// </summary>
+        /// <param name="dbManager">The Database Manager to use.</param>
+        /// <param name="name">The name of the preset to retrieve.</param>
+        /// <returns>Returns a Color Presets in the database with the matching name if one exists; otherwise null.</returns>
+        public static SidekickColorPreset GetByName(DatabaseManager dbManager, string name)
+        {
+            SidekickColorPreset colorPreset = dbManager.GetCurrentDbConnection()
+                .Table<SidekickColorPreset>()
+                .FirstOrDefault(colorPreset => colorPreset.Name == name);
+
+            if (colorPreset != null)
+            {
+                Decorate(dbManager, colorPreset);
+            }
+
+            return colorPreset;
+        }
+
+        /// <summary>
         ///     Gets a list of all the Color Presets in the database that have the matching species.
         /// </summary>
         /// <param name="dbManager">The Database Manager to use.</param>

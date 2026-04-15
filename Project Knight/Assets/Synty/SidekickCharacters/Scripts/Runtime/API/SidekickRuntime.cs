@@ -326,7 +326,7 @@ namespace Synty.SidekickCharacters.API
 #if UNITY_EDITOR
                 GameObject.DestroyImmediate(oldRootBone);
 #else
-                GameObject.Destroy(oldRootBone)
+                GameObject.Destroy(oldRootBone);
 #endif
             }
 
@@ -364,7 +364,7 @@ namespace Synty.SidekickCharacters.API
 #if UNITY_EDITOR
                         GameObject.DestroyImmediate(existingPart.gameObject);
 #else
-                        GameObject.Destroy(existingModel.gameObject)
+                        GameObject.Destroy(existingModel.gameObject);
 #endif
                     }
                 }
@@ -406,7 +406,7 @@ namespace Synty.SidekickCharacters.API
 #if UNITY_EDITOR
                     GameObject.DestroyImmediate(existingPart.gameObject);
 #else
-                    GameObject.Destroy(existingModel.gameObject)
+                    GameObject.Destroy(existingModel.gameObject);
 #endif
                 }
             }
