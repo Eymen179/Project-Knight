@@ -2720,7 +2720,7 @@ GameObject:
   - component: {fileID: 1519997655}
   - component: {fileID: 1519997654}
   m_Layer: 0
-  m_Name: TestNPCSpawner
+  m_Name: NPC5Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7220,11 +7220,11 @@ SceneRoots:
   - {fileID: 1876557664}
   - {fileID: 558448165}
   - {fileID: 1464381865}
-  - {fileID: 1519997655}
   - {fileID: 100345826}
   - {fileID: 252586789}
   - {fileID: 1689556415}
   - {fileID: 1374581474}
+  - {fileID: 1519997655}
   - {fileID: 2139949221}
   - {fileID: 1735403153}
   - {fileID: 773727162}
