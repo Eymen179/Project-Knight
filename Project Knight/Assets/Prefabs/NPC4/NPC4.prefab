@@ -1484,6 +1484,7 @@ GameObject:
   - component: {fileID: 6152428832316011792}
   - component: {fileID: 2129514239967606117}
   - component: {fileID: 1455919018691494219}
+  - component: {fileID: 792014235010011423}
   - component: {fileID: 1955276838331533140}
   - component: {fileID: 7986092301381261131}
   - component: {fileID: 5416649241277044935}
@@ -1553,6 +1554,7 @@ MonoBehaviour:
   healthText: {fileID: 6787367020795340786}
   currentHealth: 0
   healthBeforeDamage: 0
+  isDead: 0
   maxBlockCount: 3
   blockResetTime: 5
   stunDuration: 1
@@ -1577,6 +1579,20 @@ MonoBehaviour:
   redColor: {r: 1, g: 0, b: 0, a: 1}
   greenColor: {r: 0.13802457, g: 1, b: 0, a: 1}
   yellowColor: {r: 1, g: 0.9778552, b: 0, a: 1}
+--- !u!114 &792014235010011423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2876145401879956234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c43dd275dc674443b6028618a0223ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: f04cc08ff8c9f8b4891550371fcd2b0e, type: 2}
+  flashDuration: 0.15
 --- !u!65 &1955276838331533140
 BoxCollider:
   m_ObjectHideFlags: 0

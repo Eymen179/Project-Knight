@@ -265,18 +265,25 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
-    // NavMesh üzerinde rastgele geçerli bir nokta bulur
+    // NavMesh üzerinde rastgele geçerli bir nokta bulur (GELÝÞTÝRÝLMÝÞ ZEMÝN ARAMASI)
     private Vector3 GetRandomPoint(Vector3 center, float range)
     {
-        Vector3 randomDirection = Random.insideUnitSphere * range;
+        // Random.insideUnitSphere yerine, sadece X ve Z eksenlerinde (yatay düzlemde) bir disk içinde nokta seçer.
+        // Bu sayede havada veya yeraltýnda imkansýz noktalar aranmaz.
+        Vector2 randomCircle = Random.insideUnitCircle * range;
+
+        // Seçilen yatay noktayý karakterin kendi Y hizasýna ekle
+        Vector3 randomDirection = new Vector3(randomCircle.x, 0f, randomCircle.y);
         randomDirection += center;
 
         NavMeshHit hit;
-        // Seçilen rastgele nokta NavMesh'e uygun mu diye kontrol et (SamplePosition)
-        if (NavMesh.SamplePosition(randomDirection, out hit, range, NavMesh.AllAreas))
+        // Seçilen noktanýn en fazla 2 birim üstünde/altýnda geçerli bir NavMesh zemini var mý bak.
+        // range deðerini vermek (eskisi gibi) tüm sahneyi taramasýna ve yanlýþ katlara gitmesine sebep oluyordu.
+        if (NavMesh.SamplePosition(randomDirection, out hit, range/2, NavMesh.AllAreas))
         {
             return hit.position;
         }
+
         return center; // Bulamazsa olduðu yerde kalsýn
     }
 

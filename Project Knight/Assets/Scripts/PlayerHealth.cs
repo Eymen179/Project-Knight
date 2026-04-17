@@ -12,13 +12,17 @@ public class PlayerHealth : MonoBehaviour
     [Header("Savunma (Blok) Ayarlarý")]
 
     private Animator animator;
+    private DamageFlasher damageFlasher;
 
     [Header("Geliþmiþ Blok & Stun Ayarlarý")]
     public int maxBlockCount = 3;       // Peþ peþe maksimum blok hakký
+
     private int currentBlockCount;      // Kalan blok hakkýmýz
     private float lastBlockTime = 0f;   // Son bloklanan saldýrýnýn zamaný
+
     public float blockResetTime = 5f;   // Haklarýn yenilenmesi için gereken süre
     public float stunDuration = 1f;     // Sersemleme süresi
+
     private bool isStunned = false;     // Karakter sersemlemiþ durumda mý?
     private bool isDead = false;
 
@@ -27,7 +31,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         currentBlockCount = maxBlockCount; // Baþlangýçta 3 hakkýmýz var
         animator = GetComponent<Animator>();
-
+        damageFlasher = GetComponent<DamageFlasher>();
         UpdateUI();
     }
     private void Update()
@@ -88,6 +92,8 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth < 0) currentHealth = 0;
         Debug.Log($"Oyuncu Hasar Aldý! Kalan Can: {currentHealth}");
         UpdateUI();
+
+        if (damageFlasher != null) damageFlasher.Flash();
 
         // 3. ÖLÜM KONTROLÜ
         if (currentHealth <= 0) Die();

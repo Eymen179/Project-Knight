@@ -2226,6 +2226,7 @@ GameObject:
   - component: {fileID: 6628565154127490782}
   - component: {fileID: 7763199381108311453}
   - component: {fileID: 2147185737513783367}
+  - component: {fileID: 861946578221295995}
   - component: {fileID: 5818863337156318631}
   - component: {fileID: 3513091887837150045}
   - component: {fileID: 6182689773290074569}
@@ -2294,6 +2295,7 @@ MonoBehaviour:
   healthText: {fileID: 786732124454215312}
   currentHealth: 0
   healthBeforeDamage: 0
+  isDead: 0
   maxBlockCount: 3
   blockResetTime: 5
   stunDuration: 1
@@ -2335,6 +2337,20 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &861946578221295995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4843698787006421974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c43dd275dc674443b6028618a0223ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: f04cc08ff8c9f8b4891550371fcd2b0e, type: 2}
+  flashDuration: 0.15
 --- !u!65 &5818863337156318631
 BoxCollider:
   m_ObjectHideFlags: 0

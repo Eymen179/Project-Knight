@@ -16,15 +16,17 @@ public class EnemyHealth : MonoBehaviour
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int healthBeforeDamage;
+    [HideInInspector]public bool isDead = false;
 
     private Animator animator;
-
-    [HideInInspector]public bool isDead = false;
+    private DamageFlasher damageFlasher;
 
     [Header("Geliþmiþ Blok & Stun Ayarlarý")]
     public int maxBlockCount = 3;
+
     private int currentBlockCount;
     private float lastBlockTime = 0f;
+
     public float blockResetTime = 5f;
     public float stunDuration = 1f;
     public bool isStunned = false;
@@ -32,7 +34,7 @@ public class EnemyHealth : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-
+        damageFlasher = GetComponent<DamageFlasher>();
         // Baþlangýç canýný statlardan al
         if (stats != null)
         {
@@ -97,6 +99,9 @@ public class EnemyHealth : MonoBehaviour
         currentHealth -= damageAmount;
         if (currentHealth < 0) currentHealth = 0;
         UpdateUI();
+        
+        // Hasar alýndýðýnda parlamayý tetikle
+        if (damageFlasher != null) damageFlasher.Flash();
 
         // --- 3. ÖLÜM KONTROLÜ ---
         if (currentHealth <= 0) Die();

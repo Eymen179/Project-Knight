@@ -962,22 +962,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4815908259085995636, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
   m_PrefabInstance: {fileID: 272841550668554330}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &443672671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 443672660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 407bb9c44a00c994a88b4503da98963a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 250
-  maxBlockCount: 3
-  blockResetTime: 5
-  stunDuration: 2
 --- !u!1 &460644129
 GameObject:
   m_ObjectHideFlags: 0
@@ -3651,6 +3635,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4020826724178654314, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
+      propertyPath: flashMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: f04cc08ff8c9f8b4891550371fcd2b0e, type: 2}
     - target: {fileID: 4253807944103685414, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
       propertyPath: playerCamera
       value: 
@@ -3718,10 +3706,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7245607276765736895, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 443672671}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
 --- !u!1 &438290532359969499
 GameObject:
@@ -5629,7 +5614,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1630706103542306955, guid: c8cb12db693b7254a864c91681d4d83c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 1630706103542306955, guid: c8cb12db693b7254a864c91681d4d83c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5637,7 +5622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1630706103542306955, guid: c8cb12db693b7254a864c91681d4d83c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.32
+      value: 18.17
       objectReference: {fileID: 0}
     - target: {fileID: 1630706103542306955, guid: c8cb12db693b7254a864c91681d4d83c, type: 3}
       propertyPath: m_LocalRotation.w
