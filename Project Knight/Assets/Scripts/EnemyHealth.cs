@@ -19,7 +19,7 @@ public class EnemyHealth : MonoBehaviour
 
     private Animator animator;
 
-    private bool isDead = false;
+    [HideInInspector]public bool isDead = false;
 
     [Header("Geliþmiþ Blok & Stun Ayarlarý")]
     public int maxBlockCount = 3;

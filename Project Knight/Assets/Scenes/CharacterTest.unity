@@ -210,7 +210,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &100345825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,10 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff87dcd622c1e9c48be2eb5532d4ba48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtDebugQuota: {fileID: 0}
   NPCPrefab: {fileID: 4885283746668633753, guid: efaccb52312d363438f08583878099b0, type: 3}
   spawnPoints:
   - {fileID: 100345826}
   NPCCount: 5
+  totalQuota: 10
   respawnDelay: 1
   activationDistance: 50
 --- !u!4 &100345826
@@ -751,7 +753,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &252586788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,10 +766,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff87dcd622c1e9c48be2eb5532d4ba48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtDebugQuota: {fileID: 0}
   NPCPrefab: {fileID: 1343804589627008674, guid: 4ac361963dc71bb46b8130a9c38cf718, type: 3}
   spawnPoints:
   - {fileID: 252586789}
   NPCCount: 5
+  totalQuota: 10
   respawnDelay: 1
   activationDistance: 50
 --- !u!4 &252586789
@@ -2434,7 +2438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1374581473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2447,10 +2451,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff87dcd622c1e9c48be2eb5532d4ba48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtDebugQuota: {fileID: 0}
   NPCPrefab: {fileID: 2876145401879956234, guid: 61e93f18e97e4934383a301d68996a2a, type: 3}
   spawnPoints:
   - {fileID: 1374581474}
   NPCCount: 5
+  totalQuota: 10
   respawnDelay: 1
   activationDistance: 50
 --- !u!4 &1374581474
@@ -2949,7 +2955,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 225869d0c15ef5b4eb8de3c0e68a0d83, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 6844f2e96679d834eb8e6ad58e468c59, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1681981358
 Transform:
@@ -3091,7 +3097,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1689556414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3104,10 +3110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff87dcd622c1e9c48be2eb5532d4ba48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtDebugQuota: {fileID: 0}
   NPCPrefab: {fileID: 3309441208409744683, guid: 0c3524b46320c694cb3e7006eed0b429, type: 3}
   spawnPoints:
   - {fileID: 1689556415}
   NPCCount: 5
+  totalQuota: 10
   respawnDelay: 1
   activationDistance: 50
 --- !u!4 &1689556415
