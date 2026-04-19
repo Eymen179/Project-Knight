@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -8,7 +10,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [Header("Veri")]
     public EnemyStats stats;
-
+    public List<GameObject> crystalPrefabs = new List<GameObject>();
     // YENÝ: UIManager yerine kendi slider ve text'imizi kullanacaðýz
     [Header("NPC UI")]
     public Slider healthSlider;      // NPC'nin kendi Canvas'ýndaki Slider
@@ -16,7 +18,7 @@ public class EnemyHealth : MonoBehaviour
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int healthBeforeDamage;
-    [HideInInspector]public bool isDead = false;
+    [HideInInspector] public bool isDead = false;
 
     private Animator animator;
     private DamageFlasher damageFlasher;
@@ -161,6 +163,8 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true;
 
+        SpawnCrystal(transform);
+
         GetComponent<EnemyAI>().enabled = false;
         GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
         if (animator != null) animator.enabled = false;
@@ -251,5 +255,11 @@ public class EnemyHealth : MonoBehaviour
             ai.ResetAI();
         }
         // --------------------------------------------------------
+    }
+    public void SpawnCrystal(Transform NPCpos)
+    {
+        if (crystalPrefabs.Count == 0) return;
+        GameObject crystalPrefab = crystalPrefabs[Random.Range(0, crystalPrefabs.Count)];
+        Instantiate(crystalPrefab, NPCpos.position + Vector3.up * 0.5f, Quaternion.identity);
     }
 }
