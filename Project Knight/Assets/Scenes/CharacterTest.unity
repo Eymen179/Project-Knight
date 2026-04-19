@@ -4638,6 +4638,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3333388138832226154, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
+      propertyPath: attackInputThreshold
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 4020826724178654314, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
       propertyPath: flashMaterial
       value: 
