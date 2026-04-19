@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
   m_Name: Crystal6
   m_EditorClassIdentifier: 
-  itemName: Crystal6
-  description: Crystal6
+  itemName: Can Yenileme Kristali
+  description: "Belli bir s\xFCrede bir miktar can yeniler."
   inventorySprite: {fileID: 21300000, guid: 7d6ce9725d3b42f42930e6f232259e07, type: 3}
   itemObject: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
   attackDamage: 0

@@ -11,6 +11,12 @@ public class UIManager : MonoBehaviour
     public GameObject toolBar;
     public Image toolBarBarrier;
 
+    [Header("Item Details")]
+    public GameObject pnlItemDetails;
+    public TextMeshProUGUI txtItemName;
+    public TextMeshProUGUI txtItemDescription;
+    public TextMeshProUGUI[] txtStats;
+
     public TextMeshProUGUI txtCount;
     public TextMeshProUGUI txtPrompt;
 
@@ -30,7 +36,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         mainInventoryGroup.SetActive(false);
-
+        pnlItemDetails.SetActive(false);
         toolBarBarrier.enabled = true;
 
         if (playerHealthSlider != null)

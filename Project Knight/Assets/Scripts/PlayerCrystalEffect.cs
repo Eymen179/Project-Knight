@@ -210,30 +210,31 @@ public class PlayerCrystalEffect : MonoBehaviour
             {
                 string effectDetails = "";
 
-                // Özellik 0'dan farklýysa metne ekle. 
-                // Pozitif sayýlarda baþýna "+" koymak için (crystal.X > 0 ? "+" : "") mantýðý kullanýyoruz.
-                // Negatif sayýlarda eksi iþareti zaten otomatik olarak yazdýrýlýr.
+                // Dinamik Ýþaret Mantýðý: Sadece 0'dan büyükse "+" koyar, küçükse hiçbir þey koymaz (kendi eksisi görünür)
 
                 if (crystal.attackDamage != 0)
-                    effectDetails += $"Attack Damage +{crystal.attackDamage}\n";
+                    effectDetails += $"Attack Damage {(crystal.attackDamage > 0 ? "+" : "")}{crystal.attackDamage}\n";
 
                 if (crystal.attackSpeed != 0)
-                    effectDetails += $"Attack Speed +{crystal.attackSpeed}\n";
+                    effectDetails += $"Attack Speed {(crystal.attackSpeed > 0 ? "+" : "")}{crystal.attackSpeed}\n";
+
+                if (crystal.attackRange != 0)
+                    effectDetails += $"Attack Range {(crystal.attackRange > 0 ? "+" : "")}{crystal.attackRange}\n";
 
                 if (crystal.attackDamageMultiplierChance != 0)
-                    effectDetails += $"Crit Chance +{crystal.attackDamageMultiplierChance}%\n";
+                    effectDetails += $"Crit Chance {(crystal.attackDamageMultiplierChance > 0 ? "+" : "")}{crystal.attackDamageMultiplierChance}%\n";
 
                 if (crystal.attackDamageMultiplier != 0)
-                    effectDetails += $"Crit Multiplier +{crystal.attackDamageMultiplier}\n";
+                    effectDetails += $"Crit Multiplier {(crystal.attackDamageMultiplier > 0 ? "+" : "")}{crystal.attackDamageMultiplier}\n";
 
                 if (crystal.health != 0)
-                    effectDetails += $"Health +{crystal.health}\n";
+                    effectDetails += $"Health {(crystal.health > 0 ? "+" : "")}{crystal.health}\n";
 
                 if (crystal.healthRegenerationAmount != 0)
-                    effectDetails += $"Health Regen +{crystal.healthRegenerationAmount}\n";
+                    effectDetails += $"Health Regen {(crystal.healthRegenerationAmount > 0 ? "+" : "")}{crystal.healthRegenerationAmount}\n";
 
                 if (crystal.healthRegenerationSpeed != 0)
-                    effectDetails += $"Health Regen Speed +{crystal.healthRegenerationSpeed}\n";
+                    effectDetails += $"Health Regen Speed {(crystal.healthRegenerationSpeed > 0 ? "+" : "")}{crystal.healthRegenerationSpeed}\n";
 
                 // Oluþturulan dinamik metni UI'a gönder
                 if (UIManager.Instance.txtEffects != null)

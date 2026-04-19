@@ -37,6 +37,9 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         countText.raycastTarget = false; // Yazýnýn da týklamayý engellemesini önle
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root); // Canvas'ýn en üstüne al
+
+        ItemDetailsManager.ShowItemDetails(item);
+        UIManager.Instance.pnlItemDetails.SetActive(true); // Eþya detay panelini kapat
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -79,5 +82,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             equipmentManager.ValidateEquipment();
         }
+
+        UIManager.Instance.pnlItemDetails.SetActive(false); // Eþya detay panelini kapat
     }
 }

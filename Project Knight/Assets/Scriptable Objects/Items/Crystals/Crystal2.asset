@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
   m_Name: Crystal2
   m_EditorClassIdentifier: 
-  itemName: Test Crystal2
-  description: Test Crystal2
+  itemName: "A\u011F\u0131r Kristal"
+  description: "Kritik vurma miktar\u0131n\u0131 ve kritik vurma \u015Fans\u0131n\u0131
+    art\u0131r\u0131r."
   inventorySprite: {fileID: 21300000, guid: 9bce6eea096662745add298904230172, type: 3}
   itemObject: {fileID: 2573013051975258517, guid: a8edcbbe8068cf84fbb6c13ff7e23d11, type: 3}
-  attackDamage: 10
-  attackSpeed: 0.2
-  attackRange: 0
+  attackDamage: 0
+  attackSpeed: 0
+  attackRange: -0.25
   attackDamageMultiplier: 0.5
-  attackDamageMultiplierChance: 0
+  attackDamageMultiplierChance: 10
   health: 0
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0

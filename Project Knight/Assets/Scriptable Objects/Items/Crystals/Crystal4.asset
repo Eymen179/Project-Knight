@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
   m_Name: Crystal4
   m_EditorClassIdentifier: 
-  itemName: Test Crystal4
-  description: Test Crystal4
+  itemName: Hasar Kristali
+  description: "K\u0131l\u0131c\u0131n hasar\u0131n\u0131 art\u0131r\u0131r."
   inventorySprite: {fileID: 21300000, guid: 8d4fc0bc80db9ac45b77e8ba147a47e9, type: 3}
   itemObject: {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
-  attackDamage: 0
-  attackSpeed: 0
+  attackDamage: 15
+  attackSpeed: -0.5
   attackRange: 0
-  attackDamageMultiplier: 1.5
+  attackDamageMultiplier: -0.5
   attackDamageMultiplierChance: 0
   health: 0
   healthRegenerationAmount: 0
