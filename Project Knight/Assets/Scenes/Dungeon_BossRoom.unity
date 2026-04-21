@@ -71264,6 +71264,10 @@ MonoBehaviour:
   mainInventoryGroup: {fileID: 64824922}
   toolBar: {fileID: 1383989227}
   toolBarBarrier: {fileID: 707953591}
+  pnlItemDetails: {fileID: 0}
+  txtItemName: {fileID: 0}
+  txtItemDescription: {fileID: 0}
+  txtStats: []
   txtCount: {fileID: 0}
   txtPrompt: {fileID: 1422640472}
   playerHealthSlider: {fileID: 1891542165}

@@ -25809,6 +25809,10 @@ MonoBehaviour:
   mainInventoryGroup: {fileID: 1241569434}
   toolBar: {fileID: 1693016766}
   toolBarBarrier: {fileID: 669576820}
+  pnlItemDetails: {fileID: 0}
+  txtItemName: {fileID: 0}
+  txtItemDescription: {fileID: 0}
+  txtStats: []
   txtCount: {fileID: 0}
   txtPrompt: {fileID: 762305500}
   playerHealthSlider: {fileID: 386271212}

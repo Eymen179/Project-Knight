@@ -63,5 +63,7 @@ public class PlayerCombatManager : MonoBehaviour
             // Þimdi yeni saldýrýyý tetikle
             _animator.SetTrigger("attack");
         }
+
     }
+
 }

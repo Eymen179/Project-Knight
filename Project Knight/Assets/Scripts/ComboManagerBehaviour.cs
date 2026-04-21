@@ -5,6 +5,8 @@ public class ComboManagerBehaviour : StateMachineBehaviour
 {
     [SerializeField] private int comboStepValue;
 
+    public int comboIndex;
+
     // Bu durum (state) girildiðinde çalýþýr
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -12,6 +14,8 @@ public class ComboManagerBehaviour : StateMachineBehaviour
         animator.SetInteger("comboStep", comboStepValue);
 
         animator.ResetTrigger("attack");
+
+        comboIndex = comboStepValue;
     }
     // YENÝ EKLENDÝ: Bu durumdan çýkarken çalýþýr
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

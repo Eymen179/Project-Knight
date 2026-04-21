@@ -75529,6 +75529,10 @@ MonoBehaviour:
   mainInventoryGroup: {fileID: 1790036189}
   toolBar: {fileID: 1076558737}
   toolBarBarrier: {fileID: 1466460756}
+  pnlItemDetails: {fileID: 0}
+  txtItemName: {fileID: 0}
+  txtItemDescription: {fileID: 0}
+  txtStats: []
   txtCount: {fileID: 0}
   txtPrompt: {fileID: 2102347085}
   playerHealthSlider: {fileID: 1197031847}
