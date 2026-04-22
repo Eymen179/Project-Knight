@@ -257176,14 +257176,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_MOD_Stairs_01_E_straight_3
       objectReference: {fileID: 0}
-    - target: {fileID: 6750589678309373719, guid: f58ecd7453803774fb817358c3784813, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779317802814047492, guid: f58ecd7453803774fb817358c3784813, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7779317802814047492, guid: f58ecd7453803774fb817358c3784813, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
