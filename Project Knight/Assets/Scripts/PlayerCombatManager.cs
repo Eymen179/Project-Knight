@@ -34,7 +34,16 @@ public class PlayerCombatManager : MonoBehaviour
         _animator.SetBool("isBlocking", isBlocking);
 
         // Eðer silah yoksa veya blokluyorsak saldýramayýz
-        if (!isWeaponEquipped || isBlocking) return;
+        //if (!isWeaponEquipped || isBlocking) return;
+
+        // --- YENÝ EKLENEN KORUMA (INTERRUPT) ---
+        if (isBlocking)
+        {
+            // Eðer gard alýyorsak, yarýda kesilen saldýrýnýn trigger'ýný hafýzadan SÝL
+            _animator.ResetTrigger("attack");
+            return; // Aþaðýdaki saldýrý/sol týk kodlarýný hiç okuma
+        }
+        // --------------------------------------
         // Sol týk basýldý mý?
         if (attack.action.WasPressedThisFrame())
         {

@@ -186,6 +186,11 @@ public class EnemyAI : MonoBehaviour
         // 1. DURUM: Eðer NPC þu an gardýný almýþ (Blok) durumdaysa
         if (isBlocking)
         {
+            // --- YENÝ EKLENEN KORUMA (INTERRUPT) ---
+            // Eðer NPC bloktayken hafýzasýnda bir saldýrý tetikleyicisi kaldýysa hemen sil
+            if (_animator != null) _animator.ResetTrigger("attack");
+            // --------------------------------------
+
             blockTimer -= Time.deltaTime; // Blok süresinden düþ
 
             if (blockTimer <= 0)
@@ -210,8 +215,14 @@ public class EnemyAI : MonoBehaviour
             {
                 // --- BLOK YAPMAYA KARAR VERDÝ ---
                 isBlocking = true;
-                blockTimer = Random.Range(1.5f, 2.5f); // 1.5 ile 3.5 saniye arasý blokta kalacak
-                if (_animator != null) _animator.SetBool("isBlocking", true);
+                blockTimer = Random.Range(1.5f, 2.5f); // 1.5 ile 2.5 saniye arasý blokta kalacak
+
+                if (_animator != null)
+                {
+                    _animator.SetBool("isBlocking", true);
+                    // YENÝ EKLENEN: Blok kararý verdiði o ilk salisede de vuruþu iptal et!
+                    _animator.ResetTrigger("attack");
+                }
             }
             else
             {
