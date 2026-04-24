@@ -2819,9 +2819,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c43dd275dc674443b6028618a0223ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flashColor: {r: 0.9169811, g: 0.8079815, b: 0.8079815, a: 0.42745098}
+  flashMaterial: {fileID: 2100000, guid: f04cc08ff8c9f8b4891550371fcd2b0e, type: 2}
   flashDuration: 0.15
-  colorPropertyName: Color
 --- !u!54 &7966854835744457500
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2856,7 +2855,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7245607276765736895}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 531fe2a5b50206a428998d35682b2213, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
