@@ -15,6 +15,11 @@ public class PlayerAttackSystem : MonoBehaviour
     public float bonusCritMultiplier = 0f;      // Kristalden gelen ekstra kritik çarpaný
     public int bonusCritChance = 0;             // Kristalden gelen ekstra kritik þansý
     // ---------------------------------------------------------------------------------
+    [Header("Permanent Upgrades (Kalýcý)")]
+    public int permanentBonusDamage = 0;
+    public float permanentBonusCritMultiplier = 0f;
+    public int permanentBonusCritChance = 0;
+    // ---------------------------------------------------------------------------------
 
     void Start()
     {
@@ -37,7 +42,7 @@ public class PlayerAttackSystem : MonoBehaviour
         }
 
         // 2. Bonus hasarý ekle (Kristal etkisi burada devreye giriyor)
-        int totalDamage = baseDamage + bonusDamage;
+        int totalDamage = baseDamage + bonusDamage + permanentBonusDamage;
 
         // 3. Kritik hesaplamaya gönder
         int finalDamage = DamageCalculate(totalDamage);
@@ -62,7 +67,7 @@ public class PlayerAttackSystem : MonoBehaviour
 
         // Þans hesaplarken bonus þansý da ekle
         // Örn: Kýlýç %10 + Kristal %20 = %30 þans
-        int totalChance = itemInHand.attackDamageMultiplierChance + bonusCritChance;
+        int totalChance = itemInHand.attackDamageMultiplierChance + bonusCritChance + permanentBonusCritChance;
 
         if (totalChance > 100) totalChance = 100;
 
@@ -73,7 +78,7 @@ public class PlayerAttackSystem : MonoBehaviour
             Debug.Log("Kritik Vuruþ!");
 
             // Çarpan hesaplarken bonus çarpaný da ekle
-            float totalMultiplier = itemInHand.attackDamageMultiplier + bonusCritMultiplier;
+            float totalMultiplier = itemInHand.attackDamageMultiplier + bonusCritMultiplier + permanentBonusCritMultiplier;
 
             return Mathf.RoundToInt(currentDamage * totalMultiplier);
         }

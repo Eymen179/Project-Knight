@@ -20,6 +20,7 @@ public class EquipmentManager : MonoBehaviour
 
     //Saldýrý Hýzý
     [HideInInspector] public float bonusAttackSpeed = 0f;
+    [HideInInspector] public float permanentBonusAttackSpeed = 0f; // Kalýcý
 
     void Start() // YENÝ EKLENDÝ
     {
@@ -171,10 +172,10 @@ public class EquipmentManager : MonoBehaviour
 
         // Formül: (Silah Hýzý / 10) + Bonus Hýz
         float baseSpeed = currentItemInHand.attackSpeed;
-        float totalSpeed = baseSpeed + bonusAttackSpeed;
+        float totalSpeed = baseSpeed + bonusAttackSpeed + permanentBonusAttackSpeed;
 
         GetComponent<Animator>().SetFloat("fAttackSpeed", totalSpeed);
-        Debug.Log($"Yeni Saldýrý Hýzý: {totalSpeed} (Silah: {baseSpeed} + Bonus: {bonusAttackSpeed})");
+        Debug.Log($"Yeni Saldýrý Hýzý: {totalSpeed} (Silah: {baseSpeed} + Bonus: {bonusAttackSpeed} + Kalýcý: {permanentBonusAttackSpeed})");
     }
     public int GetCurrentWeaponDamage()
     {

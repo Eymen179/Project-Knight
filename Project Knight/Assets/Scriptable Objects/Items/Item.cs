@@ -27,6 +27,8 @@ public class Item : ScriptableObject
 
     public float effectDuration;
 
+    public bool isPermanent = false;
+
     [Header("Inventory")]
     public bool isStackable = true;
 

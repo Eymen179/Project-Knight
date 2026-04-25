@@ -176,8 +176,54 @@ public class PlayerCrystalEffect : MonoBehaviour
         // Çarpan faktörü: True ise 1 (Ekle), False ise -1 (Çýkar)
         int factor = isApplying ? 1 : -1;
 
-        //Saldiri hasari, kritik sansi, kritik carpani efekt ayarlari
+        // --- SALDIRI HASARI VE KRÝTÝK EFEKTLERÝ ---
         if (playerAttackSystem != null)
+        {
+            if (crystal.isPermanent && isApplying)
+            {
+                // KALICI: factor'e gerek yok, sadece 1 kere ekliyoruz ve geri alýnmýyor
+                playerAttackSystem.permanentBonusDamage += crystal.attackDamage;
+                playerAttackSystem.permanentBonusCritChance += crystal.attackDamageMultiplierChance;
+                playerAttackSystem.permanentBonusCritMultiplier += crystal.attackDamageMultiplier;
+            }
+            else if (!crystal.isPermanent)
+            {
+                // SÜRELÝ: factor ile ekle veya çýkar
+                playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
+                playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
+                playerAttackSystem.bonusCritMultiplier += (crystal.attackDamageMultiplier * factor);
+            }
+        }
+
+        // --- SALDIRI HIZI EFEKTÝ ---
+        if (equipmentManager != null)
+        {
+            if (crystal.isPermanent && isApplying)
+            {
+                // KALICI HIZ
+                equipmentManager.permanentBonusAttackSpeed += (crystal.attackSpeed / 10f);
+            }
+            else if (!crystal.isPermanent)
+            {
+                // SÜRELÝ HIZ
+                equipmentManager.bonusAttackSpeed += (crystal.attackSpeed / 10f * factor);
+            }
+            equipmentManager.UpdateAttackSpeed(); // Silah ve animatör hýzýný güncelle
+        }
+
+        // --- CAN DOLDURMA VE KALICI CAN YÜKSELTME ---
+        if (isApplying && crystal.health != 0 && playerHealth != null)
+        {
+            playerHealth.Heal(crystal.health); // Her halükarda anlýk caný doldur
+
+            if (crystal.isPermanent)
+            {
+                playerHealth.maxHealth += crystal.health; // Kalýcýysa maksimum kapasiteyi artýr
+                playerHealth.UpdateUI(); // UI'ý güncelle ki yeni max can görünür olsun
+            }
+        }
+        //Saldiri hasari, kritik sansi, kritik carpani efekt ayarlari
+        /*if (playerAttackSystem != null)
         {
             playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
             playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
@@ -194,10 +240,12 @@ public class PlayerCrystalEffect : MonoBehaviour
         {
             playerHealth.Heal(crystal.health);
         }
-        //Can yenileme efekt ayari
-        /*if (isApplying && crystal.healthRegenerationAmount != 0 && crystal.healthRegenerationSpeed != 0 && playerHealth != null)
+        //Kalýcý can yükseltme efekt ayari (Sadece uygularken çalýþýr, bitince geri alýnmaz)
+        if (isApplying && crystal.health != 0 && playerHealth != null && crystal.isPermanent)
         {
-            playerHealth.Heal(crystal.healthRegenerationAmount * crystal.healthRegenerationSpeed);
+            playerHealth.Heal(crystal.health);
+            playerHealth.maxHealth += crystal.health; // Maksimum caný da artýr
+            playerHealth.UpdateUI(); // UI'ý güncelle ki yeni max can görünür olsun
         }*/
         // --- UI GÜNCELLEME KISMI ---
         // Sadece süreli efektler için UI panelini aç/kapat

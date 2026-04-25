@@ -22,6 +22,6 @@ MonoBehaviour:
   attackSpeedMultiplier: 1.2
   blockChance: 50
   chaseRange: 10
-  fovAngle: 90
+  fovAngle: 120
   wanderRadius: 10
   memoryTime: 4

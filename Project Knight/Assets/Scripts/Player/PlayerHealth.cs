@@ -123,7 +123,7 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Oyuncu sersemlemeden çýktý, savaþa hazýr!");
         }
     }
-    private void UpdateUI()
+    public void UpdateUI()
     {
         // Artýk UIManager deðil, kendi referanslarýmýzý kontrol ediyoruz
         // 1. Slider Güncelleme
