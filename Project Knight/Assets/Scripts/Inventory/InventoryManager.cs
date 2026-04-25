@@ -72,6 +72,7 @@ public class InventoryManager : MonoBehaviour
 
             player.GetComponent<PlayerCombatManager>().enabled = false;
             player.GetComponent<PlayerMovement>().enabled = false;
+            player.GetComponent<PlayerInteraction>().enabled = false;
 
             player.GetComponent<Animator>().SetFloat("speed", 0f);
 
@@ -83,6 +84,7 @@ public class InventoryManager : MonoBehaviour
 
             player.GetComponent<PlayerCombatManager>().enabled = true;
             player.GetComponent<PlayerMovement>().enabled = true;
+            player.GetComponent<PlayerInteraction>().enabled = true;
 
             UIManager.Instance.toolBarBarrier.enabled = false;
         }
@@ -125,69 +127,6 @@ public class InventoryManager : MonoBehaviour
         Debug.Log(itemToAdd.itemName + " için envanter dolu!");
         return false;
     }
-
-    // --- YENÝ: Eþya Yere Atma Sistemi ---
-    /*public void DropItem(InventoryItem itemUI)
-    {
-        // 1. Hangi itemi atýyoruz?
-        Item itemToDrop = itemUI.item;
-
-        // 2. Item'in 3D modeli (prefabý) var mý?
-        if (itemToDrop.itemObject != null)
-        {
-            // Karakteri bul (PlayerMovement scripti olan objeyi bul)
-            Transform playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
-
-            // Eþyayý karakterin biraz önünde ve yukarýsýnda oluþtur
-            Vector3 dropPosition = playerTransform.position + (playerTransform.forward * 1.5f) + (Vector3.up * 1f);
-
-            // Prefab'ý sahneye oluþtur (Instantiate)
-            GameObject droppedObject = Instantiate(itemToDrop.itemObject, dropPosition, Quaternion.identity);           
-
-            // 3. Oluþan objenin 'ItemPickup' scriptini ayarla
-            // Böylece yerde duran objenin hangi eþya olduðunu bilecek ve tekrar alabileceðiz.
-            if (droppedObject.TryGetComponent<ItemPickup>(out ItemPickup pickupScript))
-            {
-                pickupScript.item = itemToDrop;
-            }
-            else
-            {
-                Debug.LogWarning("DÝKKAT: Attýðýn prefab'ýn üzerinde ItemPickup scripti yok! Tekrar toplanamaz.");
-            }
-
-            // 3. LAYER AYARI (KRÝTÝK KISIM):
-            // Yere attýðýmýz þey "Interactable" olmalý ki Raycast onu görebilsin.
-            // "Interactable" yerine senin layer ismin neyse onu yaz (Interactable, Default vs.)
-            int interactableLayer = LayerMask.NameToLayer("Interactable");
-            SetLayerRecursively(droppedObject, interactableLayer);
-
-            // 4. Fizik ekle (Eðer prefabda Rigidbody yoksa havada asýlý kalmasýn)
-            if (!droppedObject.GetComponent<Rigidbody>())
-            {
-                Rigidbody rb = droppedObject.AddComponent<Rigidbody>();
-                //rb.isKinematic = true;
-                rb.AddForce(playerTransform.forward * 3f, ForceMode.Impulse); // Hafifçe ileri fýrlat
-            }
-        }
-
-        // 5. UI Güncellemesi (Sayýsý düþür veya yok et)
-        itemUI.count--;
-        if (itemUI.count <= 0)
-        {
-            Destroy(itemUI.gameObject); // Eþya bittiyse UI'dan sil
-        }
-        else
-        {
-            itemUI.RefreshCount(); // Bitmediyse sayýsýný güncelle
-        }
-
-        /*kutsal*/
-        /*EquipmentManager equipmentManager = FindFirstObjectByType<EquipmentManager>();
-        if (equipmentManager != null)
-        {
-            equipmentManager.ValidateEquipment();
-        }*/
-    /*}*/
     public void DropItem(InventoryItem itemUI)
     {
         Item itemToDrop = itemUI.item;

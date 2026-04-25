@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
 
     // O an odaklandýðýmýz (baktýðýmýz) eþya
     private ItemPickup currentFocusItem;
+    private ChestLoot currentFocusChest; // Sandýk referansý
 
     private void OnEnable()
     {
@@ -70,12 +71,27 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 return; // Bulduk, fonksiyondan çýkabiliriz
             }
+            // 2. Ýhtimal: Sandýða mý bakýyoruz? (YENÝ)
+            else if (hit.collider.TryGetComponent<ChestLoot>(out ChestLoot chest))
+            {
+                // Sadece kapaðý açýlmamýþ sandýklara etkileþim ver
+                if (!chest.isOpened)
+                {
+                    if (currentFocusChest != chest) currentFocusChest = chest;
+                    currentFocusItem = null; // Eþyaya bakmýyoruz
+                    return;
+                }
+            }
         }
 
         // Eðer buraya geldiysek; ya bir þeye çarpmadýk ya da çarptýðýmýz þey eþya deðil.
         if (currentFocusItem != null)
         {
             currentFocusItem = null;
+        }
+        if (currentFocusChest != null)
+        {
+            currentFocusChest = null;
         }
     }
     public void UpdateInteractionUI()
@@ -85,13 +101,20 @@ public class PlayerInteraction : MonoBehaviour
         // Eðer geçerli bir eþya algýlandýysa...
         if (currentFocusItem != null)
         {
-            UIManager.Instance.txtPrompt.text = $"[E] Al \n{currentFocusItem.item.itemName}";
+            UIManager.Instance.txtPrompt.text = $"[E] Take \n{currentFocusItem.item.itemName}";
+            UIManager.Instance.txtPrompt.gameObject.SetActive(true);
+        }
+        // Sandýk UI'ý (YENÝ)
+        else if (currentFocusChest != null && !currentFocusChest.isOpened)
+        {
+            UIManager.Instance.txtPrompt.text = $"[E] Open \nChest";
             UIManager.Instance.txtPrompt.gameObject.SetActive(true);
         }
         else // Eðer hiçbir eþya algýlanmadýysa (veya eþya az önce silindiyse)...
         {
             // Referansý temizle ve yazýyý zorla kapat
             currentFocusItem = null;
+            currentFocusChest = null;
             UIManager.Instance.txtPrompt.gameObject.SetActive(false);
         }
 
@@ -107,6 +130,12 @@ public class PlayerInteraction : MonoBehaviour
             // Eþyayý aldýktan sonra UI'ý hemen kapatmak için referansý temizle
             // Çünkü obje yok olacak (Destroy edilecek)
             currentFocusItem = null;
+        }
+        // Sandýk Açma (YENÝ)
+        else if (currentFocusChest != null && !currentFocusChest.isOpened)
+        {
+            currentFocusChest.OpenChest();
+            currentFocusChest = null; // Açýldýðý an UI'ý temizlemek için referansý sil
         }
     }
 

@@ -46,14 +46,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         transform.position = Input.mousePosition;
     }
-
-    /*public void OnEndDrag(PointerEventData eventData)
-    {
-        image.raycastTarget = true;
-        countText.raycastTarget = true;
-        transform.SetParent(parentAfterDrag); // Býrakýldýðý yeni slota (veya eskisine) geri dön
-        transform.localPosition = Vector3.zero; // Slotun tam ortasýna yerleþ
-    }*/
     public void OnEndDrag(PointerEventData eventData)
     {
         image.raycastTarget = true;
