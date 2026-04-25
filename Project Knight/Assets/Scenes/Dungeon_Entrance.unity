@@ -1901,6 +1901,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 9180314839616170982, guid: b0f3a99fbe7f841449786b2e5e8c99d2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7999,6 +8003,10 @@ PrefabInstance:
     - target: {fileID: 7245607276765736895, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
       propertyPath: m_Name
       value: TestCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 7245607276765736895, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8442196530240933934, guid: c981958cae03f854da6e526b8c9b9559, type: 3}
       propertyPath: toolbarSwordSlot
@@ -16302,6 +16310,10 @@ PrefabInstance:
     - target: {fileID: 1266663851100329027, guid: 220e0d78f99fd7045b9fb1b7f0b0148d, type: 3}
       propertyPath: m_Name
       value: FreeLook Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266663851100329027, guid: 220e0d78f99fd7045b9fb1b7f0b0148d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5619886438503290560, guid: 220e0d78f99fd7045b9fb1b7f0b0148d, type: 3}
       propertyPath: Target.TrackingTarget
