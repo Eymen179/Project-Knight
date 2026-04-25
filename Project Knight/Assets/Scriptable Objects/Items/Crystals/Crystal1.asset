@@ -16,6 +16,7 @@ MonoBehaviour:
   description: "Can\u0131n\u0131 belli bir miktar doldurur."
   inventorySprite: {fileID: 21300000, guid: 1681ef140f3509c44be421ed44a7dc2c, type: 3}
   itemObject: {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
+  itemColor: {r: 0.9433962, g: 0.0934496, b: 0.0934496, a: 1}
   attackDamage: 0
   attackSpeed: 0
   attackRange: 0
@@ -25,5 +26,6 @@ MonoBehaviour:
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
   effectDuration: 0
+  isPermanent: 0
   isStackable: 0
   itemType: 1

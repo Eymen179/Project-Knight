@@ -17,6 +17,7 @@ MonoBehaviour:
     art\u0131r\u0131r."
   inventorySprite: {fileID: 21300000, guid: 9bce6eea096662745add298904230172, type: 3}
   itemObject: {fileID: 2573013051975258517, guid: a8edcbbe8068cf84fbb6c13ff7e23d11, type: 3}
+  itemColor: {r: 0.8584906, g: 0.23891953, b: 0.60422903, a: 1}
   attackDamage: 0
   attackSpeed: 0
   attackRange: -0.25
@@ -26,5 +27,6 @@ MonoBehaviour:
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
   effectDuration: 10
+  isPermanent: 0
   isStackable: 0
   itemType: 1

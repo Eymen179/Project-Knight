@@ -16,6 +16,7 @@ MonoBehaviour:
   description: "K\u0131l\u0131c\u0131n hasar\u0131n\u0131 art\u0131r\u0131r."
   inventorySprite: {fileID: 21300000, guid: 8d4fc0bc80db9ac45b77e8ba147a47e9, type: 3}
   itemObject: {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
+  itemColor: {r: 1, g: 0.3732436, b: 0, a: 1}
   attackDamage: 15
   attackSpeed: -0.5
   attackRange: 0
@@ -25,5 +26,6 @@ MonoBehaviour:
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
   effectDuration: 20
+  isPermanent: 0
   isStackable: 0
   itemType: 1

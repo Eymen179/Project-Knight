@@ -13,6 +13,9 @@ public class PlayerCrystalEffect : MonoBehaviour
     private EquipmentManager equipmentManager;
     private PlayerHealth playerHealth; // YENÝ EKLENDÝ
 
+    [Header("Görsel Efektler")]
+    public ParticleSystem crystalUseEffect;
+
     private bool isCrystalActive = false;
     void Start()
     {
@@ -87,6 +90,19 @@ public class PlayerCrystalEffect : MonoBehaviour
     private void ConsumeItemAndApplyEffect(InventoryItem inventoryItem)
     {
         Item crystalToUse = inventoryItem.item;
+
+        // --- YENÝ: DÝNAMÝK PARTÝKÜL RENGÝ ---
+        if (crystalUseEffect != null)
+        {
+            // Particle System'in ana (main) modülüne eriþiyoruz
+            var main = crystalUseEffect.main;
+
+            // Kristalin rengini partikülün baþlangýç rengi (startColor) yapýyoruz
+            main.startColor = crystalToUse.itemColor;
+
+            crystalUseEffect.Play();
+        }
+        // ------------------------------------
 
         // 1. Efekti Baþlat
         if (crystalToUse.effectDuration > 0)
@@ -222,31 +238,6 @@ public class PlayerCrystalEffect : MonoBehaviour
                 playerHealth.UpdateUI(); // UI'ý güncelle ki yeni max can görünür olsun
             }
         }
-        //Saldiri hasari, kritik sansi, kritik carpani efekt ayarlari
-        /*if (playerAttackSystem != null)
-        {
-            playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
-            playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
-            playerAttackSystem.bonusCritMultiplier += (crystal.attackDamageMultiplier * factor);
-        }
-        //Saldiri hizi efekt ayari
-        if (equipmentManager != null)
-        {
-            equipmentManager.bonusAttackSpeed += (crystal.attackSpeed / 10f * factor);
-            equipmentManager.UpdateAttackSpeed();
-        }
-        //Can doldurma efekt ayari
-        if (isApplying && crystal.health != 0 && playerHealth != null)
-        {
-            playerHealth.Heal(crystal.health);
-        }
-        //Kalýcý can yükseltme efekt ayari (Sadece uygularken çalýþýr, bitince geri alýnmaz)
-        if (isApplying && crystal.health != 0 && playerHealth != null && crystal.isPermanent)
-        {
-            playerHealth.Heal(crystal.health);
-            playerHealth.maxHealth += crystal.health; // Maksimum caný da artýr
-            playerHealth.UpdateUI(); // UI'ý güncelle ki yeni max can görünür olsun
-        }*/
         // --- UI GÜNCELLEME KISMI ---
         // Sadece süreli efektler için UI panelini aç/kapat
         if (crystal.effectDuration > 0 && UIManager.Instance != null)

@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     [Header("Visuals")]
     public Sprite inventorySprite;
     public GameObject itemObject;
+    public Color itemColor = Color.white;
 
     [Header("Attributes")]
     public int attackDamage;
