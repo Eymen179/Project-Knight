@@ -42,6 +42,8 @@ public class InventoryManager : MonoBehaviour
         // 2. 3D oyun için fareyi kilitle
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        LoadInventory();
     }
     // --- BÝTTÝ ---
 
@@ -228,6 +230,80 @@ public class InventoryManager : MonoBehaviour
         {
             if (child == null) continue;
             SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
+    // --- YENÝ EKLENEN: SAHNE GEÇÝÞÝ VERÝ KÖPRÜSÜ ---
+
+    // 1. Kapýdan geçmeden saniyeler önce çaðrýlacak
+    public void SaveInventory()
+    {
+        if (SceneController.Instance == null) return;
+
+        SceneController.Instance.savedSwordSlots.Clear();
+        SceneController.Instance.savedOtherSlots.Clear();
+
+        // 1. Kýlýç Slotlarýný Kaydet
+        for (int i = 0; i < swordSlots.Count; i++)
+        {
+            if (swordSlots[i].transform.childCount > 0)
+            {
+                InventoryItem itemInSlot = swordSlots[i].transform.GetChild(0).GetComponent<InventoryItem>();
+                SceneController.Instance.savedSwordSlots.Add(new SceneController.ItemSaveData
+                {
+                    item = itemInSlot.item,
+                    count = itemInSlot.count,
+                    slotIndex = i // Slotun sýrasýný kaydet
+                });
+            }
+        }
+
+        // 2. Diðer Eþya Slotlarýný Kaydet
+        for (int i = 0; i < otherSlots.Count; i++)
+        {
+            if (otherSlots[i].transform.childCount > 0)
+            {
+                InventoryItem itemInSlot = otherSlots[i].transform.GetChild(0).GetComponent<InventoryItem>();
+                SceneController.Instance.savedOtherSlots.Add(new SceneController.ItemSaveData
+                {
+                    item = itemInSlot.item,
+                    count = itemInSlot.count,
+                    slotIndex = i // Slotun sýrasýný kaydet
+                });
+            }
+        }
+    }
+
+    public void LoadInventory()
+    {
+        if (SceneController.Instance == null) return;
+
+        // Kýlýçlarý kayýttaki slotlarýna geri koy
+        foreach (var savedData in SceneController.Instance.savedSwordSlots)
+        {
+            RestoreItemToSpecificSlot(savedData, swordSlots);
+        }
+
+        // Diðer eþyalarý kayýttaki slotlarýna geri koy
+        foreach (var savedData in SceneController.Instance.savedOtherSlots)
+        {
+            RestoreItemToSpecificSlot(savedData, otherSlots);
+        }
+    }
+
+    // YENÝ: Eþyayý rastgele deðil, tam belirlenen slota yerleþtiren fonksiyon
+    private void RestoreItemToSpecificSlot(SceneController.ItemSaveData data, List<InventorySlot> targetSlots)
+    {
+        // Güvenlik kontrolü: Kayýtlý index liste sýnýrlarý içinde mi?
+        if (data.slotIndex >= 0 && data.slotIndex < targetSlots.Count)
+        {
+            InventorySlot targetSlot = targetSlots[data.slotIndex];
+
+            GameObject newItemGO = Instantiate(inventoryItemPrefab, targetSlot.transform);
+            InventoryItem newInventoryItem = newItemGO.GetComponent<InventoryItem>();
+
+            newInventoryItem.InitializeItem(data.item);
+            newInventoryItem.count = data.count;
+            newInventoryItem.RefreshCount();
         }
     }
 }
