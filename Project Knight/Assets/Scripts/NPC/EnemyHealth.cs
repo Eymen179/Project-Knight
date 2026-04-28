@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using RangeAttribute = UnityEngine.RangeAttribute;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class EnemyHealth : MonoBehaviour
     public float stunDuration = 1f;
     public bool isStunned = false;
 
+    [Header("Loot Ayarlarý")]
+    [Range(0,100)]
+    public int dropChance = 100; // Yüzde kaç ihtimalle eþya düþürecek? (Þu an %100)
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -258,6 +262,16 @@ public class EnemyHealth : MonoBehaviour
     }
     public void SpawnCrystal(Transform NPCpos)
     {
+        // 1. ADIM: Eþya düþecek mi düþmeyecek mi zar at (0 ile 100 arasý)
+        int randomRoll = Random.Range(0, 100);
+
+        // Eðer attýðýmýz zar, düþme þansýndan büyükse HÝÇBÝR ÞEY YAPMA ve fonksiyondan çýk
+        if (randomRoll >= dropChance)
+        {
+            Debug.Log("Zar tutmadý, eþya düþmedi.");
+            return;
+        }
+
         if (crystalPrefabs.Count == 0) return;
         GameObject crystalPrefab = crystalPrefabs[Random.Range(0, crystalPrefabs.Count)];
         Instantiate(crystalPrefab, NPCpos.position + Vector3.up * 0.5f, Quaternion.identity);

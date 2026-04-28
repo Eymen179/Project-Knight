@@ -7199,6 +7199,7 @@ MonoBehaviour:
   blockResetTime: 5
   stunDuration: 1
   isStunned: 0
+  dropChance: 73
 --- !u!114 &7763199381108311453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7219,6 +7220,7 @@ MonoBehaviour:
   redColor: {r: 1, g: 0, b: 0, a: 1}
   greenColor: {r: 0.13802457, g: 1, b: 0, a: 1}
   yellowColor: {r: 1, g: 0.9778552, b: 0, a: 1}
+  spawnerWanderRadius: 0
 --- !u!114 &2147185737513783367
 MonoBehaviour:
   m_ObjectHideFlags: 0
