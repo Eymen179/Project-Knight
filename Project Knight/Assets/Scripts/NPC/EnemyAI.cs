@@ -34,6 +34,9 @@ public class EnemyAI : MonoBehaviour
 
     private EnemyHealth enemyHealth;
 
+    // --- YENÝ EKLENEN DEÐÝÞKEN ---
+    [HideInInspector] public float spawnerWanderRadius = 0f; // Spawner'ýn dolduracaðý deðer
+    // -----------------------------
     void Start()
     {
         enemyHealth = GetComponent<EnemyHealth>();
@@ -146,8 +149,12 @@ public class EnemyAI : MonoBehaviour
 
             if (patrolWaitTimer <= 0)
             {
+                // --- SENÝN MANTIÐININ KODA DÖKÜLMÜÞ HALÝ ---
+                // Eðer spawnerWanderRadius 0'dan büyükse onu kullan, deðilse stats.wanderRadius kullan
+                float activeRadius = (spawnerWanderRadius > 0) ? spawnerWanderRadius : stats.wanderRadius;
+
                 // Yeni noktaya doðru yürümeye baþla
-                Vector3 randomPoint = GetRandomPoint(startPosition, stats.wanderRadius);
+                Vector3 randomPoint = GetRandomPoint(startPosition, activeRadius);
                 agent.SetDestination(randomPoint);
                 agent.isStopped = false;
                 patrolWaitTimer = Random.Range(2f, 5f);
@@ -338,9 +345,12 @@ public class EnemyAI : MonoBehaviour
     {
         if (stats == null) return;
 
-        // Devriye (Wander) Alaný
-        Gizmos.color = new Color(0, 1, 0, 0.3f); // Yarý saydam yeþil
-        Gizmos.DrawWireSphere(Application.isPlaying ? startPosition : transform.position, stats.wanderRadius);
+        // --- GÜNCELLENEN GIZMOS ÇÝZÝMÝ ---
+        float activeRadius = (spawnerWanderRadius > 0) ? spawnerWanderRadius : stats.wanderRadius;
+
+        Gizmos.color = new Color(0, 1, 0, 0.3f);
+        Gizmos.DrawWireSphere(Application.isPlaying ? startPosition : transform.position, activeRadius);
+        // ---------------------------------
 
         // Görüþ Açýsý Çizgileri
         if (currentState == AIState.Patrol)

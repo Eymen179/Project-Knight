@@ -21,6 +21,12 @@ public class NPCSpawner : MonoBehaviour
     private Transform playerTarget;
     private bool isSpawningActive = false;
 
+    // --- YENÝ EKLENEN DEÐÝÞKEN ---
+    [Header("Bölgesel Sýnýrlandýrma")]
+    [Tooltip("0 býrakýlýrsa EnemyStats içindeki wanderRadius kullanýlýr.")]
+    public float spawnRadius = 0f;
+    // -----------------------------
+
     private List<GameObject> npcPool = new List<GameObject>();
 
     // Mantýk Kontrol Listeleri
@@ -158,6 +164,14 @@ public class NPCSpawner : MonoBehaviour
         npc.SetActive(true);
         countedDeadNPCs.Remove(npc); // Yeni hayata baþladý, eski ölüm kaydýný sil
         npc.SendMessage("ResetNPC", SendMessageOptions.DontRequireReceiver);
+
+        // --- YENÝ EKLENEN: DEÐERÝ NPC'YE AKTAR ---
+        EnemyAI ai = npc.GetComponent<EnemyAI>();
+        if (ai != null)
+        {
+            ai.spawnerWanderRadius = this.spawnRadius; // Spawner kendi deðerini NPC'ye verir
+        }
+        // -----------------------------------------
 
         UpdateDebugTexts(); // Doðduðunda üzerinde güncel kota yazsýn
     }
