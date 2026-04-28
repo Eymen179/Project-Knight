@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 9af23ba5fa5364ff598888460e0e2759, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -9979,10 +9979,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 9132025150788247081, guid: b3e2a0d749d776846bd25fc7e8d2dc5b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9132025150788247081, guid: b3e2a0d749d776846bd25fc7e8d2dc5b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 820574693}
   m_SourcePrefab: {fileID: 100100000, guid: b3e2a0d749d776846bd25fc7e8d2dc5b, type: 3}
 --- !u!4 &245239011 stripped
 Transform:
@@ -38254,6 +38261,38 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2031987537685113108, guid: 402b88e528a2d3d469405163699f7d1f, type: 3}
   m_PrefabInstance: {fileID: 818317330}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &820574689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9132025150788247081, guid: b3e2a0d749d776846bd25fc7e8d2dc5b, type: 3}
+  m_PrefabInstance: {fileID: 245239010}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &820574693
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820574689}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &822300279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100403,6 +100442,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 928103842}
     m_Modifications:
+    - target: {fileID: 3876784662767115690, guid: 164915bd70392e34f94333a314e02a82, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4831182134560879432, guid: 164915bd70392e34f94333a314e02a82, type: 3}
       propertyPath: m_Name
       value: P_PROP_skeleton_bonepile_dungeon_01
