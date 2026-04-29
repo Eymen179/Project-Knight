@@ -1552,11 +1552,10 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 2f6ede057df5fd44f950f17e0362a961, type: 2}
   crystalPrefabs:
   - {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
-  - {fileID: 2573013051975258517, guid: a8edcbbe8068cf84fbb6c13ff7e23d11, type: 3}
-  - {fileID: 152753561844906315, guid: a22f2dd12c61a4f4e8a391c98303fbe8, type: 3}
-  - {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
-  - {fileID: 543725697735843016, guid: e4f09d077073d594b9df5eb84380c2db, type: 3}
   - {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
+  - {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
+  - {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
+  - {fileID: 2197940631385660832, guid: 915bb4f71eaa3474b857209d73d6fb46, type: 3}
   healthSlider: {fileID: 7388059257633911980}
   healthText: {fileID: 6787367020795340786}
   currentHealth: 0
@@ -1566,7 +1565,7 @@ MonoBehaviour:
   blockResetTime: 5
   stunDuration: 1
   isStunned: 0
-  dropChance: 30
+  dropChance: 31
 --- !u!114 &1455919018691494219
 MonoBehaviour:
   m_ObjectHideFlags: 0

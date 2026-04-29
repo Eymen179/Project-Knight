@@ -67,6 +67,21 @@ public class EnemyAI : MonoBehaviour
         bool canSeePlayer = CanSeePlayer();
         float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
 
+        // --- YENÝ EKLENEN: HASAR ALMA (AGGRO) KONTROLÜ ---
+        // Eðer can düþtüyse (Yani arkadan bile olsa hasar aldýysa)
+        if (enemyHealth.currentHealth != enemyHealth.healthBeforeDamage)
+        {
+            // Farka baktýk, hemen eþitliyoruz ki sonsuz döngüye (bug'a) girmesin!
+            enemyHealth.healthBeforeDamage = enemyHealth.currentHealth;
+
+            // Eðer oyuncuyu zaten görmüyorsak anýnda takibe baþla
+            if (!canSeePlayer)
+            {
+                SwitchState(AIState.Chase);
+                memoryTimer = stats.memoryTime; // Hafýzayý fulle ki merkeze (Return) kaçmasýn
+            }
+        }
+        // ------------------------------------------------
         // --- DURUM MAKÝNESÝ (STATE MACHINE) ---
 
         if (canSeePlayer)
@@ -96,11 +111,11 @@ public class EnemyAI : MonoBehaviour
                     SwitchState(AIState.Return);
                 }
             }
-            if(currentState == AIState.Patrol && enemyHealth.currentHealth != enemyHealth.healthBeforeDamage)
+            /*if(currentState == AIState.Patrol && enemyHealth.currentHealth != enemyHealth.healthBeforeDamage)
             {
                 // Devriye halindeyken oyuncuyu görmezse rastgele gezinmeye devam et
                 SwitchState(AIState.Chase);
-            }
+            }*/
         }
 
         // Bulunduðumuz duruma göre eylemleri yap

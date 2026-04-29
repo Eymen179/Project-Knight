@@ -7655,7 +7655,7 @@ MonoBehaviour:
   attack: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   block: {fileID: 8952290963971338528, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   isWeaponEquipped: 0
-  attackInputThreshold: 0.3
+  attackInputThreshold: 0.4
 --- !u!114 &6048758083785235787
 MonoBehaviour:
   m_ObjectHideFlags: 0
