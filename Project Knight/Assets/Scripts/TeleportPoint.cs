@@ -10,16 +10,46 @@ public class TeleportPoint : MonoBehaviour
     // Karakter portalýn içine girdiðinde (temas ettiðinde) tetiklenir
     private void OnTriggerEnter(Collider other)
     {
-        // Çarpan obje "Player" etiketine (Tag) sahip mi kontrol et
         if (other.CompareTag("Player"))
         {
             Debug.Log($"{destinationScene} sahnesine ýþýnlanýlýyor...");
-            // --- YENÝ: Sahneyi yok etmeden HEMEN ÖNCE envanteri ölümsüz köprüye (SceneController) kaydet! ---
+
+            // 1. Envanteri Kaydet
             if (InventoryManager.Instance != null)
             {
                 InventoryManager.Instance.SaveInventory();
             }
-            // Senin yazdýðýn merkezi SceneController'a talimat gönder
+
+            // 2. Kalýcý Efektleri Kaydet
+            PlayerCrystalEffect crystalEffect = other.GetComponent<PlayerCrystalEffect>();
+            PlayerAttackSystem attackSystem = other.GetComponent<PlayerAttackSystem>();
+            EquipmentManager equipmentManager = other.GetComponent<EquipmentManager>();
+
+            if (crystalEffect != null && attackSystem != null && equipmentManager != null)
+            {
+                SceneController.Instance.savedPermanentHealthCount = crystalEffect.permanentHealthCount;
+                SceneController.Instance.savedPermanentDamageCount = crystalEffect.permanentDamageCount;
+                SceneController.Instance.savedPermanentSpeedCount = crystalEffect.permanentSpeedCount;
+
+                SceneController.Instance.savedPermanentBonusDamage = attackSystem.permanentBonusDamage;
+                SceneController.Instance.savedPermanentBonusCritChance = attackSystem.permanentBonusCritChance;
+                SceneController.Instance.savedPermanentBonusCritMultiplier = attackSystem.permanentBonusCritMultiplier;
+                SceneController.Instance.savedPermanentBonusAttackSpeed = equipmentManager.permanentBonusAttackSpeed;
+
+                SceneController.Instance.hasSavedPermanentEffects = true;
+            }
+
+            // --- YENÝ EKLENEN: CAN VE MAKSÝMUM CANI KAYDET ---
+            PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                // Kalýcý saðlýk basýldýysa maxHealth zaten artmýþtýr, bunu direkt kaydediyoruz
+                SceneController.Instance.savedCurrentHealth = playerHealth.currentHealth;
+                SceneController.Instance.savedMaxHealth = playerHealth.maxHealth;
+            }
+            // -------------------------------------------------
+
+            // 3. Sahneyi Yükle
             SceneController.Instance.LoadScene(destinationScene);
         }
     }

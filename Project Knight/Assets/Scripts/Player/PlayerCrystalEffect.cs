@@ -16,6 +16,11 @@ public class PlayerCrystalEffect : MonoBehaviour
     [Header("Görsel Efektler")]
     public ParticleSystem crystalUseEffect;
 
+    [Header("Kalýcý Efekt Sayaçlarý")]
+    public int permanentHealthCount = 0;
+    public int permanentDamageCount = 0;
+    public int permanentSpeedCount = 0;
+
     private bool isCrystalActive = false;
     void Start()
     {
@@ -26,9 +31,37 @@ public class PlayerCrystalEffect : MonoBehaviour
             return;
         }
 
-        playerHealth = GetComponent<PlayerHealth>(); // YENÝ EKLENDÝ
+        playerHealth = GetComponent<PlayerHealth>();
         playerAttackSystem = GetComponent<PlayerAttackSystem>();
         equipmentManager = GetComponent<EquipmentManager>();
+
+        // --- YENÝ EKLENEN: SAHNE YÜKLENDÝÐÝNDE KALICI EFEKTLERÝ GERÝ YÜKLE ---
+        if (SceneController.Instance != null && SceneController.Instance.hasSavedPermanentEffects)
+        {
+            // 1. UI Sayaçlarýný Geri Yükle
+            permanentHealthCount = SceneController.Instance.savedPermanentHealthCount;
+            permanentDamageCount = SceneController.Instance.savedPermanentDamageCount;
+            permanentSpeedCount = SceneController.Instance.savedPermanentSpeedCount;
+
+            // 2. Gerçek Bonus Deðerlerini Geri Yükle
+            if (playerAttackSystem != null)
+            {
+                playerAttackSystem.permanentBonusDamage = SceneController.Instance.savedPermanentBonusDamage;
+                playerAttackSystem.permanentBonusCritChance = SceneController.Instance.savedPermanentBonusCritChance;
+                playerAttackSystem.permanentBonusCritMultiplier = SceneController.Instance.savedPermanentBonusCritMultiplier;
+            }
+
+            if (equipmentManager != null)
+            {
+                equipmentManager.permanentBonusAttackSpeed = SceneController.Instance.savedPermanentBonusAttackSpeed;
+                // Ekipman hýzýný hemen güncelle
+                equipmentManager.UpdateAttackSpeed();
+            }
+
+            // 3. UI Panelini Güncelle (Sayaçlar 0'dan büyükse paneli de açar)
+            UpdatePermanentUI();
+        }
+        // ---------------------------------------------------------------------
     }
     private void OnEnable()
     {
@@ -201,6 +234,12 @@ public class PlayerCrystalEffect : MonoBehaviour
                 playerAttackSystem.permanentBonusDamage += crystal.attackDamage;
                 playerAttackSystem.permanentBonusCritChance += crystal.attackDamageMultiplierChance;
                 playerAttackSystem.permanentBonusCritMultiplier += crystal.attackDamageMultiplier;
+
+                if (crystal.attackDamage > 0)
+                {
+                    permanentDamageCount++;
+                    UpdatePermanentUI();
+                }
             }
             else if (!crystal.isPermanent)
             {
@@ -218,6 +257,13 @@ public class PlayerCrystalEffect : MonoBehaviour
             {
                 // KALICI HIZ
                 equipmentManager.permanentBonusAttackSpeed += (crystal.attackSpeed / 10f);
+
+                // YENÝ: Hýz artýþý varsa sayacý artýr
+                if (crystal.attackSpeed > 0)
+                {
+                    permanentSpeedCount++;
+                    UpdatePermanentUI();
+                }
             }
             else if (!crystal.isPermanent)
             {
@@ -236,6 +282,13 @@ public class PlayerCrystalEffect : MonoBehaviour
             {
                 playerHealth.maxHealth += crystal.health; // Kalýcýysa maksimum kapasiteyi artýr
                 playerHealth.UpdateUI(); // UI'ý güncelle ki yeni max can görünür olsun
+
+                // YENÝ: Can artýþý varsa sayacý artýr
+                if (crystal.health > 0)
+                {
+                    permanentHealthCount++;
+                    UpdatePermanentUI();
+                }
             }
         }
         // --- UI GÜNCELLEME KISMI ---
@@ -282,6 +335,27 @@ public class PlayerCrystalEffect : MonoBehaviour
                 }
             }
         }
+    }
+    // YENÝ: Kalýcý efekt UI yazýlarýný güncelleyen yardýmcý metot
+    public void UpdatePermanentUI()
+    {
+        if (UIManager.Instance == null) return;
+
+        // Panel kapalýysa açalým (sadece ilk kullanýldýðýnda çalýþmasý yeterli)
+        if (!UIManager.Instance.pnlPermanentCrystals.activeSelf &&
+            (permanentHealthCount > 0 || permanentDamageCount > 0 || permanentSpeedCount > 0))
+        {
+            UIManager.Instance.pnlPermanentCrystals.SetActive(true);
+        }
+
+        if (UIManager.Instance.txtHealthPermanent != null)
+            UIManager.Instance.txtHealthPermanent.text = $"x{permanentHealthCount}";
+
+        if (UIManager.Instance.txtDamagePermanent != null)
+            UIManager.Instance.txtDamagePermanent.text = $"x{permanentDamageCount}";
+
+        if (UIManager.Instance.txtSpeedPermanent != null)
+            UIManager.Instance.txtSpeedPermanent.text = $"x{permanentSpeedCount}";
     }
     private void SetCrsytalUsability(bool isUsable)
     {

@@ -23,6 +23,26 @@ public class SceneController : MonoBehaviour
     [HideInInspector] public bool hasSavedToolbarSword = false;
     // -------------------------
 
+    [Header("Player Stats Save Data")]
+    public int savedCurrentHealth = -1; // -1, henüz bir kayýt yok demektir
+    public int savedMaxHealth = -1;
+
+    // --- YENÝ EKLENEN: KALICI EFEKT VERÝLERÝ ---
+    [Header("Permanent Effect Save Data")]
+    public bool hasSavedPermanentEffects = false; // Efekt var mý kontrolü
+
+    // UI Sayaçlarý
+    public int savedPermanentHealthCount = 0;
+    public int savedPermanentDamageCount = 0;
+    public int savedPermanentSpeedCount = 0;
+
+    // Gerçek Bonus Deðerleri
+    public int savedPermanentBonusDamage = 0;
+    public int savedPermanentBonusCritChance = 0;
+    public float savedPermanentBonusCritMultiplier = 0f;
+    public float savedPermanentBonusAttackSpeed = 0f;
+    // ------------------------------------------
+
     private void Awake()
     {
         if (Instance == null)

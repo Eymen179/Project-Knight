@@ -29,6 +29,12 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI txtEffectDuration;
     public TextMeshProUGUI txtEffects;
 
+    [Header("Permanent Crystals")]
+    public GameObject pnlPermanentCrystals;
+    public TextMeshProUGUI txtHealthPermanent;
+    public TextMeshProUGUI txtDamagePermanent;
+    public TextMeshProUGUI txtSpeedPermanent;
+
     private void Awake()
     {
         Instance = this;

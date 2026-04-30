@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [Header("Can Ayarlarý")]
     public int maxHealth = 250;
-    private int currentHealth;
+    public int currentHealth;
 
     [Header("Savunma (Blok) Ayarlarý")]
 
@@ -32,6 +32,19 @@ public class PlayerHealth : MonoBehaviour
         currentBlockCount = maxBlockCount; // Baþlangýçta 3 hakkýmýz var
         animator = GetComponent<Animator>();
         damageFlasher = GetComponent<DamageFlasher>();
+
+        if (SceneController.Instance != null && SceneController.Instance.savedMaxHealth != -1)
+        {
+            // Verileri köprüden çek (Böylece 250 yerine kalýcý artýrýlmýþ 280 caný alýr)
+            maxHealth = SceneController.Instance.savedMaxHealth;
+            currentHealth = SceneController.Instance.savedCurrentHealth;
+        }
+        else
+        {
+            // Oyun ilk defa baþlýyorsa caný fulleyerek baþlat
+            currentHealth = maxHealth;
+        }
+
         UpdateUI();
     }
     private void Update()
