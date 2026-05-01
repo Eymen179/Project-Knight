@@ -7,6 +7,11 @@ public class TeleportPoint : MonoBehaviour
     // Kendi yazdýðýn enum'ý burada çaðýrýyoruz. Inspector'da þýk bir liste olacak.
     public SceneController.GameScenes destinationScene;
 
+    // --- YENÝ EKLENEN ---
+    [Tooltip("Gidilecek sahnedeki doðma noktasýnýn adý (Örn: ZindanKuzeyGiris)")]
+    public string targetSpawnPointID;
+    // -------------------
+
     // Karakter portalýn içine girdiðinde (temas ettiðinde) tetiklenir
     private void OnTriggerEnter(Collider other)
     {
@@ -48,6 +53,13 @@ public class TeleportPoint : MonoBehaviour
                 SceneController.Instance.savedMaxHealth = playerHealth.maxHealth;
             }
             // -------------------------------------------------
+
+            // --- YENÝ EKLENEN: DOÐMA NOKTASINI KAYDET ---
+            if (SceneController.Instance != null)
+            {
+                SceneController.Instance.targetSpawnPointID = this.targetSpawnPointID;
+            }
+            // --------------------------------------------
 
             // 3. Sahneyi Yükle
             SceneController.Instance.LoadScene(destinationScene);

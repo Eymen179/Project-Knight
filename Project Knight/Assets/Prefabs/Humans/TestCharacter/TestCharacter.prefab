@@ -7548,6 +7548,7 @@ GameObject:
   - component: {fileID: 4253807944103685414}
   - component: {fileID: 8442196530240933934}
   - component: {fileID: 4020826724178654314}
+  - component: {fileID: 8869193624348086648}
   - component: {fileID: 7966854835744457500}
   - component: {fileID: 2878168511094816453}
   m_Layer: 8
@@ -7637,6 +7638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 250
+  currentHealth: 0
   maxBlockCount: 3
   blockResetTime: 5
   stunDuration: 2
@@ -7699,6 +7701,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   crystalUseEffect: {fileID: 2914712851497111152}
+  permanentHealthCount: 0
+  permanentDamageCount: 0
+  permanentSpeedCount: 0
 --- !u!114 &4253807944103685414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7750,6 +7755,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashMaterial: {fileID: 2100000, guid: f04cc08ff8c9f8b4891550371fcd2b0e, type: 2}
   flashDuration: 0.15
+--- !u!114 &8869193624348086648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7245607276765736895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc4590a5ba9f35419e154c028372600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &7966854835744457500
 Rigidbody:
   m_ObjectHideFlags: 0

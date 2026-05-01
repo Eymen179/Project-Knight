@@ -4,6 +4,9 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject pnlMainMenu;
     public GameObject pnlOptionsMenu;
+
+    //Scene Transition debugging
+    public SceneController.GameScenes debugDestinationScene;
     void Start()
     {
         pnlMainMenu.SetActive(true);
@@ -31,7 +34,7 @@ public class MainMenuManager : MonoBehaviour
     }
     public void DeveloperButton()
     {
-        SceneController.Instance.LoadScene(SceneController.GameScenes.CharacterTest);
+        SceneController.Instance.LoadScene(debugDestinationScene);
     }
     //Options
     public void OptionsToMainMenuButton()

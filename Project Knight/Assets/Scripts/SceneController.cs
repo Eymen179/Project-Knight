@@ -23,6 +23,9 @@ public class SceneController : MonoBehaviour
     [HideInInspector] public bool hasSavedToolbarSword = false;
     // -------------------------
 
+    [Header("Spawn Settings")]
+    public string targetSpawnPointID = ""; // YENÝ: Hangi noktada doðacaðýz?
+
     [Header("Player Stats Save Data")]
     public int savedCurrentHealth = -1; // -1, henüz bir kayýt yok demektir
     public int savedMaxHealth = -1;
