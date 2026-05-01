@@ -24,7 +24,7 @@ public class PlayerHealth : MonoBehaviour
     public float stunDuration = 1f;     // Sersemleme süresi
 
     private bool isStunned = false;     // Karakter sersemlemiþ durumda mý?
-    private bool isDead = false;
+    public bool isDead = false;
 
     private void Start()
     {
@@ -153,7 +153,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
         isDead = true;
         Debug.Log("Oyuncu Öldü! (Ölüm ekraný altyapýsý tetiklendi)");

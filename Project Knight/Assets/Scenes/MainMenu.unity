@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pnlMainMenu: {fileID: 294898273}
   pnlOptionsMenu: {fileID: 544166959}
-  debugDestinationScene: 6
+  debugDestinationScene: 5
 --- !u!4 &271817474
 Transform:
   m_ObjectHideFlags: 0
