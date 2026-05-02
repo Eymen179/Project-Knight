@@ -33863,6 +33863,44 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 872954663666569469, guid: b2e45dd6af1b1874582506c085ff8e5c, type: 3}
   m_PrefabInstance: {fileID: 725312243}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &726243227 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 97972203990753569, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+  m_PrefabInstance: {fileID: 1172340796}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &726243228 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3158882516137243382, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+  m_PrefabInstance: {fileID: 1172340796}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &726243229 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3734882159735057520, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+  m_PrefabInstance: {fileID: 1172340796}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &726243230 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6611105060618220629, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+  m_PrefabInstance: {fileID: 1172340796}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &727416790
 GameObject:
   m_ObjectHideFlags: 0
@@ -100905,6 +100943,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1172340799}
     - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
+      propertyPath: txtSpeedPermanent
+      value: 
+      objectReference: {fileID: 726243227}
+    - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
       propertyPath: mainInventoryGroup
       value: 
       objectReference: {fileID: 1172340797}
@@ -100913,9 +100955,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1172340802}
     - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
+      propertyPath: txtDamagePermanent
+      value: 
+      objectReference: {fileID: 726243228}
+    - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
+      propertyPath: txtHealthPermanent
+      value: 
+      objectReference: {fileID: 726243229}
+    - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
       propertyPath: txtItemDescription
       value: 
       objectReference: {fileID: 1172340816}
+    - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
+      propertyPath: pnlPermanentCrystals
+      value: 
+      objectReference: {fileID: 726243230}
     - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
       propertyPath: pnlCrystalEffectStatus
       value: 

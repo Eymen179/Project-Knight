@@ -1148,9 +1148,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 387947590}
     m_Modifications:
     - target: {fileID: -6824374223298622395, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
+      propertyPath: lootPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -6824374223298622395, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
       propertyPath: 'lootPrefabs.Array.data[0]'
       value: 
       objectReference: {fileID: 5310963310368244162, guid: 84b95e80250efd2408969492c3002afd, type: 3}
+    - target: {fileID: -6824374223298622395, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
+      propertyPath: 'lootPrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8588061054967466627, guid: 8b222146fa41a324789772470d2d6e3d, type: 3}
     - target: {fileID: 4888578325416512682, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
       propertyPath: m_Name
       value: C_chest3 (3)
@@ -4206,7 +4214,7 @@ Transform:
   m_GameObject: {fileID: 276808115}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 352.71, y: 100.20143, z: 433.01}
+  m_LocalPosition: {x: 352.96, y: 100.20143, z: 432.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19386,7 +19394,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8358493727670476298, guid: 4770d995c88ad7548b42333ee36a4506, type: 3}
       propertyPath: lootPrefabs.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8358493727670476298, guid: 4770d995c88ad7548b42333ee36a4506, type: 3}
       propertyPath: 'lootPrefabs.Array.data[0]'
@@ -19400,6 +19408,10 @@ PrefabInstance:
       propertyPath: 'lootPrefabs.Array.data[2]'
       value: 
       objectReference: {fileID: 543725697735843016, guid: e4f09d077073d594b9df5eb84380c2db, type: 3}
+    - target: {fileID: -8358493727670476298, guid: 4770d995c88ad7548b42333ee36a4506, type: 3}
+      propertyPath: 'lootPrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
     - target: {fileID: 1683597241284800675, guid: 4770d995c88ad7548b42333ee36a4506, type: 3}
       propertyPath: m_Name
       value: C_chest1
@@ -26807,9 +26819,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 387947590}
     m_Modifications:
     - target: {fileID: -6824374223298622395, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
+      propertyPath: lootPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -6824374223298622395, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
       propertyPath: 'lootPrefabs.Array.data[0]'
       value: 
       objectReference: {fileID: 2573013051975258517, guid: a8edcbbe8068cf84fbb6c13ff7e23d11, type: 3}
+    - target: {fileID: -6824374223298622395, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
+      propertyPath: 'lootPrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
     - target: {fileID: 4888578325416512682, guid: 9eb2e9d983dbeb842be5cb459861915c, type: 3}
       propertyPath: m_Name
       value: C_chest3

@@ -74,11 +74,21 @@ public class EnemyAI : MonoBehaviour
             // Farka baktýk, hemen eþitliyoruz ki sonsuz döngüye (bug'a) girmesin!
             enemyHealth.healthBeforeDamage = enemyHealth.currentHealth;
 
-            // Eðer oyuncuyu zaten görmüyorsak anýnda takibe baþla
-            if (!canSeePlayer)
+            // Hafýzayý her halükarda fulle ki hedefini unutmasýn
+            memoryTimer = stats.memoryTime;
+
+            // --- BUG ÇÖZÜMÜ ---
+            // Oyuncu kör noktamýzda olsa bile...
+            // Eðer dibimizdeyse (menzildeyse) direkt Attack durumuna geç!
+            // AttackBehavior içindeki FaceTarget() bizi saniyesinde oyuncuya döndürecektir.
+            if (distanceToPlayer <= stats.attackRange)
+            {
+                SwitchState(AIState.Attack);
+            }
+            // Eðer uzaktaysa (ve göremiyorsak) Chase durumuna geçip ona doðru koþalým
+            else if (!canSeePlayer)
             {
                 SwitchState(AIState.Chase);
-                memoryTimer = stats.memoryTime; // Hafýzayý fulle ki merkeze (Return) kaçmasýn
             }
         }
         // ------------------------------------------------

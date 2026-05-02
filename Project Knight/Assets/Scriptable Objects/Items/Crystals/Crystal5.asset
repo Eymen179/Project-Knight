@@ -25,7 +25,7 @@ MonoBehaviour:
   health: 0
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
-  effectDuration: 10
+  effectDuration: 15
   isPermanent: 0
   isStackable: 0
   itemType: 1

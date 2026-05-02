@@ -7199,7 +7199,7 @@ MonoBehaviour:
   blockResetTime: 5
   stunDuration: 1
   isStunned: 0
-  dropChance: 58
+  dropChance: 25
 --- !u!114 &7763199381108311453
 MonoBehaviour:
   m_ObjectHideFlags: 0
