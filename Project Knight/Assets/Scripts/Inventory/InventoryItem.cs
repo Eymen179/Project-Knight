@@ -6,13 +6,14 @@ using TMPro; // TextMeshPro kullanmak çok daha iyi, Unity'ye eklemeyi unutma
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Image image;
-    // GÜNCELLENDÝ: Her eþyanýn kendi yazý objesi olmalý
+
     public TextMeshProUGUI countText;
 
     [HideInInspector] public Item item;
     [HideInInspector] public Transform parentAfterDrag;
     [HideInInspector] public int count = 1;
 
+    //Envanter itemini aktif etme metodu
     public void InitializeItem(Item newItem)
     {
         item = newItem;
@@ -21,7 +22,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         RefreshCount();
     }
 
-    // GÜNCELLENDÝ: Artýk kendi 'countText' objesini güncelliyor
+    //Ýleriye yonelik: Stackable itemler icin sayiyi guncelleme metodu
     public void RefreshCount()
     {
         // Sayý 1'den büyükse göster, deðilse gizle
@@ -29,17 +30,17 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         countText.gameObject.SetActive(count > 1);
     }
 
-    // --- Drag System (Burasý çoðunlukla doðruydu, küçük eklemeler yapýldý) ---
-
+    //Envanter esyasini surukleme islemleri icin gerekli metodlar
     public void OnBeginDrag(PointerEventData eventData)
     {
         image.raycastTarget = false;
-        countText.raycastTarget = false; // Yazýnýn da týklamayý engellemesini önle
+        countText.raycastTarget = false;
+
         parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root); // Canvas'ýn en üstüne al
+        transform.SetParent(transform.root); //Canvas'in en ustune alir.
 
         ItemDetailsManager.ShowItemDetails(item);
-        UIManager.Instance.pnlItemDetails.SetActive(true); // Eþya detay panelini kapat
+        UIManager.Instance.pnlItemDetails.SetActive(true); //Esya detay panelini kapat.
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -51,30 +52,30 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         image.raycastTarget = true;
         countText.raycastTarget = true;
 
-        // YENÝ: Mouse herhangi bir UI objesinin üzerinde DEÐÝLSE (yani dünyaya býrakýldýysa)
+        //Mouse herhangi bir UI objesinin uzerinde degilse (yani dunyaya birakildiysa)
         if (!EventSystem.current.IsPointerOverGameObject())
         {
-            // InventoryManager üzerinden yere atma iþlemini baþlat
+            //InventoryManager uzerinden yere atma islemini baslat
             InventoryManager.Instance.DropItem(this);
 
-            // UI objesi yok olacaðý veya sayýsý azalacaðý için parent iþlemine gerek kalmayabilir
-            // Ama sayý azalýrsa eski yerine dönsün diye yine de parent atamasý yapýyoruz:
+            //UI objesi yok olacagi veya sayisi azalacagi icin parent islemine gerek kalmayabilir.
+            //Ama sayý azalirsa eski yerine dönsün diye yine de parent atamasi yapilir.
             transform.SetParent(parentAfterDrag);
             transform.localPosition = Vector3.zero;
         }
         else
         {
-            // Eðer UI üzerine (baþka slota veya panele) býrakýldýysa normal iþlem
+            //Eger UI üzerine (baska slota veya panele) birakildiysa normal islem
             transform.SetParent(parentAfterDrag);
             transform.localPosition = Vector3.zero;
         }
-        /*kutsal*/
+        //-----Kullanilacak kilic slotuna esya birakildiysa esyayi tanimla-----
         EquipmentManager equipmentManager = FindFirstObjectByType<EquipmentManager>();
         if (equipmentManager != null)
         {
             equipmentManager.ValidateEquipment();
         }
 
-        UIManager.Instance.pnlItemDetails.SetActive(false); // Eþya detay panelini kapat
+        UIManager.Instance.pnlItemDetails.SetActive(false);
     }
 }

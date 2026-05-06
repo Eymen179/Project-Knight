@@ -7,14 +7,14 @@ public class ItemDetailsManager : MonoBehaviour
     {
         if (UIManager.Instance == null || item == null) return;
 
-        // 1. Eþya Adý ve Açýklamasýný Yazdýr
+        //Esya ad ve aciklamasi
         if (UIManager.Instance.txtItemName != null)
             UIManager.Instance.txtItemName.text = item.itemName;
 
         if (UIManager.Instance.txtItemDescription != null)
             UIManager.Instance.txtItemDescription.text = item.description;
 
-        // 2. Sadece deðeri 0'dan farklý olan özellikleri bu listeye topla
+        //0'dan farkli olan statlari toplayacagimiz liste
         List<string> activeStats = new List<string>();
 
         //Kiliç detaylari
@@ -58,18 +58,16 @@ public class ItemDetailsManager : MonoBehaviour
         if (item.effectDuration > 0)
             activeStats.Add($"Duration: {item.effectDuration}s");
 
-        // 3. Toplanan özellikleri UI Text'lerine aktar (TxtStat1, TxtStat2...)
+        //UI'a yazdirma islemi
         for (int i = 0; i < UIManager.Instance.txtStats.Length; i++)
         {
-            // Eðer o anki Index listemizdeki eleman sayýsýndan küçükse (Yani yazdýracak stat varsa)
             if (i < activeStats.Count)
             {
                 UIManager.Instance.txtStats[i].text = activeStats[i];
-                UIManager.Instance.txtStats[i].gameObject.SetActive(true); // O text'i görünür yap
+                UIManager.Instance.txtStats[i].gameObject.SetActive(true); //O text'i gorunur yap.
             }
             else
             {
-                // Yazdýracak stat kalmadýysa o text yuvasýný gizle (Ekranda boþ yere "New Text" yazmasýn)
                 UIManager.Instance.txtStats[i].gameObject.SetActive(false);
             }
         }

@@ -10,19 +10,17 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject player;
 
-    [Header("Slot Listeleri")]
+    [Header("Slot Lists")]
     public List<InventorySlot> swordSlots = new List<InventorySlot>();
     public List<InventorySlot> otherSlots = new List<InventorySlot>();
 
-    [Header("Ekipman Slotu")]
+    [Header("Equipment Slot")]
     public InventorySlot toolbarSwordSlot;
 
-    // --- YENÝ EKLENDÝ: Envanter Aç/Kapa ---
     [Header("UI Toggling")]
-    [SerializeField] private GameObject mainInventoryGroup; // Ana envanter panelini buraya sürükle
-    [SerializeField] private InputActionReference toggleInventoryAction; // "TAB" tuþu için action
+    [SerializeField] private GameObject mainInventoryGroup;
+    [SerializeField] private InputActionReference toggleInventoryAction;
     private bool isInventoryOpen = false;
-    // --- BÝTTÝ ---
 
     void Awake()
     {
@@ -32,22 +30,17 @@ public class InventoryManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    // --- YENÝ EKLENDÝ: Baþlangýç Ayarlarý ---
     void Start()
     {
-        // 1. Oyun baþladýðýnda envanterin kapalý olduðundan emin ol
-        mainInventoryGroup.SetActive(false); // Prefab'da 'm_IsActive: 0' [cite: 48] olarak ayarlý, ama bu bir güvence.
+        mainInventoryGroup.SetActive(false);
         isInventoryOpen = false;
 
-        // 2. 3D oyun için fareyi kilitle
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         LoadInventory();
     }
-    // --- BÝTTÝ ---
 
-    // --- YENÝ EKLENDÝ: Input Eventleri ---
     private void OnEnable()
     {
         toggleInventoryAction.action.Enable();
@@ -60,14 +53,14 @@ public class InventoryManager : MonoBehaviour
         toggleInventoryAction.action.performed -= OnToggleInventoryPerformed;
     }
 
-    // "TAB" tuþuna basýldýðýnda bu fonksiyon çalýþacak
+    //"TAB" tusu metodu
     private void OnToggleInventoryPerformed(InputAction.CallbackContext context)
     {
-        // Durumu tersine çevir (açýksa kapa, kapalýysa aç)
+        //Envanter acma - kapama kontrolcusu
         isInventoryOpen = !isInventoryOpen;
         mainInventoryGroup.SetActive(isInventoryOpen);
 
-        // Envanter açýldýðýnda fareyi serbest býrak, karakter özelliklerini ve aktif animasyonu durdur.
+        //Envanter acikkenki/kapaliykenki kurallari ayarla.
         if (isInventoryOpen)
         {
             CursorVisibility(true);
@@ -80,7 +73,7 @@ public class InventoryManager : MonoBehaviour
 
             UIManager.Instance.toolBarBarrier.enabled = true;
         }
-        else// Envanter açýldýðýnda fareyi kilitle, karakter özelliklerini geri aktif et.
+        else
         {
             CursorVisibility(false);
 
@@ -91,9 +84,8 @@ public class InventoryManager : MonoBehaviour
             UIManager.Instance.toolBarBarrier.enabled = false;
         }
     }
-    // --- BÝTTÝ ---
 
-    // Eþya ekleme ana fonksiyonu (Bu kodda deðiþiklik yok)
+    //Envanter slotuna esya koyma metodu
     public bool AddItem(Item itemToAdd)
     {
         List<InventorySlot> targetSlots = (itemToAdd.itemType == Item.ItemType.Sword) ? swordSlots : otherSlots;
@@ -129,6 +121,8 @@ public class InventoryManager : MonoBehaviour
         Debug.Log(itemToAdd.itemName + " için envanter dolu!");
         return false;
     }
+
+    //Envanter slotundaki esyayi atma metodu
     public void DropItem(InventoryItem itemUI)
     {
         Item itemToDrop = itemUI.item;
@@ -137,18 +131,17 @@ public class InventoryManager : MonoBehaviour
         {
             Transform playerTransform = FindFirstObjectByType<PlayerMovement>().transform;
 
-            // 1. Eþyanýn ilk çýkýþ noktasýný (Karakterin biraz önü) belirle
+            //Esyanin birakilacagi nokta belirlenir.
             Vector3 dropPosition = playerTransform.position + (playerTransform.forward * 1.5f) + (Vector3.up * 1f);
 
-            // 2. YERÝ BUL (Minecraft stili için kritik)
-            // Eðer oyuncu zýplarken eþyayý atarsa havada asýlý kalmasýn diye aþaðý doðru 10 metrelik bir ýþýn atýyoruz
+            //Esya atilirken atilacagi yeri algimasi icin aþagi dogru 10 metrelik bir isin atilir.
             if (Physics.Raycast(dropPosition, Vector3.down, out RaycastHit hit, 10f))
             {
-                // Yeri bulursak, eþyanýn merkezini yerin tam 0.5 metre yukarýsýna sabitliyoruz
+                //Yer bulununca esyanin merkezi yerin tam 0.5 metre yukarisina sabitlenir.
                 dropPosition = hit.point + (Vector3.up * 0.5f);
             }
 
-            // 3. Eþyayý sahnede oluþtur
+            //Esyayi sahnede olustur.
             GameObject droppedObject = Instantiate(itemToDrop.itemObject, dropPosition, Quaternion.identity);           
 
             if (droppedObject.TryGetComponent<ItemPickup>(out ItemPickup pickupScript))
@@ -160,33 +153,31 @@ public class InventoryManager : MonoBehaviour
                 Debug.LogWarning("DÝKKAT: Attýðýn prefab'ýn üzerinde ItemPickup scripti yok!");
             }
 
-            // Layer ayarý
+            //Layer ayari
             int interactableLayer = LayerMask.NameToLayer("Interactable");
             SetLayerRecursively(droppedObject, interactableLayer);
 
-            // 4. FÝZÝÐÝ ÝPTAL ET, ANÝMASYONU BAÞLAT
-            // Artýk fýrlatma (AddForce) istemiyoruz. Eðer prefabda Rigidbody varsa siliyoruz.
+            //Esyanin sahnedeki animasyonu ayarlanir, rigidbody'si varsa kaldirilir.
             Rigidbody rb = droppedObject.GetComponent<Rigidbody>();
             if (rb != null)
             {
-                Destroy(rb); // Fizik motoruyla iþimiz yok, SimpleGemsAnim halledecek
+                Destroy(rb);
             }
 
-            // Objede süzülme scripti yoksa otomatik ekle ve ayarlarýný aç
             if (!droppedObject.TryGetComponent<Benjathemaker.SimpleGemsAnim>(out Benjathemaker.SimpleGemsAnim anim))
             {
                 anim = droppedObject.AddComponent<Benjathemaker.SimpleGemsAnim>();
             }
             
-            // Animasyon özelliklerini kod üzerinden aktif et
+            //Animasyon ozellikleri
             anim.isRotating = true;
             anim.rotateY = true;
             anim.isFloating = true;
-            anim.floatHeight = 0.25f; // Ne kadar yukarý/aþaðý sekeceði
-            anim.floatSpeed = 0.4f;    // Sekme hýzý
+            anim.floatHeight = 0.25f;
+            anim.floatSpeed = 0.4f;
         }
 
-        // 5. UI Güncellemesi
+        //UI guncellemesi
         itemUI.count--;
         if (itemUI.count <= 0)
         {
@@ -218,8 +209,7 @@ public class InventoryManager : MonoBehaviour
 
         UIManager.Instance.crosshair.gameObject.SetActive(!isVisible);
     }
-    // Bu fonksiyonu EquipmentManager'da da kullanacaðýz, o yüzden public ve static yapabilirsin
-    // veya her iki scriptin içine de kopyalayabilirsin. Ben static öneririm.
+
     public static void SetLayerRecursively(GameObject obj, int newLayer)
     {
         if (obj == null) return;
@@ -232,9 +222,8 @@ public class InventoryManager : MonoBehaviour
             SetLayerRecursively(child.gameObject, newLayer);
         }
     }
-    // --- YENÝ EKLENEN: SAHNE GEÇÝÞÝ VERÝ KÖPRÜSÜ ---
 
-    // 1. Kapýdan geçmeden saniyeler önce çaðrýlacak
+    //Sahne gecisinde envanterdeki esyalari koruyan metotlar
     public void SaveInventory()
     {
         if (SceneController.Instance == null) return;
@@ -242,7 +231,7 @@ public class InventoryManager : MonoBehaviour
         SceneController.Instance.savedSwordSlots.Clear();
         SceneController.Instance.savedOtherSlots.Clear();
 
-        // 1. Kýlýç Slotlarýný Kaydet
+        //Kilic slotlarini kaydet.
         for (int i = 0; i < swordSlots.Count; i++)
         {
             if (swordSlots[i].transform.childCount > 0)
@@ -252,12 +241,12 @@ public class InventoryManager : MonoBehaviour
                 {
                     item = itemInSlot.item,
                     count = itemInSlot.count,
-                    slotIndex = i // Slotun sýrasýný kaydet
+                    slotIndex = i
                 });
             }
         }
 
-        // 2. Diðer Eþya Slotlarýný Kaydet
+        //Diger esya slotlarini kaydet.
         for (int i = 0; i < otherSlots.Count; i++)
         {
             if (otherSlots[i].transform.childCount > 0)
@@ -267,7 +256,7 @@ public class InventoryManager : MonoBehaviour
                 {
                     item = itemInSlot.item,
                     count = itemInSlot.count,
-                    slotIndex = i // Slotun sýrasýný kaydet
+                    slotIndex = i
                 });
             }
         }
@@ -277,23 +266,22 @@ public class InventoryManager : MonoBehaviour
     {
         if (SceneController.Instance == null) return;
 
-        // Kýlýçlarý kayýttaki slotlarýna geri koy
+        //Kiliclari slotlarina geri yukle.
         foreach (var savedData in SceneController.Instance.savedSwordSlots)
         {
             RestoreItemToSpecificSlot(savedData, swordSlots);
         }
 
-        // Diðer eþyalarý kayýttaki slotlarýna geri koy
+        //Diger esyalari slotlarina geri yukle.
         foreach (var savedData in SceneController.Instance.savedOtherSlots)
         {
             RestoreItemToSpecificSlot(savedData, otherSlots);
         }
     }
 
-    // YENÝ: Eþyayý rastgele deðil, tam belirlenen slota yerleþtiren fonksiyon
+    //Esyayi rastgele degil, tam belirlenen slota yerlestiren metot
     private void RestoreItemToSpecificSlot(SceneController.ItemSaveData data, List<InventorySlot> targetSlots)
     {
-        // Güvenlik kontrolü: Kayýtlý index liste sýnýrlarý içinde mi?
         if (data.slotIndex >= 0 && data.slotIndex < targetSlots.Count)
         {
             InventorySlot targetSlot = targetSlots[data.slotIndex];

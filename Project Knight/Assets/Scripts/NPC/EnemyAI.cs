@@ -5,7 +5,7 @@ public class EnemyAI : MonoBehaviour
 {
     public enum AIState { Patrol, Chase, Attack, Return }
 
-    [Header("Referanslar & Ayarlar")]
+    [Header("References & Settings")]
     public EnemyStats stats;
     public AIState currentState = AIState.Patrol;
 
@@ -13,30 +13,31 @@ public class EnemyAI : MonoBehaviour
     private Transform playerTarget;
     private Animator _animator;
 
-    // Hafýza ve Bölge Deðiþkenleri
-    private Vector3 startPosition;       // Doðduðu/Beklediði merkez nokta
-    private float memoryTimer;           // Oyuncuyu görmediðinde geri sayan sayaç
-    private float patrolWaitTimer;       // Rastgele gezinirken bekleme süresi
+    //Hafiza ve Bolge Degiskenleri
+    private Vector3 startPosition;
+    private float memoryTimer;
+    private float patrolWaitTimer;
 
-    // Görüþ (Line of Sight) için katman ayarý (Duvarlarýn arkasýný görmemesi için)
-    // Eðer bir harita eklersen duvarlarý "Obstacle" gibi bir katmana alabilirsin.
+    //"Duvar" sayilacak layer
     [SerializeField] private LayerMask obstacleMask;
 
+    [Header("Gizmo Colors")]
     public Color redColor;
     public Color greenColor;
     public Color yellowColor;
 
-    private EnemyAttackSystem attackSystem;
-    private float nextAttackTime = 0f; // Saldýrý bekleme süresi (Cooldown) için sayaç
+    //Saldiri bekleme suresi (Cooldown) icin sayac
+    private float nextAttackTime = 0f;
 
     private bool isBlocking = false;
     private float blockTimer = 0f;
 
+    private EnemyAttackSystem attackSystem;
     private EnemyHealth enemyHealth;
 
-    // --- YENÝ EKLENEN DEÐÝÞKEN ---
-    [HideInInspector] public float spawnerWanderRadius = 0f; // Spawner'ýn dolduracaðý deðer
-    // -----------------------------
+    //Spawner bazli yaricap ayari
+    [HideInInspector] public float spawnerWanderRadius = 0f;
+
     void Start()
     {
         enemyHealth = GetComponent<EnemyHealth>();
@@ -49,7 +50,7 @@ public class EnemyAI : MonoBehaviour
             agent.speed = stats.patrolSpeed;
         }
 
-        // Merkez konumunu kaydet
+        //Merkez konumunu kaydet.
         startPosition = transform.position;
 
         PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
@@ -63,40 +64,34 @@ public class EnemyAI : MonoBehaviour
         if (playerTarget == null || stats == null) return;
 
         SetAttackSpeed();
-        // 1. Oyuncuyu Görüyor mu? (Açý, Mesafe ve Duvar Kontrolü)
+
+        //Oyuncuyu goruyor mu?
         bool canSeePlayer = CanSeePlayer();
         float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
 
-        // --- YENÝ EKLENEN: HASAR ALMA (AGGRO) KONTROLÜ ---
-        // Eðer can düþtüyse (Yani arkadan bile olsa hasar aldýysa)
+        //NPC oyuncuya arkasini donukken oyuncudan hasar aldiysa aninda oyuncuya kitlenmesini saglayan kontrolcu
         if (enemyHealth.currentHealth != enemyHealth.healthBeforeDamage)
         {
-            // Farka baktýk, hemen eþitliyoruz ki sonsuz döngüye (bug'a) girmesin!
+            //Can ayari
             enemyHealth.healthBeforeDamage = enemyHealth.currentHealth;
 
-            // Hafýzayý her halükarda fulle ki hedefini unutmasýn
+            //Hafiza tazele.
             memoryTimer = stats.memoryTime;
 
-            // --- BUG ÇÖZÜMÜ ---
-            // Oyuncu kör noktamýzda olsa bile...
-            // Eðer dibimizdeyse (menzildeyse) direkt Attack durumuna geç!
-            // AttackBehavior içindeki FaceTarget() bizi saniyesinde oyuncuya döndürecektir.
             if (distanceToPlayer <= stats.attackRange)
             {
                 SwitchState(AIState.Attack);
             }
-            // Eðer uzaktaysa (ve göremiyorsak) Chase durumuna geçip ona doðru koþalým
             else if (!canSeePlayer)
             {
                 SwitchState(AIState.Chase);
             }
         }
-        // ------------------------------------------------
-        // --- DURUM MAKÝNESÝ (STATE MACHINE) ---
 
+        // --- (STATE MACHINE) ---
         if (canSeePlayer)
         {
-            // Oyuncuyu görüyorsa hafýzayý tazele ve saldýrmaya/kovalamaya baþla
+            //Oyuncuyu goruyorsa hafizayi tazele ve saldirmaya/kovalamaya basla.
             memoryTimer = stats.memoryTime;
 
             if (distanceToPlayer <= stats.attackRange)
@@ -110,25 +105,19 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            // Oyuncuyu GÖRMÜYORSA
+            // Oyuncuyu GORMUYORSA hafiza suresi bitene kadar takip et.
             if (currentState == AIState.Chase || currentState == AIState.Attack)
             {
-                // Hafýza süresi bitene kadar takip etmeye çalýþ
                 memoryTimer -= Time.deltaTime;
                 if (memoryTimer <= 0)
                 {
-                    // Hafýza bitti, pes et ve merkeze dön
+                    //Pes et ve merkeze don.
                     SwitchState(AIState.Return);
                 }
             }
-            /*if(currentState == AIState.Patrol && enemyHealth.currentHealth != enemyHealth.healthBeforeDamage)
-            {
-                // Devriye halindeyken oyuncuyu görmezse rastgele gezinmeye devam et
-                SwitchState(AIState.Chase);
-            }*/
         }
 
-        // Bulunduðumuz duruma göre eylemleri yap
+        //Bulundugumuz duruma gore eylemleri yap.
         ExecuteCurrentState();
     }
 
@@ -158,27 +147,23 @@ public class EnemyAI : MonoBehaviour
     }
 
     // --- YAPAY ZEKA DAVRANIÞLARI ---
-
     private void PatrolBehavior()
     {
-        // Devriye atarken yürüme hýzýna geç
         agent.speed = stats.patrolSpeed;
 
-        // Hedefe ulaþtýysa veya hiç hedefi yoksa bekle
+        //Hedefe ulastiysa veya hic hedefi yoksa bekle.
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
-            // Beklerken (Hareketsizken) Idle animasyonu
             if (_animator != null) _animator.SetFloat("speed", 0f);
 
             patrolWaitTimer -= Time.deltaTime;
 
             if (patrolWaitTimer <= 0)
             {
-                // --- SENÝN MANTIÐININ KODA DÖKÜLMÜÞ HALÝ ---
-                // Eðer spawnerWanderRadius 0'dan büyükse onu kullan, deðilse stats.wanderRadius kullan
+                //NPC'nin ya da Spawner'inin yaricap ayarini kullan.
                 float activeRadius = (spawnerWanderRadius > 0) ? spawnerWanderRadius : stats.wanderRadius;
 
-                // Yeni noktaya doðru yürümeye baþla
+                //Yeni noktaya dogru yurumeye basla.
                 Vector3 randomPoint = GetRandomPoint(startPosition, activeRadius);
                 agent.SetDestination(randomPoint);
                 agent.isStopped = false;
@@ -187,14 +172,13 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            // Yürüyüþ halindeyse Walk animasyonu (0.5 deðeri Walk'u tetikler)
             if (_animator != null) _animator.SetFloat("speed", 0.5f);
         }
     }
 
     private void ChaseBehavior()
     {
-        // Eðer NPC blok yaparken sen menzilden kaçarsan, bloku hemen indirsin
+        //Eger NPC blok yaparken oyuncu menzilden kacarsa, blogu hemen indirsin.
         if (isBlocking)
         {
             isBlocking = false;
@@ -215,50 +199,47 @@ public class EnemyAI : MonoBehaviour
 
         if (_animator != null) _animator.SetFloat("speed", 0f);
 
-        // 1. DURUM: Eðer NPC þu an gardýný almýþ (Blok) durumdaysa
+        //NPC blok yaparken
         if (isBlocking)
         {
-            // --- YENÝ EKLENEN KORUMA (INTERRUPT) ---
-            // Eðer NPC bloktayken hafýzasýnda bir saldýrý tetikleyicisi kaldýysa hemen sil
+            //INTERRUPT
             if (_animator != null) _animator.ResetTrigger("attack");
-            // --------------------------------------
 
-            blockTimer -= Time.deltaTime; // Blok süresinden düþ
+            blockTimer -= Time.deltaTime;
 
             if (blockTimer <= 0)
             {
-                // Süre doldu, gardýný indir
+                //Sure doldu, blok bitirilir.
                 isBlocking = false;
                 if (_animator != null) _animator.SetBool("isBlocking", false);
 
-                // Blok bitince anýnda saldýrmasýn diye yarým saniye nefes alma payý
+                //Blok bitince aninda saldirmasin diye nefes alma payi
                 nextAttackTime = Time.time + 0.5f;
             }
-            return; // Blok halindeyken aþaðýdaki saldýrý kodlarýný OKUMA
+            return;
         }
 
-        // 2. DURUM: Bekleme süresi bitti, yeni bir hamle yapma vakti
+        //Hamle yaparken
         if (Time.time >= nextAttackTime)
         {
-            // KARAR ANI: Rastgele bir sayý tut (0-100 arasý)
             int decision = Random.Range(0, 100);
 
             if (decision < stats.blockChance)
             {
-                // --- BLOK YAPMAYA KARAR VERDÝ ---
+                //Blok yapmaya karar verdi.
                 isBlocking = true;
-                blockTimer = Random.Range(1.5f, 2.5f); // 1.5 ile 2.5 saniye arasý blokta kalacak
+                blockTimer = Random.Range(1.5f, 2.5f);
 
                 if (_animator != null)
                 {
                     _animator.SetBool("isBlocking", true);
-                    // YENÝ EKLENEN: Blok kararý verdiði o ilk salisede de vuruþu iptal et!
+
                     _animator.ResetTrigger("attack");
                 }
             }
             else
             {
-                // --- SALDIRMAYA KARAR VERDÝ ---
+                //Saldirmaya karar verdi.
                 if (_animator != null) _animator.SetTrigger("attack");
                 nextAttackTime = Time.time + stats.attackCooldown;
             }
@@ -267,15 +248,13 @@ public class EnemyAI : MonoBehaviour
 
     private void ReturnBehavior()
     {
-        // Merkeze dönerken koþma hýzýna geç
         agent.speed = stats.chaseSpeed;
         agent.isStopped = false;
         agent.SetDestination(startPosition);
 
-        // Run (Koþma) animasyonunu oynat
         if (_animator != null) _animator.SetFloat("speed", 1f);
 
-        // Merkeze ulaþtýysa tekrar devriyeye (Patrol) baþla
+        //Merkeze ulastiysa tekrar Patrol'a gec.
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             SwitchState(AIState.Patrol);
@@ -284,50 +263,45 @@ public class EnemyAI : MonoBehaviour
 
     // --- YARDIMCI METOTLAR ---
 
-    // Düþmanýn gözü: Açý ve Engel kontrolü
+    //Dusmanin gozu: Aci ve Engel Kontrolcusu
     private bool CanSeePlayer()
     {
         Vector3 dirToPlayer = (playerTarget.position - transform.position).normalized;
         float distanceToPlayer = Vector3.Distance(transform.position, playerTarget.position);
 
-        // 1. Mesafe Kontrolü
+        //Mesafe Kontrolu
         if (distanceToPlayer > stats.chaseRange) return false;
 
-        // 2. Görüþ Açýsý Kontrolü (Önündeki x derecelik koni içinde mi?)
+        //Gorus Acisi Kontrolu
         float angleToPlayer = Vector3.Angle(transform.forward, dirToPlayer);
         if (angleToPlayer < stats.fovAngle / 2f)
         {
-            // 3. Duvar/Engel Kontrolü (Raycast ile)
-            // Lazer ýþýnýný düþmanýn göz hizasýndan (Vector3.up) atýyoruz
+            //Duvar/Engel Kontrolu
             if (!Physics.Raycast(transform.position + Vector3.up, dirToPlayer, distanceToPlayer, obstacleMask))
             {
-                // Çarpýþma yoksa oyuncuyu net görüyor demektir
-                return true;
+                return true;//Oyuncu goruluyor.
             }
         }
         return false;
     }
 
-    // NavMesh üzerinde rastgele geçerli bir nokta bulur (GELÝÞTÝRÝLMÝÞ ZEMÝN ARAMASI)
+    //NavMesh uzerinde rastgele gecerli bir nokta bulan metot
     private Vector3 GetRandomPoint(Vector3 center, float range)
     {
-        // Random.insideUnitSphere yerine, sadece X ve Z eksenlerinde (yatay düzlemde) bir disk içinde nokta seçer.
-        // Bu sayede havada veya yeraltýnda imkansýz noktalar aranmaz.
+        //2d bir disk icinde rastgele nokta secilir.
         Vector2 randomCircle = Random.insideUnitCircle * range;
 
-        // Seçilen yatay noktayý karakterin kendi Y hizasýna ekle
         Vector3 randomDirection = new Vector3(randomCircle.x, 0f, randomCircle.y);
         randomDirection += center;
 
         NavMeshHit hit;
-        // Seçilen noktanýn en fazla 2 birim üstünde/altýnda geçerli bir NavMesh zemini var mý bak.
-        // range deðerini vermek (eskisi gibi) tüm sahneyi taramasýna ve yanlýþ katlara gitmesine sebep oluyordu.
+        //Secilen noktanin en fazla 2 birim ustunde/altinda gecerli bir NavMesh zemini var mi diye kontrol eder.
         if (NavMesh.SamplePosition(randomDirection, out hit, range/2, NavMesh.AllAreas))
         {
             return hit.position;
         }
 
-        return center; // Bulamazsa olduðu yerde kalsýn
+        return center; // Bulamazsa oldugu yerde kalsin.
     }
 
     private void FaceTarget(Vector3 targetPos)
@@ -337,47 +311,42 @@ public class EnemyAI : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
-    // SPAWNER'IN ÇAÐIRDIÐI BEYÝN SIFIRLAMA METODU
+    //SPAWNER'IN ÇAGIRDIGI BEYIN SIFIRLAMA METODU
     public void ResetAI()
     {
-        currentState = AIState.Patrol; // Tekrar devriyeye baþla
+        currentState = AIState.Patrol;
         memoryTimer = 0f;
-        patrolWaitTimer = 0f; // YENÝ: Uyanýr uyanmaz boþ boþ beklemesin, anýnda devriyeye baþlasýn
+        patrolWaitTimer = 0f;
 
         startPosition = transform.position;
 
-        // DÝKKAT: playerTarget = null; SATIRINI TAMAMEN KALDIRDIK!
-        // Çünkü Update döngümüzün çalýþmasý için playerTarget'ýn kim olduðunu bilmek zorunda.
-
         if (agent != null && agent.isActiveAndEnabled)
         {
-            // Eðer zemine tutunabildiyse eski rotasýný sil
+            //EGer zemine tutunabildiyse eski rotasini sil.
             if (agent.isOnNavMesh)
             {
                 agent.ResetPath();
                 agent.velocity = Vector3.zero;
-                ExecuteCurrentState(); // Yeni duruma göre hareket etmeye baþla
+                ExecuteCurrentState(); //Yeni duruma gore hareket etmeye basla.
                 Debug.Log("Current state: " + currentState.ToString());
             }
 
-            // Yürümeyi serbest býrak ve hýzýný ayarla
             agent.isStopped = false;
             if (stats != null) agent.speed = stats.patrolSpeed;
         }
     }
-    // Test ortamýnda görüþ açýsýný (FOV Konisi) ve Devriye alanýný çizdirelim
+
     private void OnDrawGizmos()
     {
         if (stats == null) return;
 
-        // --- GÜNCELLENEN GIZMOS ÇÝZÝMÝ ---
         float activeRadius = (spawnerWanderRadius > 0) ? spawnerWanderRadius : stats.wanderRadius;
 
+        //NPC Gezinme Kuresi
         Gizmos.color = new Color(0, 1, 0, 0.3f);
         Gizmos.DrawWireSphere(Application.isPlaying ? startPosition : transform.position, activeRadius);
-        // ---------------------------------
 
-        // Görüþ Açýsý Çizgileri
+        //Gorus Acisi Cizgileri
         if (currentState == AIState.Patrol)
             Gizmos.color = greenColor;
         else if (currentState == AIState.Chase)

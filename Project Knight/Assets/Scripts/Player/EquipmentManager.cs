@@ -10,27 +10,25 @@ public class EquipmentManager : MonoBehaviour
 
     private GameObject currentEquippedWeapon;
 
-    // --- YENÝ EKLENDÝ ---
-    private PlayerMovement playerMovement; // PlayerMovement script'ine referans
+    private PlayerMovement playerMovement;
     private PlayerCombatManager combatManager;
 
     public Item currentItemInHand;
 
-    private bool isWeaponEquipped = false; // Senin 'pressCounter' mantýðý için toggle
+    private bool isWeaponEquipped = false;
 
-    //Saldýrý Hýzý
+    //Saldiri hizi kristal efektleri
     [HideInInspector] public float bonusAttackSpeed = 0f;
     [HideInInspector] public float permanentBonusAttackSpeed = 0f; // Kalýcý
 
-    void Start() // YENÝ EKLENDÝ
+    void Start()
     {
-        // EquipmentManager ve PlayerMovement ayný obje üzerindeyse
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
             Debug.LogError("PlayerMovement script'i bulunamadý!");
         }
-        // YENÝ: PlayerCombatManager referansýný al
+
         combatManager = GetComponent<PlayerCombatManager>();
         if (combatManager == null) Debug.LogError("PlayerCombatManager script'i bulunamadý!");
     }
@@ -47,80 +45,72 @@ public class EquipmentManager : MonoBehaviour
         equipSlot1Action.action.performed -= OnEquipSlot1Performed;
     }
 
-    // --- GÜNCELLENDÝ: Artýk 'pressCounter' gibi aç/kapa mantýðý içeriyor ---
+    //"1" tusu metodu
     private void OnEquipSlot1Performed(InputAction.CallbackContext context)
     {
-        // 1. Eðer zaten bir silah kuþanmýþsak, silahý býrak
         if (isWeaponEquipped)
         {
             UnequipWeapon();
         }
-        // 2. Silah kuþanmamýþsak, slotu kontrol et ve kuþan
         else
         {
-            // Slotta bir eþya var mý?
+            // Slot dolulugu kontrolcusu
             if (toolbarSwordSlot.transform.childCount > 0)
             {
                 EquipWeaponFromSlot();
             }
-            // Slot boþsa hiçbir þey yapma
         }
     }
 
-    // --- YENÝ FONKSÝYON: Sadece kuþanma iþini yapar ---
+    //Kilic Kusanma Metodu
     private void EquipWeaponFromSlot()
     {
-        // Slottaki item'i al
         InventoryItem itemInSlot = toolbarSwordSlot.transform.GetChild(0).GetComponent<InventoryItem>();
         Item itemToEquip = itemInSlot.item;
 
         if (itemToEquip.itemObject != null)
         {
-            // 3D modeli oluþtur
+            //Kilici ele spawnla
             currentEquippedWeapon = Instantiate(itemToEquip.itemObject, handTransform);
             currentEquippedWeapon.transform.localPosition = Vector3.zero;
             currentEquippedWeapon.transform.localRotation = Quaternion.identity;
 
-            // --- YENÝ EKLENEN KRÝTÝK DÜZELTME ---
-            // 1. Kýlýç elimizdeyken süzülme animasyonuna ihtiyacýmýz yok, scripti sil:
+            //Kilic objesi eldeyken yerdeykenki suzulme animasyonu olmamali.
             if (currentEquippedWeapon.TryGetComponent<Benjathemaker.SimpleGemsAnim>(out Benjathemaker.SimpleGemsAnim floatAnim))
             {
                 Destroy(floatAnim);
             }
-            // --- YENÝ EKLENEN KRÝTÝK KISIM: KILICIN FÝZÝÐÝNÝ YOK ET ---
-            // Kýlýcýn kendisinde veya alt objelerinde (býçak, kabza vs.) bulunan tüm Collider'larý bul ve sil.
+
+            //Collider kaldir.
             Collider[] weaponColliders = currentEquippedWeapon.GetComponentsInChildren<Collider>();
             foreach (Collider col in weaponColliders)
             {
                 col.enabled = false;
             }
-            // ---------------------------------------------------------
+
             currentItemInHand = itemToEquip;
 
-            // Durumu ve animasyonu güncelle
+            //Durum guncellemesi
             isWeaponEquipped = true;
-            playerMovement.SetEquippedState(true); // PlayerMovement'a haber ver!
+            playerMovement.SetEquippedState(true);
 
             if (combatManager != null)
             {
                 combatManager.isWeaponEquipped = true;
             }
 
-            // --- BURASI EKLENECEK ---
-            // Eline aldýðýn silahý "Player" layer'ýna (veya Ignore Raycast'e) çekmelisin.
-            // Böylece PlayerInteraction scripti (Raycast) bu silahý GÖRMEZDEN GELÝR.
-            int playerLayer = LayerMask.NameToLayer("Player"); // Veya "Ignore Raycast"
+            //Layer ayari
+            int playerLayer = LayerMask.NameToLayer("Player");
             InventoryManager.SetLayerRecursively(currentEquippedWeapon, playerLayer);
-            // ------------------------
 
-            //Saldýrý hýzý ayarý
+            //Saldiri hizi guncellemesi (Kristal efektleri icin)
             UpdateAttackSpeed();
 
             Debug.Log(itemToEquip.itemName + " kuþanýldý!");
         }
     }
 
-    // --- YENÝ FONKSÝYON: Sadece silahý býrakma iþini yapar ---
+    //Kilici elden birakma metodu
     private void UnequipWeapon()
     {
         if (currentEquippedWeapon != null)
@@ -131,9 +121,9 @@ public class EquipmentManager : MonoBehaviour
 
         currentItemInHand = null;
 
-        // Durumu ve animasyonu güncelle
+        //Durum guncellemesi
         isWeaponEquipped = false;
-        playerMovement.SetEquippedState(false); // PlayerMovement'a haber ver!
+        playerMovement.SetEquippedState(false);
         Debug.Log("Silah býrakýldý.");
         /* deneme*/
         if (combatManager != null)
@@ -142,50 +132,47 @@ public class EquipmentManager : MonoBehaviour
         }
     }
 
-    // --- YENÝ KRÝTÝK FONKSÝYON: DOÐRULAMA SÝSTEMÝ ---
-    // Bu fonksiyonu eþyalarýn yeri deðiþtiðinde çaðýracaðýz.
+    //Dogrulama sistemi metodu
     public void ValidateEquipment()
     {
-        // Eðer elimizde silah yoksa kontrole gerek yok
         if (!isWeaponEquipped) return;
 
-        // 1. Kýlýç Slotu tamamen boþaldýysa -> Silahý Býrak
+        //Kilic slotu bosaldiysa kilici birak.
         if (toolbarSwordSlot.transform.childCount == 0)
         {
             UnequipWeapon();
             return;
         }
 
-        // 2. Kýlýç Slotunda eþya var AMA elimizdekiyle ayný deðilse (Swap yapýldýysa)
+        //Envanterdeki baska kilicla swap islemi
         InventoryItem itemInSlot = toolbarSwordSlot.transform.GetChild(0).GetComponent<InventoryItem>();
         if (itemInSlot.item != currentItemInHand)
         {
-            // Önce eskisini býrak, sonra yenisini (varsa) kuþan
             UnequipWeapon();
             EquipWeaponFromSlot();
         }
     }
-    // YENÝ: Hýz güncelleme fonksiyonu (Kristal kullanýnca da bunu çaðýracaðýz)
+    //Hiz guncelleme metodu (Kristal efektleri icin)
     public void UpdateAttackSpeed()
     {
         if (currentItemInHand == null) return;
 
-        // Formül: (Silah Hýzý / 10) + Bonus Hýz
+        //Formul: (Silah Hizi / 10) + Bonus Hiz
         float baseSpeed = currentItemInHand.attackSpeed;
         float totalSpeed = baseSpeed + bonusAttackSpeed + permanentBonusAttackSpeed;
 
         GetComponent<Animator>().SetFloat("fAttackSpeed", totalSpeed);
         Debug.Log($"Yeni Saldýrý Hýzý: {totalSpeed} (Silah: {baseSpeed} + Bonus: {bonusAttackSpeed} + Kalýcý: {permanentBonusAttackSpeed})");
     }
+
+    //Eldeki kilicin guncel hasar degerini donduren metot
     public int GetCurrentWeaponDamage()
     {
-        // Eðer elimizde bir eþya varsa ve bu eþyanýn bir hasar deðeri varsa döndür
         if (currentItemInHand != null)
         {
             return currentItemInHand.attackDamage;
         }
 
-        // Eðer elimiz boþsa veya hasarsýz bir eþya varsa (Yumruk hasarý)
-        return 1; // Ýstersen burayý 5 yapabilirsin.
+        return 1;
     }
 }

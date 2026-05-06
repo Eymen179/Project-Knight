@@ -3,17 +3,16 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))] // Üzerinde collider olmalý
 public class ItemPickup : MonoBehaviour
 {
-    public Item item; // Bu objenin temsil ettiði ScriptableObject (Inspector'dan ata)
+    public Item item; //Ýlgili esyanýn scriptable object referansi
 
-    // PlayerInteraction tarafýndan çaðrýlacak
+    //PlayerInteraction tarafindan cagrilacak metot
     public void Pickup()
     {
-        // InventoryManager'a eþyayý eklemesini söyle
+        //InventoryManager'a esyayi eklemesini soyle.
         bool success = InventoryManager.Instance.AddItem(item);
         if (success)
         {
-            Destroy(gameObject); // Toplandýysa dünyadan sil
+            Destroy(gameObject); // Toplandiysa dunyadan sil.
         }
-        // Eðer envanter doluysa (success = false) eþya dünyada kalýr.
     }
 }

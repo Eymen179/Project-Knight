@@ -3,50 +3,47 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    // 1. Bu slotun hangi tip eþyayý kabul ettiðini Inspector'dan seçeceðiz
+    //Slotun tipi --> Sword - Other
     public Item.ItemType allowedItemType;
 
     public void OnDrop(PointerEventData eventData)
     {
-        // 1. Sürüklenen þeyin bir InventoryItem olduðundan emin ol
+        //Suruklenen objenin bir InventoryItem oldugundan emin ol.
         if (eventData.pointerDrag.TryGetComponent<InventoryItem>(out InventoryItem draggedItem))
         {
-            // 2. Eþya tipi bu slota uygun mu? (Genel slotlar "Other" olacak)
+            //Slot tipi kontrolcusu
             if (draggedItem.item.itemType != allowedItemType)
             {
-                return; // Uygun deðilse, býrakma iþlemini iptal et
+                return;
             }
 
-            // 3. Bu slot boþ mu? (içinde alt obje yok mu?)
+            //Slot boslugu kontrolcusu
             if (transform.childCount == 0)
             {
-                // Boþsa, eþyayý bu slotun içine yerleþtir
+                //Bossa suruklenen esyayi bu slota yerlestir.
                 draggedItem.parentAfterDrag = transform;
-                // Not: InventoryItem.cs'deki OnEndDrag() geri kalan iþi halledecek
             }
-            else // 4. Slot doluysa (içinde baþka bir eþya var)
+            else
             {
-                // Slotta zaten var olan eþyayý bul
+                //Aktif slottaki esya
                 InventoryItem itemInSlot = transform.GetChild(0).GetComponent<InventoryItem>();
 
-                // 5. Eþyalar ayný ve stacklenebilir mi?
+                //Stack kontrolcusu
                 if (draggedItem.item == itemInSlot.item && itemInSlot.item.isStackable)
                 {
-                    // Stack'le: Slottaki eþyanýn sayýsýný artýr
                     itemInSlot.count += draggedItem.count;
                     itemInSlot.RefreshCount();
-                    // Sürüklediðimiz eþyayý artýk silebiliriz
+
                     Destroy(draggedItem.gameObject);
                 }
-                else // 6. Stacklenemezse veya farklý eþyalarsa, yer deðiþtir (Swap)
+                else //Farkli tip esyalar
                 {
-                    // Slottaki eþyayý, sürüklenenin eski slotuna gönder
+                    //Slottaki eþyayý, suruklenenin eski slotuna gonder.
                     itemInSlot.transform.SetParent(draggedItem.parentAfterDrag);
                     itemInSlot.transform.localPosition = Vector3.zero; // Yeni slotunun ortasýna koy
 
-                    // Sürüklenen eþyayý bu slota al
+                    //Suruklenen esyayi bu slota al
                     draggedItem.parentAfterDrag = transform;
-                    // Not: OnEndDrag() bu eþyayý buraya (transform) yerleþtirecek
                 }
             }
         }

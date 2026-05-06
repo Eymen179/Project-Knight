@@ -12,10 +12,10 @@ public class EnemyHealth : MonoBehaviour
     [Header("Veri")]
     public EnemyStats stats;
     public List<GameObject> crystalPrefabs = new List<GameObject>();
-    // YENÝ: UIManager yerine kendi slider ve text'imizi kullanacaðýz
+
     [Header("NPC UI")]
-    public Slider healthSlider;      // NPC'nin kendi Canvas'ýndaki Slider
-    public TextMeshProUGUI healthText; // NPC'nin kendi Canvas'ýndaki Text
+    public Slider healthSlider;      // NPC'nin kendi Canvas'indaki Slider
+    public TextMeshProUGUI healthText; // NPC'nin kendi Canvas'indaki Text
 
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int healthBeforeDamage;
@@ -24,7 +24,7 @@ public class EnemyHealth : MonoBehaviour
     private Animator animator;
     private DamageFlasher damageFlasher;
 
-    [Header("Geliþmiþ Blok & Stun Ayarlarý")]
+    [Header("Enhanced Block & Stun Settings")]
     public int maxBlockCount = 3;
 
     private int currentBlockCount;
@@ -34,19 +34,19 @@ public class EnemyHealth : MonoBehaviour
     public float stunDuration = 1f;
     public bool isStunned = false;
 
-    [Header("Loot Ayarlarý")]
+    [Header("Loot Settings")]
     [Range(0,100)]
-    public int dropChance = 100; // Yüzde kaç ihtimalle eþya düþürecek? (Þu an %100)
+    public int dropChance = 100;
     void Start()
     {
         animator = GetComponent<Animator>();
         damageFlasher = GetComponent<DamageFlasher>();
-        // Baþlangýç canýný statlardan al
+        //Statlardan bilgi alinir.
         if (stats != null)
         {
             currentHealth = stats.maxHealth;
 
-            healthBeforeDamage = currentHealth; // Ýlk deðer olarak baþlangýç canýný atýyoruz
+            healthBeforeDamage = currentHealth;
         }
         else
         {
@@ -54,10 +54,9 @@ public class EnemyHealth : MonoBehaviour
             Debug.LogWarning(gameObject.name + " üzerinde EnemyStats eksik!");
         }
 
-        // Baþlangýçta UI'ý ayarla
         if (healthSlider != null)
         {
-            healthSlider.maxValue = 1f; // Slider deðer aralýðýný 0-1 yapýyoruz
+            healthSlider.maxValue = 1f;
             healthSlider.value = 1f;
         }
 
@@ -67,7 +66,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead || isStunned) return;
 
-        // 5 Saniye Kuralý
+        //Blok yenileme kontrolu
         if (currentBlockCount < maxBlockCount)
         {
             if (Time.time - lastBlockTime >= blockResetTime)
@@ -76,12 +75,12 @@ public class EnemyHealth : MonoBehaviour
             }
         }
     }
-    //Animation Event
+    //DealDamage Animation Event metodunun kullandigi metot
     public void TakeDamage(int damageAmount)
     {
         if (isDead) return;
 
-        // --- 1. BLOK KONTROLÜ ---
+        //Blok Kontrolu
         if (!isStunned && animator != null && animator.GetBool("isBlocking"))
         {
             currentBlockCount--;
@@ -100,27 +99,27 @@ public class EnemyHealth : MonoBehaviour
             }
         }
 
-        // --- 2. HASAR ALMA ---
-        healthBeforeDamage = currentHealth; // Hasar almadan önceki caný kaydet
+        //Hasar Alma Kontrolu
+        healthBeforeDamage = currentHealth; //Hasar almadan onceki cani kaydet.
         currentHealth -= damageAmount;
         if (currentHealth < 0) currentHealth = 0;
         UpdateUI();
         
-        // Hasar alýndýðýnda parlamayý tetikle
+        //Hasar yiyince parlama efekti
         if (damageFlasher != null) damageFlasher.Flash();
 
-        // --- 3. ÖLÜM KONTROLÜ ---
+        //Olum Kontrolu
         if (currentHealth <= 0) Die();
     }
 
-    // --- SERSEMLEME (STUN) SÝSTEMÝ ---
+    //Stun Sistemi
     private IEnumerator StunRoutine()
     {
         isStunned = true;
         animator.SetBool("isBlocking", false);
-        animator.SetTrigger("stun"); // NPC'nin sersemleme animasyonunu tetikle
+        animator.SetTrigger("stun"); //NPC'nin sersemleme animasyonu
 
-        // NPC'nin Yapay Zekasýný ve Yürümesini Durdur
+        //NPC'yi dondur.
         GetComponent<EnemyAI>().enabled = false;
         GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = true;
 
@@ -128,7 +127,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (!isDead)
         {
-            // Yapay zekayý uyandýr
+            //NPC'yi uyandir.
             GetComponent<EnemyAI>().enabled = true;
             GetComponent<UnityEngine.AI.NavMeshAgent>().isStopped = false;
             currentBlockCount = maxBlockCount;
@@ -138,35 +137,25 @@ public class EnemyHealth : MonoBehaviour
 
     private void UpdateUI()
     {
-        // Artýk UIManager deðil, kendi referanslarýmýzý kontrol ediyoruz
         if (stats != null)
         {
-            // 1. Slider Güncelleme
             if (healthSlider != null)
             {
                 float fillValue = (float)currentHealth / stats.maxHealth;
                 healthSlider.value = fillValue;
             }
 
-            // 2. Text Güncelleme
             if (healthText != null)
             {
                 healthText.text = currentHealth.ToString() + "/" + stats.maxHealth;
             }
         }
     }
-
-    /*private void Die()
-    {
-        isDead = true;
-
-        Debug.Log(gameObject.name + " öldü!");
-        Destroy(gameObject);
-    }*/
     private void Die()
     {
         isDead = true;
 
+        //Sansa bagli loot dusur.
         SpawnCrystal(transform);
 
         GetComponent<EnemyAI>().enabled = false;
@@ -190,19 +179,17 @@ public class EnemyHealth : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         if (healthSlider != null) healthSlider.gameObject.SetActive(false);
 
-        // ESKÝ KOD: Destroy(gameObject, 5f);
-        // YENÝ KOD: 5 saniye sonra kapat ki Spawner bunu görüp yeniden doðursun!
+        //Object Pooling
         StartCoroutine(DeactivateAfterSeconds(5f));
     }
 
     private IEnumerator DeactivateAfterSeconds(float time)
     {
         yield return new WaitForSeconds(time);
-        gameObject.SetActive(false); // Obje kapanýr, havuza geri döner
+        gameObject.SetActive(false);
     }
 
-    // SPAWNER'IN ÇAÐIRDIÐI SIFIRLAMA (RESET) METODU
-    // SPAWNER'IN ÇAÐIRDIÐI SIFIRLAMA (RESET) METODU
+    //SPAWNER'IN ÇAGIRDIGI SIFIRLAMA (RESET) METODU
     public void ResetNPC()
     {
         isDead = false;
@@ -212,17 +199,15 @@ public class EnemyHealth : MonoBehaviour
         if (stats != null)
         {
             currentHealth = stats.maxHealth;
-            healthBeforeDamage = currentHealth; // <--- ÝÞTE EKSÝK OLAN HAYAT KURTARICI SATIR!
+            healthBeforeDamage = currentHealth;
         }
 
         gameObject.layer = LayerMask.NameToLayer("NPC");
 
-        // --- 1. ÇÖZÜM: KINEMATIC UYARISINI GÝDERME ---
+        //Kinematic uyarisi kontrolcusu
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
-            // Eðer obje havuzda kaskatý haldeyse (Kinematic ise) hýzýný sýfýrlamaya çalýþma!
-            // Sadece öldüðünde fizikselleþtiyse hýzýný sýfýrla.
             if (!rb.isKinematic)
             {
                 rb.linearVelocity = Vector3.zero;
@@ -231,24 +216,23 @@ public class EnemyHealth : MonoBehaviour
             rb.isKinematic = true;
             rb.freezeRotation = true;
         }
-        // ---------------------------------------------
 
         if (animator != null)
         {
             animator.enabled = true;
-            // Animasyonu zorla Idle (Bekleme) durumuna al ki koþuda takýlý kalmasýn
+            //Kosu animasyonunda takili kalmasin diye idle'a gecir.
             animator.SetFloat("speed", 0f);
         }
 
         if (healthSlider != null) healthSlider.gameObject.SetActive(true);
         UpdateUI();
 
-        // --- 2. ÇÖZÜM: NAVMESH AGENT'I ZEMÝNE ÇÝVÝLEME (WARP) ---
+        //NAVMESH AGENT'I ZEMINE CIVILEME (WARP)
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
         {
             agent.enabled = true;
-            // Iþýnlanma sonrasý ajanýn kafasý karýþmasýn diye onu zorla bulunduðu konuma baðlarýz
+            //Isinlanma sonrasi NPC'nin kafasi karismasin diye onu zorla bulundugu konuma baglariz.
             agent.Warp(transform.position);
         }
 
@@ -258,14 +242,11 @@ public class EnemyHealth : MonoBehaviour
             ai.enabled = true;
             ai.ResetAI();
         }
-        // --------------------------------------------------------
     }
     public void SpawnCrystal(Transform NPCpos)
     {
-        // 1. ADIM: Eþya düþecek mi düþmeyecek mi zar at (0 ile 100 arasý)
         int randomRoll = Random.Range(0, 100);
 
-        // Eðer attýðýmýz zar, düþme þansýndan büyükse HÝÇBÝR ÞEY YAPMA ve fonksiyondan çýk
         if (randomRoll >= dropChance)
         {
             Debug.Log("Zar tutmadý, eþya düþmedi.");

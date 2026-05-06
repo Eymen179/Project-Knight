@@ -7,33 +7,31 @@ public class NPCSpawner : MonoBehaviour
 {
     public TextMeshProUGUI txtDebugQuota;
 
-    [Header("NPC Ayarlarý")]
+    [Header("NPC Settings")]
     public GameObject NPCPrefab;
 
-    [Header("Spawn & Havuz Ayarlarý")]
+    [Header("Spawn & Pool Settings")]
     public Transform[] spawnPoints;
-    public int NPCCount = 5;      // Sahnede ayný anda olabilecek MAKSÝMUM NPC
-    public int totalQuota = 10;   // Spawner'ýn üreteceði toplam NPC kotasý
+    public int NPCCount = 5;
+    public int totalQuota = 10;
     public float respawnDelay = 3f;
 
-    [Header("Optimizasyon (Mesafe) Ayarlarý")]
+    [Header("Optimization (Distance) Settings")]
     public float activationDistance = 50f;
     private Transform playerTarget;
     private bool isSpawningActive = false;
 
-    // --- YENÝ EKLENEN DEÐÝÞKEN ---
-    [Header("Bölgesel Sýnýrlandýrma")]
+    [Header("Wander Limit")]
     [Tooltip("0 býrakýlýrsa EnemyStats içindeki wanderRadius kullanýlýr.")]
     public float spawnRadius = 0f;
-    // -----------------------------
 
     private List<GameObject> npcPool = new List<GameObject>();
 
-    // Mantýk Kontrol Listeleri
+    //NPC Kontrol Listeleri
     private HashSet<GameObject> respawningNPCs = new HashSet<GameObject>();
     private HashSet<GameObject> countedDeadNPCs = new HashSet<GameObject>();
 
-    private int currentQuota; // Kalan toplam kotayý takip eder
+    private int currentQuota; //Kalan toplam kota
 
     private void Start()
     {
@@ -42,9 +40,7 @@ public class NPCSpawner : MonoBehaviour
         PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
         if (player != null) playerTarget = player.transform;
 
-        // 1. HAVUZU OLUÞTUR (AKILLI HAVUZ)
-        // Eðer kota 10, max NPC 5 ise -> Havuz 5 kapasiteli olur. 
-        // Eðer kota 3, max NPC 5 ise -> Havuz boþuna 5 olmaz, 3 kapasiteli olur.
+        //Kotali havuz ile kotaya gore NPC spawnla.
         int poolSize = Mathf.Min(NPCCount, totalQuota);
 
         for (int i = 0; i < poolSize; i++)
@@ -55,7 +51,7 @@ public class NPCSpawner : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void Update()//Optimizasyon ayari
     {
         if (playerTarget == null) return;
 
@@ -81,9 +77,9 @@ public class NPCSpawner : MonoBehaviour
         }
     }
 
+    //Aktif kalan NPC'leri uyandiran metot
     private void ActivatePool()
     {
-        // Sadece kalan kota kadar NPC uyandýrýlýr (Örn: Kota 4 kaldýysa 5. NPC uyanmaz)
         int spawnTarget = Mathf.Min(NPCCount, currentQuota);
         int spawned = 0;
 
@@ -96,7 +92,7 @@ public class NPCSpawner : MonoBehaviour
             }
         }
     }
-
+    //Aktivasyon alanina girip cikmaya bagli olarak NPC'leri ayarlayan metot
     private void DeactivatePool()
     {
         foreach (GameObject npc in npcPool)
@@ -104,7 +100,7 @@ public class NPCSpawner : MonoBehaviour
             npc.SetActive(false);
         }
         respawningNPCs.Clear();
-        countedDeadNPCs.Clear(); // Uzaklaþýnca ölüm kayýtlarýný temizle ki geri dönünce odadaki düþmanlar baþtan baþlasýn
+        countedDeadNPCs.Clear();
         StopAllCoroutines();
     }
 
@@ -114,32 +110,31 @@ public class NPCSpawner : MonoBehaviour
         {
             EnemyHealth health = npc.GetComponent<EnemyHealth>();
 
-            // 1. AÞAMA: NPC ÖLDÜÐÜ ANDA KOTAYI DÜÞÜR VE YAZIYI GÜNCELLE
+            //NPC OLDUGU ANDA KOTAYI DUSUR VE YAZIYI GUNCELLE
             if (health != null && health.isDead && !countedDeadNPCs.Contains(npc))
             {
                 currentQuota--;
-                countedDeadNPCs.Add(npc); // Bu NPC sayýldý, bir daha sayma
+                countedDeadNPCs.Add(npc); //Bu NPC sayildi, bir daha sayma.
                 UpdateDebugTexts();
             }
 
-            // 2. AÞAMA: NPC 5 SANÝYE SONRA SAHNEDEN SÝLÝNDÝÐÝNDE YERÝNE YENÝSÝNÝ ÇAÐIR
+            //NPC 5 SANÝYE SONRA SAHNEDEN SILINDIGINDE YERÝNE YENÝSÝNÝ CAGIR
             if (!npc.activeInHierarchy && !respawningNPCs.Contains(npc) && countedDeadNPCs.Contains(npc))
             {
-                // Eðer kalan kota, sahnede bulunmasý gereken max sayýdan büyük veya eþitse yenisini doður
+                //Sahne kotasi - Toplam kota karsilastirmasi
                 if (currentQuota >= NPCCount)
                 {
                     StartCoroutine(RespawnRoutine(npc));
                 }
                 else
                 {
-                    // Kota yetersizse bu NPC tamamen ölü kalacak. 
-                    // Update döngüsünü meþgul etmemesi için diriltme listesine atýyoruz ama diriltmiyoruz.
                     respawningNPCs.Add(npc);
                 }
             }
         }
     }
 
+    //Respawnlama dongusu
     private IEnumerator RespawnRoutine(GameObject npc)
     {
         respawningNPCs.Add(npc);
@@ -152,6 +147,7 @@ public class NPCSpawner : MonoBehaviour
         respawningNPCs.Remove(npc);
     }
 
+    //Havuzdan NPC'leri cikarip spawnlayan metot
     private void SpawnNPCFromPool(GameObject npc)
     {
         if (spawnPoints.Length == 0) return;
@@ -162,21 +158,19 @@ public class NPCSpawner : MonoBehaviour
         npc.transform.rotation = randomPoint.rotation;
 
         npc.SetActive(true);
-        countedDeadNPCs.Remove(npc); // Yeni hayata baþladý, eski ölüm kaydýný sil
+        countedDeadNPCs.Remove(npc);
         npc.SendMessage("ResetNPC", SendMessageOptions.DontRequireReceiver);
 
-        // --- YENÝ EKLENEN: DEÐERÝ NPC'YE AKTAR ---
         EnemyAI ai = npc.GetComponent<EnemyAI>();
         if (ai != null)
         {
-            ai.spawnerWanderRadius = this.spawnRadius; // Spawner kendi deðerini NPC'ye verir
+            ai.spawnerWanderRadius = this.spawnRadius;
         }
-        // -----------------------------------------
 
-        UpdateDebugTexts(); // Doðduðunda üzerinde güncel kota yazsýn
+        UpdateDebugTexts();
     }
 
-    // --- DEBUG UI GÜNCELLEME ---
+    //DEBUG UI UPDATE
     private void UpdateDebugTexts()
     {
         foreach (GameObject npc in npcPool)

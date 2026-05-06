@@ -3,11 +3,11 @@ using UnityEngine;
 public class EnemyAttackSystem : MonoBehaviour
 {
     [Header("Saldýrý Ayarlarý")]
-    public EnemyStats stats;           // Hasar deðerini buradan alacak
-    public Transform attackPoint;      // NPC'nin önündeki görünmez vuruþ noktasý
-    public LayerMask playerLayer;      // Sadece 'Player' katmanýný arayacak
+    public EnemyStats stats;
+    public Transform attackPoint;
+    public LayerMask playerLayer;
 
-    // Bu fonksiyonu þimdilik test için, ileride ise Animation Event'ten çaðýracaðýz
+    //Animation Event ile Hasar Verme Metodu
     public void DealDamageToPlayer()
     {
         if (stats == null || attackPoint == null) return;
@@ -16,18 +16,17 @@ public class EnemyAttackSystem : MonoBehaviour
 
         foreach (Collider playerCol in hitPlayers)
         {
-            // Çarptýðýmýz objede veya ebeveyninde PlayerHealth var mý?
+            //Oyuncuyu bul.
             PlayerHealth pHealth = playerCol.GetComponentInParent<PlayerHealth>();
 
             if (pHealth != null)
             {
-                // Varsa ona hasar ver
+                //Varsa ona hasar ver.
                 pHealth.TakeDamage(stats.attackDamage);
             }
         }
     }
 
-    // Editörde NPC'nin vuruþ küresini kýrmýzý olarak görmek için
     private void OnDrawGizmos()
     {
         if (attackPoint == null) return;
