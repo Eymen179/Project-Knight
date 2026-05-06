@@ -20,6 +20,7 @@ MonoBehaviour:
   attackCooldown: 1.5
   attackRange: 2
   attackSpeedMultiplier: 1
+  specialAttackDamages: 3200000023000000140000000f000000
   blockChance: 50
   chaseRange: 10
   fovAngle: 150

@@ -896,6 +896,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &215541135 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8851996816963498726, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+  m_PrefabInstance: {fileID: 276234271464943304}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &235336003
 GameObject:
   m_ObjectHideFlags: 0
@@ -2225,6 +2236,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 962725180}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &760126793 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1927186500216150043, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+  m_PrefabInstance: {fileID: 992179108}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &760126800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 760126793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5845a0ac2e0c1fa4a9f7fe7c7ff8a292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: e82d2536f5cc61a428afe0a4bc1c4127, type: 2}
+  currentHealth: 0
+  isDead: 0
+  maxBlockDuration: 5
+  blockCooldown: 10
 --- !u!1001 &768240504
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2745,7 +2778,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1927186500216150043, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      insertIndex: 5
+      addedObject: {fileID: 760126800}
   m_SourcePrefab: {fileID: 100100000, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
 --- !u!1 &1007151812
 GameObject:
@@ -5714,6 +5750,17 @@ Transform:
   - {fileID: 337485412}
   m_Father: {fileID: 1373586365}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2017538950 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6714114306598291698, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+  m_PrefabInstance: {fileID: 276234271464943304}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2026371729
 GameObject:
   m_ObjectHideFlags: 0
@@ -6171,6 +6218,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5196401021993887309, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024959021964262259, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024959021964262259, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6334268492793661612, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
@@ -6814,6 +6869,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 623669220}
     - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
+      propertyPath: txtBossHealth
+      value: 
+      objectReference: {fileID: 2017538950}
+    - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
       propertyPath: pnlItemDetails
       value: 
       objectReference: {fileID: 1937233181142527235}
@@ -6821,6 +6880,10 @@ PrefabInstance:
       propertyPath: toolBarBarrier
       value: 
       objectReference: {fileID: 950764070}
+    - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
+      propertyPath: bossHealthSlider
+      value: 
+      objectReference: {fileID: 215541135}
     - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
       propertyPath: txtEffectDuration
       value: 

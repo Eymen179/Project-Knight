@@ -16,6 +16,9 @@ public class EnemyStats : ScriptableObject
     public float attackRange = 2f;  // Vurma menzili
     public float attackSpeedMultiplier = 1f; // Saldýrý hýzýný etkileyen çarpan
 
+    [Header("Boss Special Attacks")]
+    public int[] specialAttackDamages; // 4 özel saldýrý için 4 farklý hasar gireceðin liste
+
     [Range(0, 100)]
     public int blockChance = 30;
 

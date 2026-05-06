@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
     public Slider playerHealthSlider;
     public TextMeshProUGUI txtHealth;
     public Image crosshair;
+    public Slider bossHealthSlider;
+    public TextMeshProUGUI txtBossHealth;
 
     [Header("In-Game UI/Crystal Effects")]
     public GameObject pnlCrystalEffectStatus;
