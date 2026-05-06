@@ -941,6 +941,7 @@ GameObject:
   - component: {fileID: 1400796657031884956}
   - component: {fileID: 333692173628725759}
   - component: {fileID: 4981057603794476901}
+  - component: {fileID: 4724454801174950431}
   - component: {fileID: 4431019775854507884}
   m_Layer: 0
   m_Name: Boss
@@ -1057,6 +1058,23 @@ MonoBehaviour:
   basicAttackPoint: {fileID: 8935715668884136258}
   specialAttackPoint: {fileID: 3459700033590326539}
   isActionLocked: 0
+--- !u!114 &4724454801174950431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927186500216150043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5845a0ac2e0c1fa4a9f7fe7c7ff8a292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: e82d2536f5cc61a428afe0a4bc1c4127, type: 2}
+  currentHealth: 5000
+  isDead: 0
+  maxBlockDuration: 5
+  blockCooldown: 10
 --- !u!114 &4431019775854507884
 MonoBehaviour:
   m_ObjectHideFlags: 0

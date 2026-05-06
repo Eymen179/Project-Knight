@@ -54,9 +54,14 @@ public class PlayerAttackSystem : MonoBehaviour
         {
             if (enemy.gameObject == gameObject) continue;
             EnemyHealth enemyHealth = enemy.GetComponentInParent<EnemyHealth>();
+            BossHealth bossHealth = enemy.GetComponentInParent<BossHealth>();
             if (enemyHealth != null)
             {
                 enemyHealth.TakeDamage(finalDamage);
+            }
+            else if (bossHealth != null)
+            {
+                bossHealth.TakeDamage(finalDamage);
             }
         }
     }
