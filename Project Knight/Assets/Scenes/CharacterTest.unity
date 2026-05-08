@@ -2713,6 +2713,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 1927186500216150043, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2145660435712272365, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.6203856
@@ -2753,10 +2757,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3701271789162480765, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3701271789162480765, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3701271789162480765, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4361787392561355486, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
       propertyPath: playerTarget
       value: 
       objectReference: {fileID: 443672661}
+    - target: {fileID: 7941450121743378876, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7941450121743378876, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6490,11 +6514,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3600687090631308435, guid: b568b1aa32270144cbf6295bcb553376, type: 3}
       propertyPath: destinationScene
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3600687090631308435, guid: b568b1aa32270144cbf6295bcb553376, type: 3}
       propertyPath: targetSpawnPointID
-      value: Dungeon_Entrance
+      value: Dungeon_BossRoom
       objectReference: {fileID: 0}
     - target: {fileID: 4313058420806662149, guid: b568b1aa32270144cbf6295bcb553376, type: 3}
       propertyPath: m_Name

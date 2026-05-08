@@ -7,6 +7,12 @@ public class BossHealth : MonoBehaviour
     [Header("Veri & UI")]
     public EnemyStats stats;
 
+    [Header("Eðitim / Test Ayarlarý")]
+    [Tooltip("Eðer açýksa UIManager yerine Boss'un altýndaki (Child) yerel UI kullanýlýr.")]
+    public bool isTrainingMode = false;
+    public Slider localHealthSlider;       // Eðitimdeki yerel can barý
+    public TextMeshProUGUI localHealthText;  // Eðitimdeki yerel can yazýsý
+
     [Header("Durumlar (Salt Okunur)")]
     public int currentHealth;
     public bool isDead = false;
@@ -35,6 +41,10 @@ public class BossHealth : MonoBehaviour
         agent = GetComponent<BossAgent>(); // Ajaný bulduk
 
         if (stats != null) currentHealth = stats.maxHealth;
+
+        // Yerel slider'ýn maksimum deðerini ayarla
+        if (localHealthSlider != null) localHealthSlider.maxValue = 1f;
+
         UpdateUI();
     }
 
@@ -98,15 +108,28 @@ public class BossHealth : MonoBehaviour
         currentCooldownTimer = blockCooldown;
     }
 
+    // --- GÜNCELLENEN UI SÝSTEMÝ ---
     private void UpdateUI()
     {
-        if (stats != null)
-        {
-            if (UIManager.Instance.bossHealthSlider != null)
-                UIManager.Instance.bossHealthSlider.value = (float)currentHealth / stats.maxHealth;
+        if (stats == null) return;
 
-            if (UIManager.Instance.txtBossHealth != null)
-                UIManager.Instance.txtBossHealth.text = currentHealth.ToString() + "/" + stats.maxHealth;
+        float fillValue = (float)currentHealth / stats.maxHealth;
+        string healthStr = currentHealth.ToString() + "/" + stats.maxHealth;
+
+        if (isTrainingMode)
+        {
+            // Eðitim modundaysak Boss'un kendi kafasýndaki UI'ý güncelle
+            if (localHealthSlider != null) localHealthSlider.value = fillValue;
+            if (localHealthText != null) localHealthText.text = healthStr;
+        }
+        else
+        {
+            // Asýl oyundaysak UIManager'daki devasa UI'ý güncelle
+            if (UIManager.Instance != null && UIManager.Instance.bossHealthSlider != null)
+            {
+                UIManager.Instance.bossHealthSlider.value = fillValue;
+                UIManager.Instance.txtBossHealth.text = healthStr;
+            }
         }
     }
 
@@ -118,7 +141,16 @@ public class BossHealth : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
 
-        if (UIManager.Instance.bossHealthSlider != null) UIManager.Instance.bossHealthSlider.gameObject.SetActive(false);
+        // Doðru UI'ý kapat
+        if (isTrainingMode)
+        {
+            if (localHealthSlider != null) localHealthSlider.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (UIManager.Instance != null && UIManager.Instance.bossHealthSlider != null)
+                UIManager.Instance.bossHealthSlider.gameObject.SetActive(false);
+        }
 
         // BÜYÜK CEZA: Boss ölürse aðýr eksi puan alýr ve eðitim turu (Episode) biter.
         if (agent != null)
@@ -128,7 +160,6 @@ public class BossHealth : MonoBehaviour
         }
     }
 
-    // --- EÐÝTÝM ÝÇÝN SIFIRLAMA METODU ---
     public void ResetHealth()
     {
         isDead = false;
@@ -137,7 +168,17 @@ public class BossHealth : MonoBehaviour
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = true;
 
-        if (UIManager.Instance.bossHealthSlider != null) UIManager.Instance.bossHealthSlider.gameObject.SetActive(true);
+        // Doðru UI'ý geri aç
+        if (isTrainingMode)
+        {
+            if (localHealthSlider != null) localHealthSlider.gameObject.SetActive(true);
+        }
+        else
+        {
+            if (UIManager.Instance != null && UIManager.Instance.bossHealthSlider != null)
+                UIManager.Instance.bossHealthSlider.gameObject.SetActive(true);
+        }
+
         UpdateUI();
     }
 }
