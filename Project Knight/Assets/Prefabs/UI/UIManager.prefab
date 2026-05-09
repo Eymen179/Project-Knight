@@ -62,6 +62,15 @@ MonoBehaviour:
   playerHealthSlider: {fileID: 0}
   txtHealth: {fileID: 0}
   crosshair: {fileID: 0}
+  bossHealthSlider: {fileID: 0}
+  txtBossHealth: {fileID: 0}
   pnlCrystalEffectStatus: {fileID: 0}
   txtEffectDuration: {fileID: 0}
   txtEffects: {fileID: 0}
+  pnlDieScreen: {fileID: 0}
+  btnRespawn: {fileID: 0}
+  isRespawnButtonActive: 0
+  pnlPermanentCrystals: {fileID: 0}
+  txtHealthPermanent: {fileID: 0}
+  txtDamagePermanent: {fileID: 0}
+  txtSpeedPermanent: {fileID: 0}

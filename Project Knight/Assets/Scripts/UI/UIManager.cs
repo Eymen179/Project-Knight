@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -31,6 +32,10 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI txtEffectDuration;
     public TextMeshProUGUI txtEffects;
 
+    public GameObject pnlDieScreen;
+    public Button btnRespawn;
+    public bool isRespawnButtonActive = false;
+
     [Header("Permanent Crystals")]
     public GameObject pnlPermanentCrystals;
     public TextMeshProUGUI txtHealthPermanent;
@@ -46,12 +51,25 @@ public class UIManager : MonoBehaviour
         mainInventoryGroup.SetActive(false);
         pnlItemDetails.SetActive(false);
         toolBarBarrier.enabled = true;
-
+        pnlDieScreen.SetActive(false);
         if (playerHealthSlider != null)
         {
             playerHealthSlider.maxValue = 1f; // Slider deðer aralýðýný 0-1 yapýyoruz
             playerHealthSlider.value = 1f;
         }
+        if(SceneManager.GetActiveScene().name == "Dungeon_BossRoom")
+        {
+            isRespawnButtonActive = true;
+            bossHealthSlider.gameObject.SetActive(true);
+        }
+        if(isRespawnButtonActive)
+        {
+            btnRespawn.gameObject.SetActive(true);
+        }else
+        {
+            btnRespawn.gameObject.SetActive(false);
+        }
     }
-
+    
+    
 }

@@ -22,7 +22,7 @@ public class EnemyAttackSystem : MonoBehaviour
             if (pHealth != null)
             {
                 //Varsa ona hasar ver.
-                pHealth.TakeDamage(stats.attackDamage);
+                pHealth.TakeDamage(Mathf.RoundToInt(stats.attackDamage * SceneController.Instance.globalDifficultyMultiplier));
             }
         }
     }

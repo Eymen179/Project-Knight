@@ -157,6 +157,14 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
         Debug.Log("Oyuncu Öldü! (Ölüm ekraný altyapýsý tetiklendi)");
-        // Ýleriki adýmlarda buraya ölüm animasyonu ve UI Game Over ekraný gelecek
+
+        UIManager.Instance.pnlDieScreen.SetActive(true);
+        InventoryManager.Instance.CursorVisibility(true);
+
+        gameObject.GetComponent<PlayerCombatManager>().enabled = false;
+        gameObject.GetComponent<PlayerMovement>().enabled = false;
+        gameObject.GetComponent<PlayerInteraction>().enabled = false;
+
+        gameObject.GetComponent<Animator>().SetFloat("speed", 0f);
     }
 }

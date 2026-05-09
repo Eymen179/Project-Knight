@@ -15,6 +15,10 @@ public class TeleportPoint : MonoBehaviour
     // Karakter portalýn içine girdiðinde (temas ettiðinde) tetiklenir
     private void OnTriggerEnter(Collider other)
     {
+        TeleportPointSettings(other);
+    }
+    public void TeleportPointSettings(Collider other)
+    {
         if (other.CompareTag("Player"))
         {
             Debug.Log($"{destinationScene} sahnesine ýþýnlanýlýyor...");

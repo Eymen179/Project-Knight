@@ -46,6 +46,9 @@ public class SceneController : MonoBehaviour
     public float savedPermanentBonusAttackSpeed = 0f;
     // ------------------------------------------
 
+    [Header("Difficulty Scaling")]
+    // Oyun ilk baþladýðýnda zorluk 1.0 (Normal)
+    public float globalDifficultyMultiplier = 1.0f;
     private void Awake()
     {
         if (Instance == null)
@@ -98,7 +101,33 @@ public class SceneController : MonoBehaviour
                 break;
         }
     }
+    // --- YENÝ EKLENEN SIFIRLAMA METODU ---
+    // Restart veya Main Menu'ye dönüldüðünde eski kayýtlarý temizler.
+    public void ResetAllSavedData()
+    {
+        // Envanter temizliði
+        savedSwordSlots.Clear();
+        savedOtherSlots.Clear();
+        hasSavedToolbarSword = false;
 
+        // Can ve Spawn noktasý temizliði
+        savedCurrentHealth = -1;
+        savedMaxHealth = -1;
+        targetSpawnPointID = "";
+
+        // Kalýcý (Crystal) güçlendirmelerin temizliði
+        hasSavedPermanentEffects = false;
+        savedPermanentHealthCount = 0;
+        savedPermanentDamageCount = 0;
+        savedPermanentSpeedCount = 0;
+        savedPermanentBonusDamage = 0;
+        savedPermanentBonusCritChance = 0;
+        savedPermanentBonusCritMultiplier = 0f;
+        savedPermanentBonusAttackSpeed = 0f;
+
+        Debug.Log("SceneController hafýzasý baþarýyla temizlendi.");
+    }
+    // ------------------------------------
     public enum GameScenes
     {
         MainMenu,

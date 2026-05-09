@@ -20,6 +20,7 @@ public class EnemyHealth : MonoBehaviour
     [HideInInspector] public int currentHealth;
     [HideInInspector] public int healthBeforeDamage;
     [HideInInspector] public bool isDead = false;
+    private int dynamicMaxHealth; // Zorluk arttýkca max cani artan NPC'ler icin dinamik max can degeri
 
     private Animator animator;
     private DamageFlasher damageFlasher;
@@ -41,26 +42,14 @@ public class EnemyHealth : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         damageFlasher = GetComponent<DamageFlasher>();
-        //Statlardan bilgi alinir.
-        if (stats != null)
-        {
-            currentHealth = stats.maxHealth;
-
-            healthBeforeDamage = currentHealth;
-        }
-        else
-        {
-            currentHealth = 100;
-            Debug.LogWarning(gameObject.name + " üzerinde EnemyStats eksik!");
-        }
 
         if (healthSlider != null)
         {
             healthSlider.maxValue = 1f;
-            healthSlider.value = 1f;
         }
 
-        UpdateUI();
+        // Oyun ilk baþladýðýnda sahnede hazýr duran NPC'ler için zorluðu hesapla
+        ApplyDifficultyAndReset();
     }
     void Update()
     {
@@ -134,20 +123,46 @@ public class EnemyHealth : MonoBehaviour
             isStunned = false;
         }
     }
+    // --- YENÝ EKLENEN ORTAK METOT ---
+    // Bu metot NPC her doðduðunda güncel zorluk çarpanýný SceneController'dan çeker.
+    private void ApplyDifficultyAndReset()
+    {
+        if (stats != null)
+        {
+            // Güvenlik: SceneController henüz sahnede yoksa çarpaný 1 kabul et
+            float multiplier = 1.0f;
+            if (SceneController.Instance != null)
+            {
+                multiplier = SceneController.Instance.globalDifficultyMultiplier;
+            }
 
+            dynamicMaxHealth = Mathf.RoundToInt(stats.maxHealth * multiplier);
+            currentHealth = dynamicMaxHealth;
+            healthBeforeDamage = currentHealth;
+        }
+        else
+        {
+            dynamicMaxHealth = 100;
+            currentHealth = dynamicMaxHealth;
+            Debug.LogWarning(gameObject.name + " üzerinde EnemyStats eksik!");
+        }
+
+        UpdateUI();
+    }
     private void UpdateUI()
     {
         if (stats != null)
         {
-            if (healthSlider != null)
+            // GÜVENLÝK KÝLÝDÝ: dynamicMaxHealth 0'dan büyükse bölme iþlemi yap (NaN hatasýný önler)
+            if (healthSlider != null && dynamicMaxHealth > 0)
             {
-                float fillValue = (float)currentHealth / stats.maxHealth;
+                float fillValue = (float)currentHealth / dynamicMaxHealth;
                 healthSlider.value = fillValue;
             }
 
             if (healthText != null)
             {
-                healthText.text = currentHealth.ToString() + "/" + stats.maxHealth;
+                healthText.text = currentHealth.ToString() + "/" + dynamicMaxHealth;
             }
         }
     }
@@ -196,15 +211,13 @@ public class EnemyHealth : MonoBehaviour
         isStunned = false;
         currentBlockCount = maxBlockCount;
 
-        if (stats != null)
-        {
-            currentHealth = stats.maxHealth;
-            healthBeforeDamage = currentHealth;
-        }
+        // --- EN KRÝTÝK DEÐÝÞÝKLÝK ---
+        // NPC havuzdan her çýktýðýnda, eðer oyuncu ölüp zorluk arttýysa yeni canýný hesaplayarak doðar!
+        ApplyDifficultyAndReset();
 
         gameObject.layer = LayerMask.NameToLayer("NPC");
 
-        //Kinematic uyarisi kontrolcusu
+        // Kinematic uyarýsý kontrolcüsü
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -220,19 +233,17 @@ public class EnemyHealth : MonoBehaviour
         if (animator != null)
         {
             animator.enabled = true;
-            //Kosu animasyonunda takili kalmasin diye idle'a gecir.
             animator.SetFloat("speed", 0f);
         }
 
         if (healthSlider != null) healthSlider.gameObject.SetActive(true);
         UpdateUI();
 
-        //NAVMESH AGENT'I ZEMINE CIVILEME (WARP)
+        // NAVMESH AGENT'I ZEMINE CIVILEME (WARP)
         UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent != null)
         {
             agent.enabled = true;
-            //Isinlanma sonrasi NPC'nin kafasi karismasin diye onu zorla bulundugu konuma baglariz.
             agent.Warp(transform.position);
         }
 
