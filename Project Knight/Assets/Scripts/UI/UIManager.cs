@@ -36,6 +36,8 @@ public class UIManager : MonoBehaviour
     public Button btnRespawn;
     public bool isRespawnButtonActive = false;
 
+    public GameObject pnlESCMenu;
+
     [Header("Permanent Crystals")]
     public GameObject pnlPermanentCrystals;
     public TextMeshProUGUI txtHealthPermanent;

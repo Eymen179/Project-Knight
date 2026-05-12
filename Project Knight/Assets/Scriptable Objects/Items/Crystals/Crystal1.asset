@@ -22,7 +22,7 @@ MonoBehaviour:
   attackRange: 0
   attackDamageMultiplier: 0
   attackDamageMultiplierChance: 0
-  health: 25
+  health: 30
   healthRegenerationAmount: 0
   healthRegenerationSpeed: 0
   effectDuration: 0

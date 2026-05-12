@@ -609,6 +609,11 @@ Transform:
   - {fileID: 578873571}
   m_Father: {fileID: 2012439759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &151310691 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7625844983888763035, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+  m_PrefabInstance: {fileID: 276234271464943304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &157733497
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,6 +898,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2475601055292789378, guid: f1116fcdb175a5f4d9e6d02745a575f1, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 443672660}
+    - target: {fileID: 2475601055292789378, guid: f1116fcdb175a5f4d9e6d02745a575f1, type: 3}
+      propertyPath: pnlEscMenu
+      value: 
+      objectReference: {fileID: 151310691}
     - target: {fileID: 5916586380793742934, guid: f1116fcdb175a5f4d9e6d02745a575f1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 255.21567
@@ -2825,30 +2838,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3701271789162480765, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701271789162480765, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3701271789162480765, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4361787392561355486, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
       propertyPath: playerTarget
       value: 
       objectReference: {fileID: 443672661}
-    - target: {fileID: 7941450121743378876, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7941450121743378876, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6975,6 +6968,10 @@ PrefabInstance:
       propertyPath: btnRespawn
       value: 
       objectReference: {fileID: 276234271464943309}
+    - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
+      propertyPath: pnlESCMenu
+      value: 
+      objectReference: {fileID: 151310691}
     - target: {fileID: 1394697361926635188, guid: 7f7eeb84b6e823542af06c2391de6015, type: 3}
       propertyPath: txtEffects
       value: 

@@ -61,6 +61,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "ESC Menu",
+                    "type": "Button",
+                    "id": "418ebf35-24c3-4fc3-b244-93fab2729b9d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Equip",
                     "type": "Button",
                     "id": "3547c2f3-b68d-4cb1-8fce-aab754068f17",
@@ -657,6 +666,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "65332dea-8f59-4559-81e0-da3f772567f3",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ESC Menu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "91f8d8ad-8890-4024-a555-8d8d0cef384c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ESC Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
