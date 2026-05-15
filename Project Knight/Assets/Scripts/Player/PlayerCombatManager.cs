@@ -41,7 +41,12 @@ public class PlayerCombatManager : MonoBehaviour
         {
             // Eðer gard alýyorsak, yarýda kesilen saldýrýnýn trigger'ýný hafýzadan SÝL
             _animator.ResetTrigger("attack");
+            GetComponent<PlayerMovement>().enabled = false; // Hareketi de durdur (isteðe baðlý)
             return; // Aþaðýdaki saldýrý/sol týk kodlarýný hiç okuma
+        }
+        else
+        {
+            GetComponent<PlayerMovement>().enabled = true; // Gardý býraktýk, hareketi aç
         }
         // --------------------------------------
         // Sol týk basýldý mý?
