@@ -10,12 +10,6 @@ public class PlayerCombatManager : MonoBehaviour
 
     public bool isWeaponEquipped = false;
 
-    // Animasyonun % kaçýnda input kabul edelim? (0.75 = %75)
-    [SerializeField] private float attackInputThreshold = 0.75f;
-
-    // YENÝ: Saldýrý animasyonlarýnýn bulunduðu Layer'ýn numarasý (AttackLayer = 1)
-    private int attackLayerIndex = 1;
-
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -29,55 +23,45 @@ public class PlayerCombatManager : MonoBehaviour
     public void ApplyAttackInputs()
     {
         if (!isWeaponEquipped) return;
-        // Bloklama kontrolü
+
         bool isBlocking = block.action.IsPressed();
         _animator.SetBool("isBlocking", isBlocking);
 
-        // Eðer silah yoksa veya blokluyorsak saldýramayýz
-        //if (!isWeaponEquipped || isBlocking) return;
-
-        // --- YENÝ EKLENEN KORUMA (INTERRUPT) ---
+        // --- KORUMA (INTERRUPT) ---
         if (isBlocking)
         {
-            // Eðer gard alýyorsak, yarýda kesilen saldýrýnýn trigger'ýný hafýzadan SÝL
+            // Gard alýrsak saldýrý emrini sil ve hareketi durdur
             _animator.ResetTrigger("attack");
-            GetComponent<PlayerMovement>().enabled = false; // Hareketi de durdur (isteðe baðlý)
-            return; // Aþaðýdaki saldýrý/sol týk kodlarýný hiç okuma
+            GetComponent<PlayerMovement>().enabled = false;
+            return;
         }
         else
         {
-            GetComponent<PlayerMovement>().enabled = true; // Gardý býraktýk, hareketi aç
+            GetComponent<PlayerMovement>().enabled = true;
         }
-        // --------------------------------------
-        // Sol týk basýldý mý?
+
+        // --- TIKLAMA (SPAM) KONTROLÜ ---
         if (attack.action.WasPressedThisFrame())
         {
-            // 1. KRÝTÝK DÜZELTME: 0 yerine 1. katmanýn (AttackLayer) geçiþini kontrol et!
-            // Eðer halihazýrda Attack1'den Attack2'ye geçiþ yapýlýyorsa týký reddet.
-            if (_animator.IsInTransition(attackLayerIndex)) return;
+            int attackLayer = 1; // Saldýrý animasyonlarýnýn olduðu Layer numarasý
 
-            // O anki animasyon durumunu al
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(attackLayerIndex);
+            // 1. O anki durumu VE eðer bir geçiþ varsa "bir sonraki" durumu al
+            AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(attackLayer);
+            AnimatorStateInfo nextState = _animator.GetNextAnimatorStateInfo(attackLayer);
 
-            // EÐER þu an zaten bir saldýrý animasyonu içindeysek...
-            if (stateInfo.IsTag("Attack"))
+            // 2. Kontrol et: Þuan Attack1/Attack2'de miyiz VEYA onlara geçiþ mi yapýyoruz?
+            bool inAttack1 = currentState.IsName("Attack1") || nextState.IsName("Attack1");
+            bool inAttack2 = currentState.IsName("Attack2") || nextState.IsName("Attack2");
+
+            // 3. Eðer Attack1 veya Attack2 içindeysek (ya da girmek üzereysek) týklamayý ÇÖPE AT!
+            if (inAttack1 || inAttack2)
             {
-                // ...ve animasyonun tamamlanma oraný belirlenen eþiðin (0.75) altýndaysa...
-                if (stateInfo.normalizedTime < attackInputThreshold)
-                {
-                    // Vuruþu YOK SAY (Return)
-                    return;
-                }
+                return;
             }
 
-            // 2. KRÝTÝK DÜZELTME: Önceki birikmiþ triggerlarý sil!
-            // Bu sayede spam yapsan bile kuyrukta sadece tek bir tetik kalýr.
+            // 4. Yukarýdaki engele takýlmadýysak (Yani Boþtaysak veya Attack3'teysek) tetiði çek
             _animator.ResetTrigger("attack");
-
-            // Þimdi yeni saldýrýyý tetikle
             _animator.SetTrigger("attack");
         }
-
     }
-
 }
