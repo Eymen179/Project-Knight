@@ -20161,6 +20161,60 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 872954663666569469, guid: b2e45dd6af1b1874582506c085ff8e5c, type: 3}
   m_PrefabInstance: {fileID: 470517632}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &470718696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 470718698}
+  - component: {fileID: 470718697}
+  m_Layer: 0
+  m_Name: GateController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &470718697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470718696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c481e69e27d034d8feead2c147fdc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 1
+  requiredConditionsCount: 1
+  invisibleBlocker: {fileID: 0}
+  door1: {fileID: 1505042320}
+  door2: {fileID: 1505042319}
+  activationEffects:
+  - {fileID: 1664915992}
+  - {fileID: 1664915991}
+  - {fileID: 371327280}
+  - {fileID: 1664915990}
+--- !u!4 &470718698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470718696}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 255.21567, y: 177.09479, z: -6.652568}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &471027704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37494,6 +37548,34 @@ PrefabInstance:
       propertyPath: playerTarget
       value: 
       objectReference: {fileID: 493842463}
+    - target: {fileID: 4724454801174950431, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: onBossDied.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724454801174950431, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: onBossDied.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724454801174950431, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: onBossDied.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 470718697}
+    - target: {fileID: 4724454801174950431, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: onBossDied.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724454801174950431, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: onBossDied.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddConditionMet
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724454801174950431, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: onBossDied.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GateController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4724454801174950431, guid: 73ec9be1c35eb914e9ed63df40f7fff4, type: 3}
+      propertyPath: onBossDied.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -42886,6 +42968,10 @@ PrefabInstance:
     - target: {fileID: 2240058671495941228, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671495941229, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2240058671706095164, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
       propertyPath: m_Layer
@@ -71663,6 +71749,16 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8117132810412722425, guid: 2aa54ccc4610b974793d0d5f80474bed, type: 3}
   m_PrefabInstance: {fileID: 1505042317}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1505042319 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9142822364846810586, guid: 2aa54ccc4610b974793d0d5f80474bed, type: 3}
+  m_PrefabInstance: {fileID: 1505042317}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1505042320 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7096777960149681577, guid: 2aa54ccc4610b974793d0d5f80474bed, type: 3}
+  m_PrefabInstance: {fileID: 1505042317}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1505137027
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79205,6 +79301,21 @@ PrefabInstance:
 --- !u!4 &1664915989 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+  m_PrefabInstance: {fileID: 1664915988}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1664915990 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 649665979040036541, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+  m_PrefabInstance: {fileID: 1664915988}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1664915991 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2240058671706095164, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+  m_PrefabInstance: {fileID: 1664915988}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1664915992 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2240058671495941228, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
   m_PrefabInstance: {fileID: 1664915988}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1668913757
@@ -101345,6 +101456,7 @@ SceneRoots:
   - {fileID: 1365526981}
   - {fileID: 1720080686}
   - {fileID: 762405398}
+  - {fileID: 470718698}
   - {fileID: 1172340796}
   - {fileID: 3342711596952630868}
   - {fileID: 142792289751397081}

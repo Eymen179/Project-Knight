@@ -3084,6 +3084,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 5
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &202925582
 Transform:
   m_ObjectHideFlags: 0
@@ -3138,6 +3141,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &203026399
 Transform:
   m_ObjectHideFlags: 0
@@ -4206,6 +4224,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 2.5
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &276808117
 Transform:
   m_ObjectHideFlags: 0
@@ -6809,6 +6830,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 5
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &451293238
 Transform:
   m_ObjectHideFlags: 0
@@ -7639,6 +7663,11 @@ Transform:
   - {fileID: 778154049}
   m_Father: {fileID: 204684759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &495872037 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2240058671706095164, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+  m_PrefabInstance: {fileID: 1247216387}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &506562157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4349813781079713995, guid: 475fef15f0da9ca4188afff2a2077292, type: 3}
@@ -11711,6 +11740,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 7
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &801442208
 Transform:
   m_ObjectHideFlags: 0
@@ -12861,6 +12893,59 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 3.7}
   m_SizeDelta: {x: 180, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &873187774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 873187776}
+  - component: {fileID: 873187775}
+  m_Layer: 0
+  m_Name: GateController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &873187775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873187774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4c481e69e27d034d8feead2c147fdc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLocked: 1
+  requiredConditionsCount: 8
+  invisibleBlocker: {fileID: 1863244647}
+  door: {fileID: 0}
+  door2: {fileID: 0}
+  activationEffects:
+  - {fileID: 1882776827}
+  - {fileID: 495872037}
+  - {fileID: 1600959884}
+--- !u!4 &873187776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873187774}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 255.21567, y: 177.09479, z: -6.652568}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &875020593
 GameObject:
   m_ObjectHideFlags: 0
@@ -14684,6 +14769,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1003008106
 Transform:
   m_ObjectHideFlags: 0
@@ -18233,6 +18333,234 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71382addb5f08ba41ae9c04deadd488c, type: 3}
+--- !u!1001 &1247216387
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 649665979040036541, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 649665979040036541, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1228261132416786905, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1228261132727146277, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749274797039960231, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749274797350434395, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 142.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 101.02538
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 213.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7574511
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.65289193
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -81.52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697090, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697093, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Name
+      value: P_FX_fog_door_dungeon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058670605697093, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671495941226, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 5.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671495941226, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671495941227, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671495941227, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671495941228, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671495941229, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671706095162, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671706095163, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 0.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671706095163, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: ShapeModule.m_Scale.z
+      value: 1.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671706095164, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671706095165, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671706095165, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 2240058671706095165, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339371749876003514, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092739, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.37388608
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.8761274
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.00000009406358
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.8490751
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.5282723
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.000000077299774
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943106092764, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 116.22201
+      objectReference: {fileID: 0}
+    - target: {fileID: 2791360943399704639, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2908584650965683527, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Intensity
+      value: 9.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5719176936502542195, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5719176936729004431, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048723635692855508, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048723635692855508, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 8048723635692855508, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 8634903755487677057, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8634903755714100349, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2339371749876003514, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1600959886}
+  m_SourcePrefab: {fileID: 100100000, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
 --- !u!1 &1248491857
 GameObject:
   m_ObjectHideFlags: 0
@@ -18271,6 +18599,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1248491859
 Transform:
   m_ObjectHideFlags: 0
@@ -21936,6 +22279,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 5
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1563526510
 Transform:
   m_ObjectHideFlags: 0
@@ -22072,6 +22418,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 5
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1575458836
 Transform:
   m_ObjectHideFlags: 0
@@ -22628,6 +22977,34 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6215015086781997334, guid: 9c9487d9c1febb9468b932a1a751fb9b, type: 3}
   m_PrefabInstance: {fileID: 1569632276}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1600959884 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2339371749876003514, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+  m_PrefabInstance: {fileID: 1247216387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1600959886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1600959884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1001 &1604212823
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23831,6 +24208,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1696594239
 Transform:
   m_ObjectHideFlags: 0
@@ -24661,6 +25053,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1736244948
 Transform:
   m_ObjectHideFlags: 0
@@ -25307,6 +25702,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 3.5
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1792478121
 Transform:
   m_ObjectHideFlags: 0
@@ -26083,6 +26481,114 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5414131312663278120, guid: d6df1db0f59f336438080737d0f58ee6, type: 3}
   m_PrefabInstance: {fileID: 2067299828}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1863244646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863244650}
+  - component: {fileID: 1863244649}
+  - component: {fileID: 1863244648}
+  - component: {fileID: 1863244647}
+  m_Layer: 0
+  m_Name: InvisibleWall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1863244647
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863244646}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1863244648
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863244646}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1863244649
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863244646}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1863244650
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863244646}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 142.202, y: 101.734, z: 213.1}
+  m_LocalScale: {x: 2.48, y: 2.48, z: 2.48}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1864117614 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5047746623303998532, guid: d31c772857f470946a0e7a36a0a472fe, type: 3}
@@ -26182,6 +26688,11 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8534338046671401085, guid: aebb7b611c1b20c4e87fe322130ad60d, type: 3}
   m_PrefabInstance: {fileID: 936999071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1882776827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2240058671495941228, guid: 476acdf83b7c55840b1ea36d3a417a26, type: 3}
+  m_PrefabInstance: {fileID: 1247216387}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1884599705 stripped
 Transform:
@@ -26317,6 +26828,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1899763076
 Transform:
   m_ObjectHideFlags: 0
@@ -27077,6 +27603,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1943463946
 Transform:
   m_ObjectHideFlags: 0
@@ -29079,6 +29620,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &2085761083
 Transform:
   m_ObjectHideFlags: 0
@@ -30977,6 +31533,21 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 873187775}
+        m_TargetAssemblyTypeName: GateController, Assembly-CSharp
+        m_MethodName: AddConditionMet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1876805736991468734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31063,6 +31634,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 5
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1986200487606818169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31084,6 +31658,9 @@ MonoBehaviour:
   respawnDelay: 1
   activationDistance: 50
   spawnRadius: 0
+  onSpawnerCleared:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!223 &2031639230561171322
 Canvas:
   m_ObjectHideFlags: 0
@@ -34066,8 +34643,11 @@ SceneRoots:
   - {fileID: 796214560}
   - {fileID: 7699670}
   - {fileID: 5110961461878645453}
+  - {fileID: 1247216387}
+  - {fileID: 1863244650}
   - {fileID: 1275801557}
   - {fileID: 1514587108}
+  - {fileID: 873187776}
   - {fileID: 1560482907}
   - {fileID: 1593399610}
   - {fileID: 1852925993}

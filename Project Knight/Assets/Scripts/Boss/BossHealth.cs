@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 
 public class BossHealth : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class BossHealth : MonoBehaviour
 
     // --- ML-AGENTS REFERANSI ---
     private BossAgent agent;
+
+    [Header("Görev/Kapý Sistemi (Events)")]
+    public UnityEvent onBossDied;
 
     void Start()
     {
@@ -151,6 +155,10 @@ public class BossHealth : MonoBehaviour
             if (UIManager.Instance != null && UIManager.Instance.bossHealthSlider != null)
                 UIManager.Instance.bossHealthSlider.gameObject.SetActive(false);
         }
+
+        // --- YENÝ EKLENEN KISIM ---
+        onBossDied?.Invoke(); // Boss ölünce sinyal gönder
+        // --------------------------
 
         // BÜYÜK CEZA: Boss ölürse aðýr eksi puan alýr ve eðitim turu (Episode) biter.
         if (agent != null)

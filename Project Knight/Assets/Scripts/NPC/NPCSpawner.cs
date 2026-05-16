@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro; // TextMeshPro Kütüphanesi
+using UnityEngine.Events;
 
 public class NPCSpawner : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class NPCSpawner : MonoBehaviour
     private HashSet<GameObject> countedDeadNPCs = new HashSet<GameObject>();
 
     private int currentQuota; //Kalan toplam kota
+
+    [Header("Görev/Kapý Sistemi (Events)")]
+    public UnityEvent onSpawnerCleared; // Spawner temizlendiðinde çalýþacak olay
+    private bool isCleared = false;     // Sadece 1 kere çalýþmasý için kilit
 
     private void Start()
     {
@@ -116,6 +121,15 @@ public class NPCSpawner : MonoBehaviour
                 currentQuota--;
                 countedDeadNPCs.Add(npc); //Bu NPC sayildi, bir daha sayma.
                 UpdateDebugTexts();
+
+                // --- YENÝ EKLENEN KISIM: KOTA SIFIRLANDIYSA SÝNYAL GÖNDER ---
+                if (currentQuota <= 0 && !isCleared)
+                {
+                    isCleared = true;
+                    Debug.Log(gameObject.name + " Spawner'ý tamamen temizlendi!");
+                    onSpawnerCleared?.Invoke(); // Unity Editöründe baðladýðýmýz kapýlarý açar
+                }
+                // ---------------------------------------------------------
             }
 
             //NPC 5 SANÝYE SONRA SAHNEDEN SILINDIGINDE YERÝNE YENÝSÝNÝ CAGIR
