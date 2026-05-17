@@ -2,22 +2,22 @@ using UnityEngine;
 
 public class GateController : MonoBehaviour
 {
-    [Header("Kilit Ayarlarý")]
+    [Header("Lock Settings")]
     public bool isLocked = true;
 
     [Tooltip("Bu kapýnýn açýlmasý için kaç farklý görevin (spawner/boss) bitmesi gerekiyor?")]
     public int requiredConditionsCount = 1;
     private int currentConditionsMet = 0;
 
-    [Header("Kontrol Edilecek Objeler")]
-    public Collider invisibleBlocker;      // Geçiþi engelleyen görünmez duvar
+    [Header("Invisible Blocker")]
+    public Collider invisibleBlocker;
 
-    [Header("Kapý Objeleri")]
-    public GameObject door1; // Ýsim karmaþasýný önlemek için door1 yapýldý
+    [Header("Door Objects")]
+    public GameObject door1;
     public GameObject door2;
 
-    [Header("Görsel Efektler")]
-    public GameObject[] activationEffects; // Açýlýnca çýkacak ýþýklar, partiküller
+    [Header("Visual Effects")]
+    public GameObject[] activationEffects;
 
     void Start()
     {
@@ -27,13 +27,12 @@ public class GateController : MonoBehaviour
         }
     }
 
-    private void LockGate()
+    private void LockGate()//Isinlanma Noktasini Kapama Metodu
     {
-        // Kapýyý kitle, duvarý aç
+        //Gorunmez duvari aktif et.
         if (invisibleBlocker != null) invisibleBlocker.enabled = true;
 
-        // Kapýlarý ayrý ayrý kontrol et ve kesin olarak KAPALI açýlarýna (0,0,0) sabitle
-        // localRotation kullanýyoruz çünkü objenin kendi ekseninde dönmesini istiyoruz
+        //Kapilari Kapat.
         if (door1 != null) door1.transform.localRotation = Quaternion.Euler(0, 0, 0);
         if (door2 != null) door2.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
@@ -43,7 +42,7 @@ public class GateController : MonoBehaviour
         }
     }
 
-    // Spawner veya Boss öldüðünde bu metot tetiklenecek
+    //Unity Event Metodu: Sarta gore metot cagirilacak.
     public void AddConditionMet()
     {
         if (!isLocked) return;
@@ -57,18 +56,18 @@ public class GateController : MonoBehaviour
         }
     }
 
-    private void UnlockGate()
+    private void UnlockGate()// Isinlanma Noktasini Acma Metodu
     {
         isLocked = false;
 
-        // Görünmez duvarý kaldýr, geçiþe izin ver
+        //Gorunmez duvari kapat.
         if (invisibleBlocker != null) invisibleBlocker.enabled = false;
 
-        // Kapýlarý ayrý ayrý kontrol et ve kesin olarak AÇIK açýlarýna sabitle
+        //Kapilari ac.
         if (door1 != null) door1.transform.localRotation = Quaternion.Euler(0, -113, 0);
         if (door2 != null) door2.transform.localRotation = Quaternion.Euler(0, 113, 0);
 
-        // Büyülü ýþýklarý/partikülleri yak
+        //Efektleri aktif et.
         foreach (GameObject effect in activationEffects)
         {
             if (effect != null) effect.SetActive(true);

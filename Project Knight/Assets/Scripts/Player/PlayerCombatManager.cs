@@ -24,13 +24,13 @@ public class PlayerCombatManager : MonoBehaviour
     {
         if (!isWeaponEquipped) return;
 
+        //Blok kontrolcusu (Sag tik)
         bool isBlocking = block.action.IsPressed();
         _animator.SetBool("isBlocking", isBlocking);
 
-        // --- KORUMA (INTERRUPT) ---
+        //Blok yapiyorken saldiri yapilmayacak ve hareket duracak.
         if (isBlocking)
         {
-            // Gard alýrsak saldýrý emrini sil ve hareketi durdur
             _animator.ResetTrigger("attack");
             GetComponent<PlayerMovement>().enabled = false;
             return;
@@ -40,26 +40,24 @@ public class PlayerCombatManager : MonoBehaviour
             GetComponent<PlayerMovement>().enabled = true;
         }
 
-        // --- TIKLAMA (SPAM) KONTROLÜ ---
+        //Saldiri kontrolcusu (Sol tik)
         if (attack.action.WasPressedThisFrame())
         {
-            int attackLayer = 1; // Saldýrý animasyonlarýnýn olduðu Layer numarasý
+            int attackLayer = 1;
 
-            // 1. O anki durumu VE eðer bir geçiþ varsa "bir sonraki" durumu al
+            //Uclu saldiridan ilk ikisinde sol tiki etkisiz hale getir.
             AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(attackLayer);
             AnimatorStateInfo nextState = _animator.GetNextAnimatorStateInfo(attackLayer);
 
-            // 2. Kontrol et: Þuan Attack1/Attack2'de miyiz VEYA onlara geçiþ mi yapýyoruz?
             bool inAttack1 = currentState.IsName("Attack1") || nextState.IsName("Attack1");
             bool inAttack2 = currentState.IsName("Attack2") || nextState.IsName("Attack2");
 
-            // 3. Eðer Attack1 veya Attack2 içindeysek (ya da girmek üzereysek) týklamayý ÇÖPE AT!
             if (inAttack1 || inAttack2)
             {
                 return;
             }
 
-            // 4. Yukarýdaki engele takýlmadýysak (Yani Boþtaysak veya Attack3'teysek) tetiði çek
+            //Saldiri animasyonu
             _animator.ResetTrigger("attack");
             _animator.SetTrigger("attack");
         }

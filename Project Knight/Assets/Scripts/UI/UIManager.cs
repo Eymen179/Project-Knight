@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
     }
-    void Start()
+    void Start()//UI Objelerinin Baslangic Ayarlari
     {
         mainInventoryGroup.SetActive(false);
         pnlItemDetails.SetActive(false);
@@ -56,7 +56,7 @@ public class UIManager : MonoBehaviour
         pnlDieScreen.SetActive(false);
         if (playerHealthSlider != null)
         {
-            playerHealthSlider.maxValue = 1f; // Slider deðer aralýðýný 0-1 yapýyoruz
+            playerHealthSlider.maxValue = 1f;
             playerHealthSlider.value = 1f;
         }
         if(SceneManager.GetActiveScene().name == "Dungeon_BossRoom")

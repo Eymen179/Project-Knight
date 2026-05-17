@@ -1,24 +1,23 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem; // 1. Yeni Input Sistemi için bu satýrý ekle
+using UnityEngine.InputSystem;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [Header("Ayarlar")]
+    [Header("Settings")]
     public Camera playerCamera;
     public float interactionDistance = 3f;
-    public float interactionRadius = 0.5f; // Ray'in kalýnlýðý (Küre yarýçapý)
+    public float interactionRadius = 0.5f; //Ray Kalinligi
 
-    // Hangi katmanlarýn etkileþime girebileceðini seç (Örn: Default, Interactable)
-    // Player katmanýný BURADA SEÇMEMELÝSÝN.
+    //Etkilesime girilecek objelerin katmanlari
     public LayerMask interactableLayers;
 
     [Header("Input")]
     [SerializeField] private InputActionReference interactAction;
 
-    // O an odaklandýðýmýz (baktýðýmýz) eþya
+    //Anlik bakilen objeler
     private ItemPickup currentFocusItem;
-    private ChestLoot currentFocusChest; // Sandýk referansý
+    private ChestLoot currentFocusChest;
 
     private void OnEnable()
     {
@@ -45,6 +44,7 @@ public class PlayerInteraction : MonoBehaviour
         UpdateInteractionUI();
     }
 
+    //Etkilesim Metodu
     private void DetectInteractable()
     {
         // Ekranýn tam ortasýndan bir ýþýn oluþtur
@@ -61,30 +61,29 @@ public class PlayerInteraction : MonoBehaviour
 
         if (hitSomething)
         {
-            // Çarptýðýmýz objede ItemPickup scripti var mý?
+            //Etkilesime girilen obje envantere alinabilir bir item mi?
             if (hit.collider.TryGetComponent<ItemPickup>(out ItemPickup item))
             {
-                // Eðer yeni bir eþyaya baktýysak UI güncelle
                 if (currentFocusItem != item)
                 {
                     currentFocusItem = item;
                 }
-                return; // Bulduk, fonksiyondan çýkabiliriz
+                return;
             }
-            // 2. Ýhtimal: Sandýða mý bakýyoruz? (YENÝ)
+            //Etkilesime girilen obje bir sandik mi?
             else if (hit.collider.TryGetComponent<ChestLoot>(out ChestLoot chest))
             {
-                // Sadece kapaðý açýlmamýþ sandýklara etkileþim ver
+                //Daha once acilmamis sandik kontrolcusu
                 if (!chest.isOpened)
                 {
                     if (currentFocusChest != chest) currentFocusChest = chest;
-                    currentFocusItem = null; // Eþyaya bakmýyoruz
+                    currentFocusItem = null;
                     return;
                 }
             }
         }
 
-        // Eðer buraya geldiysek; ya bir þeye çarpmadýk ya da çarptýðýmýz þey eþya deðil.
+        //Etkilesime girilen bir obje yok.
         if (currentFocusItem != null)
         {
             currentFocusItem = null;
@@ -94,52 +93,48 @@ public class PlayerInteraction : MonoBehaviour
             currentFocusChest = null;
         }
     }
+
+    //Etkilesim UI'ini guncelleme metodu
     public void UpdateInteractionUI()
     {
-        // 2. KONTROL: UI Güncelleme Mantýðý (Düzeltilen Kýsým)
-
-        // Eðer geçerli bir eþya algýlandýysa...
+        //Envanter Objesi
         if (currentFocusItem != null)
         {
             UIManager.Instance.txtPrompt.text = $"[E] Take \n{currentFocusItem.item.itemName}";
             UIManager.Instance.txtPrompt.gameObject.SetActive(true);
         }
-        // Sandýk UI'ý (YENÝ)
+        //Sandýk
         else if (currentFocusChest != null && !currentFocusChest.isOpened)
         {
             UIManager.Instance.txtPrompt.text = $"[E] Open \nChest";
             UIManager.Instance.txtPrompt.gameObject.SetActive(true);
         }
-        else // Eðer hiçbir eþya algýlanmadýysa (veya eþya az önce silindiyse)...
+        else
         {
-            // Referansý temizle ve yazýyý zorla kapat
             currentFocusItem = null;
             currentFocusChest = null;
             UIManager.Instance.txtPrompt.gameObject.SetActive(false);
         }
-
-        // Not: Yeni input sistemine geçtiðimiz için burada tuþ kontrolü yok,
-        // OnInteractPerformed fonksiyonu o iþi yapýyor.
     }
+
+    //Etkilesime Girme Metodu
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
+        //Envanter Objesini envantere al.
         if (currentFocusItem != null)
         {
             currentFocusItem.Pickup();
 
-            // Eþyayý aldýktan sonra UI'ý hemen kapatmak için referansý temizle
-            // Çünkü obje yok olacak (Destroy edilecek)
             currentFocusItem = null;
         }
-        // Sandýk Açma (YENÝ)
+        //Sandigi ac.
         else if (currentFocusChest != null && !currentFocusChest.isOpened)
         {
             currentFocusChest.OpenChest();
-            currentFocusChest = null; // Açýldýðý an UI'ý temizlemek için referansý sil
+            currentFocusChest = null;
         }
     }
 
-    // Editörde SphereCast'in çapýný ve menzilini görmek için (Hata ayýklama)
     private void OnDrawGizmos()
     {
         if (playerCamera == null) return;

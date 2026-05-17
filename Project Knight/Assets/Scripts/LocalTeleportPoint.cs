@@ -9,11 +9,9 @@ public class LocalTeleportPoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // CharacterController varsa anlýk kapatmak zorundayýz
             CharacterController cc = other.GetComponent<CharacterController>();
             if (cc != null) cc.enabled = false;
 
-            // Sahne yüklemeden direkt pozisyonu deðiþtir
             other.transform.position = localTargetPoint.position;
             other.transform.rotation = localTargetPoint.rotation;
 

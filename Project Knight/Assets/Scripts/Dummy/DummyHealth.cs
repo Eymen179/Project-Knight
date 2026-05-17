@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // TextMeshPro için gerekli
+using TMPro;
 
 public class DummyHealth : MonoBehaviour
 {

@@ -2,24 +2,22 @@ using UnityEngine;
 
 public class PlayerAttackSystem : MonoBehaviour
 {
-    [Header("Ayarlar")]
+    [Header("Settings")]
     public Transform attackPoint;
     public LayerMask enemyLayers;
 
     private EquipmentManager equipmentManager;
     private Item itemInHand;
 
-    // --- YENÝ EKLENEN BONUS DEÐÝÞKENLERÝ (Public yapýyoruz ki CrystalEffect eriþsin) ---
     [Header("Active Buffs/Effects")]
-    public int bonusDamage = 0;                 // Kristalden gelen ekstra hasar
-    public float bonusCritMultiplier = 0f;      // Kristalden gelen ekstra kritik çarpaný
-    public int bonusCritChance = 0;             // Kristalden gelen ekstra kritik þansý
-    // ---------------------------------------------------------------------------------
-    [Header("Permanent Upgrades (Kalýcý)")]
+    public int bonusDamage = 0;
+    public float bonusCritMultiplier = 0f;
+    public int bonusCritChance = 0;
+
+    [Header("Permanent Upgrades")]
     public int permanentBonusDamage = 0;
     public float permanentBonusCritMultiplier = 0f;
     public int permanentBonusCritChance = 0;
-    // ---------------------------------------------------------------------------------
 
     void Start()
     {
@@ -28,26 +26,26 @@ public class PlayerAttackSystem : MonoBehaviour
 
     public void DealDamage()
     {
-        // 1. ÖNCE ELÝMÝZDEKÝ SÝLAHI GÜNCELLEYELÝM (Eksik Olan Kýsým)
+        //Eldeki kilic kontrolcusu
         if (equipmentManager != null)
         {
-            // EquipmentManager'dan güncel eþyayý alýyoruz
             itemInHand = equipmentManager.currentItemInHand;
         }
-        // 1. Hasarý EquipmentManager'dan al
+
+        //Aktif hasar kontrolcusu
         int baseDamage = 1;
         if (equipmentManager != null)
         {
             baseDamage = equipmentManager.GetCurrentWeaponDamage();
         }
 
-        // 2. Bonus hasarý ekle (Kristal etkisi burada devreye giriyor)
+        //Anlik hasar hesabi
         int totalDamage = baseDamage + bonusDamage + permanentBonusDamage;
 
-        // 3. Kritik hesaplamaya gönder
+        //Final hasar hesabi
         int finalDamage = DamageCalculate(totalDamage);
 
-        // ... (OverlapSphere ve Vuruþ kodlarý aynen kalacak) ...
+        //Saldiri kuresine giren objelerin tespiti
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, itemInHand.attackRange, enemyLayers);
 
         foreach (Collider enemy in hitEnemies)
@@ -66,12 +64,12 @@ public class PlayerAttackSystem : MonoBehaviour
         }
     }
 
+    //Kritik hasar hesaplama metodu
     private int DamageCalculate(int currentDamage)
     {
         if (itemInHand == null) return currentDamage;
 
-        // Þans hesaplarken bonus þansý da ekle
-        // Örn: Kýlýç %10 + Kristal %20 = %30 þans
+        //Son kritik sansi: Eldeki kilic + gecici kristal efekti + kalici kristal efekti
         int totalChance = itemInHand.attackDamageMultiplierChance + bonusCritChance + permanentBonusCritChance;
 
         if (totalChance > 100) totalChance = 100;
@@ -82,7 +80,7 @@ public class PlayerAttackSystem : MonoBehaviour
         {
             Debug.Log("Kritik Vuruþ!");
 
-            // Çarpan hesaplarken bonus çarpaný da ekle
+            //Son kritik hasar carpani: Eldeki kilic + gecici kristal efekti + kalici kristal efekti
             float totalMultiplier = itemInHand.attackDamageMultiplier + bonusCritMultiplier + permanentBonusCritMultiplier;
 
             return Mathf.RoundToInt(currentDamage * totalMultiplier);
@@ -91,7 +89,6 @@ public class PlayerAttackSystem : MonoBehaviour
         return currentDamage;
     }
 
-    // Editörde saldýrý menzilini görmek için yardýmcý çizim
     private void OnDrawGizmos()
     {
         float gizmosRange = 1f;

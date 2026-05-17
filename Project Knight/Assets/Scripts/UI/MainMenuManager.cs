@@ -5,7 +5,7 @@ public class MainMenuManager : MonoBehaviour
     public GameObject pnlMainMenu;
     public GameObject pnlOptionsMenu;
 
-    //Scene Transition debugging
+    //Test Sahnesi icin enum degeri
     public SceneController.GameScenes debugDestinationScene;
     void Start()
     {
@@ -13,12 +13,11 @@ public class MainMenuManager : MonoBehaviour
         pnlOptionsMenu.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
-    //Ana menüdeki butonlarýn fonksiyonlarý
+    //Ana menudeki butonlarin fonksiyonlari
     public void PlayButton()
     {
         SceneController.Instance.LoadScene(SceneController.GameScenes.Map);

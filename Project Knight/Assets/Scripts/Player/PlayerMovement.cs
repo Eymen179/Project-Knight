@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Orijinal Değişkenler
     public Vector2 _moveDirection;
     private Rigidbody rb;
     private Animator _animator;
@@ -14,24 +13,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float runSpeed = 6f;
 
-    // Kamera ve Rotasyon
+    //Kamera ve Rotasyon
     private Transform mainCameraTransform;
     [SerializeField] private float turnSpeed = 10f;
 
-    // --- Zıplama Değişkenleri ---
     [Header("Jump")]
     [SerializeField] private InputActionReference jump;
     [SerializeField] private float jumpForce = 5f;
 
-    // --- Yer Kontrolü Değişkenleri ---
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
     private bool isGrounded;
 
-    // --- Kılıç Durumu ---
-    // Bu değişkeni EquipmentManager güncelleyecek
+    //Kilic Durumu
     private bool isEquipped;
 
 
@@ -43,41 +39,38 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        // Update sadece "Yönetici" gibi davranır.
-        // Detayları bilmez, sadece ilgili departmanlara (metotlara) emir verir.
-
-        CheckGroundStatus(); // Yerde miyiz kontrol et
-        HandleInput();       // Tuşlara basılıyor mu?
-        HandleJump();        // Zıplama isteği var mı?
-        UpdateAnimations();  // Animasyon parametrelerini güncelle
+        CheckGroundStatus(); //Yer Kontrolcusu
+        HandleInput();       //Tus Basma Kontrolcusu
+        HandleJump();        //Ziplama Kontrolcusu
+        UpdateAnimations();  //Animasyon Kontrolcusu
     }
 
     void FixedUpdate()
     {
-        // Fizik işlemleri de kendi metotlarına ayrılır
-        ApplyMovement();     // Hareketi uygula
-        ApplyRotation();     // Dönüşü uygula
+        ApplyMovement();     //Hareket
+        ApplyRotation();     //Donus
     }
 
-    // --- ALT METOTLAR (Detay İşçiler) ---
 
+    //Yer Kontrolcu Metodu
     private void CheckGroundStatus()
     {
         bool wasGrounded = isGrounded;
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
 
-        // Yere inme (Landing) mantığı
         if (isGrounded && !wasGrounded)
         {
             _animator.SetTrigger("land");
         }
     }
 
+    //Tus Basma Kontrolcu Metodu
     private void HandleInput()
     {
         _moveDirection = move.action.ReadValue<Vector2>();
     }
 
+    //Ziplama Kontrolcu Metodu
     private void HandleJump()
     {
         if (jump.action.WasPressedThisFrame() && isGrounded)
@@ -91,7 +84,8 @@ public class PlayerMovement : MonoBehaviour
                 _animator.SetTrigger("jump");
         }
     }
-
+    
+    //Animasyon Kontrolcu Metodu
     private void UpdateAnimations()
     {
         _animator.SetBool("isGrounded", isGrounded);
@@ -102,7 +96,8 @@ public class PlayerMovement : MonoBehaviour
 
         _animator.SetFloat("speed", animationSpeed);
     }
-
+    
+    //Hareket Metodu
     private void ApplyMovement()
     {
         if (_moveDirection == Vector2.zero)
@@ -110,10 +105,11 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             return;
         }
-
+        //Kosma - Yurume Kontrolcusu
         bool isRunning = run.action.IsPressed();
         float currentSpeed = isRunning ? runSpeed : walkSpeed;
 
+        //Kamera Yonu Ayarlari
         Vector3 camForward = mainCameraTransform.forward;
         Vector3 camRight = mainCameraTransform.right;
         camForward.y = 0f;
@@ -127,6 +123,7 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
     }
 
+    //Donus Metodu
     private void ApplyRotation()
     {
         if (_moveDirection == Vector2.zero) return;
@@ -144,13 +141,11 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
     }
 
-    // --- YENİ EKLENDİ: Dışarıdan durumu ve animasyonları güncellemek için ---
-    // EquipmentManager bu fonksiyonu çağıracak.
+    //Hareket Animasyonunu Kilicli mi Kilicsiz mi gosterecegimizi belirleyen metot
     public void SetEquippedState(bool state)
     {
         isEquipped = state;
 
-        // Kılıç alma/bırakma animasyon tetiklemelerini buraya taşıdık
         if (isEquipped)
         {
             _animator.SetTrigger("getSword");

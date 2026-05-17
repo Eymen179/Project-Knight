@@ -1,47 +1,44 @@
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Audio;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Can Ayarlarý")]
+    [Header("Health Settings")]
     public int maxHealth = 250;
     public int currentHealth;
 
-    [Header("Savunma (Blok) Ayarlarý")]
-
+    [Header("Defense (Block) Settings")]
     private Animator animator;
     private DamageFlasher damageFlasher;
 
-    [Header("Geliþmiþ Blok & Stun Ayarlarý")]
-    public int maxBlockCount = 3;       // Peþ peþe maksimum blok hakký
+    [Header("Advanced Block & Stun Settings")]
+    public int maxBlockCount = 3;
 
-    private int currentBlockCount;      // Kalan blok hakkýmýz
-    private float lastBlockTime = 0f;   // Son bloklanan saldýrýnýn zamaný
+    private int currentBlockCount;
+    private float lastBlockTime = 0f;
 
-    public float blockResetTime = 5f;   // Haklarýn yenilenmesi için gereken süre
-    public float stunDuration = 1f;     // Sersemleme süresi
+    public float blockResetTime = 5f;
+    public float stunDuration = 1f;
 
-    private bool isStunned = false;     // Karakter sersemlemiþ durumda mý?
+    private bool isStunned = false;
     public bool isDead = false;
 
     private void Start()
     {
         currentHealth = maxHealth;
-        currentBlockCount = maxBlockCount; // Baþlangýçta 3 hakkýmýz var
+        currentBlockCount = maxBlockCount;
         animator = GetComponent<Animator>();
         damageFlasher = GetComponent<DamageFlasher>();
 
         if (SceneController.Instance != null && SceneController.Instance.savedMaxHealth != -1)
         {
-            // Verileri köprüden çek (Böylece 250 yerine kalýcý artýrýlmýþ 280 caný alýr)
+            //Sahne gecisinden gelen can bilgileri
             maxHealth = SceneController.Instance.savedMaxHealth;
             currentHealth = SceneController.Instance.savedCurrentHealth;
         }
         else
         {
-            // Oyun ilk defa baþlýyorsa caný fulleyerek baþlat
             currentHealth = maxHealth;
         }
 
@@ -51,7 +48,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead || isStunned) return;
 
-        // 5 Saniye Kuralý: Eðer haklarýmýz eksikse ve son bloktan beri 5 saniye geçtiyse
+        // 5 Saniye Kurali: Blok yenileme
         if (currentBlockCount < maxBlockCount)
         {
             if (Time.time - lastBlockTime >= blockResetTime)
@@ -61,14 +58,14 @@ public class PlayerHealth : MonoBehaviour
             }
         }
     }
-    // --- YENÝ EKLENEN ÝYÝLEÞME FONKSÝYONU ---
+    //Ýyilesme Metodu
     public void Heal(int healAmount)
     {
-        if (isDead) return; // Öldüyse can basýlamaz
+        if (isDead) return;
 
         currentHealth += healAmount;
 
-        // Canýmýz maksimum caný geçmesin
+        //Can yenileme - max can kontrolcusu
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
@@ -80,27 +77,27 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead) return;
 
-        // 1. BLOK KONTROLÜ (Eðer sersemlememiþsek ve blok yapýyorsak)
+        //Bloklama Kontrolcusu
         if (!isStunned && animator != null && animator.GetBool("isBlocking"))
         {
-            currentBlockCount--; // 1 hakkýmýzý düþ
-            lastBlockTime = Time.time; // Zamanlayýcýyý sýfýrla
+            currentBlockCount--;
+            lastBlockTime = Time.time;
 
             if (currentBlockCount > 0)
             {
                 Debug.Log($"Saldýrý BLOKLANDI! Kalan Hak: {currentBlockCount}");
-                return; // Hasar alma
+                return;
             }
             else
             {
-                // HAKKIMIZ BÝTTÝ -> SERSEMLEME (STUN)
+                //Blok hakki dolunca
                 Debug.Log("GARD KIRILDI! Oyuncu Sersemledi!");
                 StartCoroutine(StunRoutine());
-                return; // Gard kýrýldýðýnda o vuruþun hasarýný almaz ama kilitlenir
+                return;
             }
         }
 
-        // 2. HASAR ALMA
+        //Hasar yeme
         currentHealth -= damageAmount;
         if (currentHealth < 0) currentHealth = 0;
         Debug.Log($"Oyuncu Hasar Aldý! Kalan Can: {currentHealth}");
@@ -108,18 +105,17 @@ public class PlayerHealth : MonoBehaviour
 
         if (damageFlasher != null) damageFlasher.Flash();
 
-        // 3. ÖLÜM KONTROLÜ
+        //Olum kontrolcusu
         if (currentHealth <= 0) Die();
     }
 
-    // --- SERSEMLEME (STUN) SÝSTEMÝ ---
+    //Stun sistemi
     private IEnumerator StunRoutine()
     {
         isStunned = true;
-        animator.SetBool("isBlocking", false); // Gardý zorla indir
-        animator.SetTrigger("stun"); // Sersemleme animasyonunu oynat
+        animator.SetBool("isBlocking", false); //Blok zorla kapatilir.
+        animator.SetTrigger("stun");
 
-        // Hareketi ve Saldýrýyý Kapat
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerCombatManager>().enabled = false;
 
@@ -128,7 +124,6 @@ public class PlayerHealth : MonoBehaviour
 
         if (!isDead)
         {
-            // 2 saniye sonra her þeyi geri aç ve haklarý yenile
             GetComponent<PlayerMovement>().enabled = true;
             GetComponent<PlayerCombatManager>().enabled = true;
             currentBlockCount = maxBlockCount;
@@ -136,23 +131,21 @@ public class PlayerHealth : MonoBehaviour
             Debug.Log("Oyuncu sersemlemeden çýktý, savaþa hazýr!");
         }
     }
+    //UI Guncelleme metodu
     public void UpdateUI()
     {
-        // Artýk UIManager deðil, kendi referanslarýmýzý kontrol ediyoruz
-        // 1. Slider Güncelleme
         if (UIManager.Instance.playerHealthSlider != null)
         {
             float fillValue = (float)currentHealth / maxHealth;
             UIManager.Instance.playerHealthSlider.value = fillValue;
         }
 
-        // 2. Text Güncelleme
         if (UIManager.Instance.txtHealth != null)
         {
             UIManager.Instance.txtHealth.text = currentHealth.ToString() + "/" + maxHealth;
         }
     }
-
+    //Olum metodu
     public void Die()
     {
         isDead = true;

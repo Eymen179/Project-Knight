@@ -6,48 +6,45 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController Instance;
 
-    // --- YENÝ EKLENEN: TAÞINACAK VERÝLER (DATA CARRIER) ---
+    //Item Datalarini tutacak struct
     [System.Serializable]
     public struct ItemSaveData
     {
         public Item item;
         public int count;
-        public int slotIndex; // YENÝ: Eþyanýn hangi numaralý slotta durduðu bilgisi
+        public int slotIndex;
     }
 
-    // Kýlýçlarý ve diðer eþyalarý sahneler arasý taþýmak için ölümsüz listeler
+    //Kiliclari ve diger esyalari sahneler arasi tasimak icin olumsuz listeler
     [HideInInspector] public List<ItemSaveData> savedSwordSlots = new List<ItemSaveData>();
     [HideInInspector] public List<ItemSaveData> savedOtherSlots = new List<ItemSaveData>();
-    // Toolbar'daki özel kýlýç slotu için tekil veri alaný
+
+    //Toolbar'daki kilic slotu
     [HideInInspector] public ItemSaveData savedToolbarSword;
     [HideInInspector] public bool hasSavedToolbarSword = false;
-    // -------------------------
 
     [Header("Spawn Settings")]
-    public string targetSpawnPointID = ""; // YENÝ: Hangi noktada doðacaðýz?
+    public string targetSpawnPointID = "";
 
     [Header("Player Stats Save Data")]
-    public int savedCurrentHealth = -1; // -1, henüz bir kayýt yok demektir
+    public int savedCurrentHealth = -1;
     public int savedMaxHealth = -1;
 
-    // --- YENÝ EKLENEN: KALICI EFEKT VERÝLERÝ ---
     [Header("Permanent Effect Save Data")]
-    public bool hasSavedPermanentEffects = false; // Efekt var mý kontrolü
+    public bool hasSavedPermanentEffects = false;
 
-    // UI Sayaçlarý
+    //UI degiskenleri (Kalici Efektler)
     public int savedPermanentHealthCount = 0;
     public int savedPermanentDamageCount = 0;
     public int savedPermanentSpeedCount = 0;
 
-    // Gerçek Bonus Deðerleri
+    //Kalici Efekt Degiskenleri
     public int savedPermanentBonusDamage = 0;
     public int savedPermanentBonusCritChance = 0;
     public float savedPermanentBonusCritMultiplier = 0f;
     public float savedPermanentBonusAttackSpeed = 0f;
-    // ------------------------------------------
 
     [Header("Difficulty Scaling")]
-    // Oyun ilk baþladýðýnda zorluk 1.0 (Normal)
     public float globalDifficultyMultiplier = 1.0f;
     private void Awake()
     {
@@ -71,6 +68,7 @@ public class SceneController : MonoBehaviour
     {
 
     }
+    //Sahne Yukleme Metodu
     public void LoadScene(GameScenes scene)
     {
         switch (scene)
@@ -101,21 +99,21 @@ public class SceneController : MonoBehaviour
                 break;
         }
     }
-    // --- YENÝ EKLENEN SIFIRLAMA METODU ---
-    // Restart veya Main Menu'ye dönüldüðünde eski kayýtlarý temizler.
+
+    //Ana Menuye Donunce Verileri Temizleme Metodu
     public void ResetAllSavedData()
     {
-        // Envanter temizliði
+        //Envanter
         savedSwordSlots.Clear();
         savedOtherSlots.Clear();
         hasSavedToolbarSword = false;
 
-        // Can ve Spawn noktasý temizliði
+        //Can ve Spawn Noktasi
         savedCurrentHealth = -1;
         savedMaxHealth = -1;
         targetSpawnPointID = "";
 
-        // Kalýcý (Crystal) güçlendirmelerin temizliði
+        //Kalici efektler
         hasSavedPermanentEffects = false;
         savedPermanentHealthCount = 0;
         savedPermanentDamageCount = 0;
@@ -127,7 +125,8 @@ public class SceneController : MonoBehaviour
 
         Debug.Log("SceneController hafýzasý baþarýyla temizlendi.");
     }
-    // ------------------------------------
+
+    //Sahne enum degerleri
     public enum GameScenes
     {
         MainMenu,

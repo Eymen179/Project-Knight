@@ -2,34 +2,32 @@ using UnityEngine;
 
 public class TeleportPoint : MonoBehaviour
 {
-    [Header("Iþýnlanma Ayarlarý")]
+    [Header("Teleport Settings")]
     [Tooltip("Bu portaldan geçince hangi sahne yüklenecek?")]
-    // Kendi yazdýðýn enum'ý burada çaðýrýyoruz. Inspector'da þýk bir liste olacak.
     public SceneController.GameScenes destinationScene;
 
-    // --- YENÝ EKLENEN ---
     [Tooltip("Gidilecek sahnedeki doðma noktasýnýn adý (Örn: ZindanKuzeyGiris)")]
     public string targetSpawnPointID;
-    // -------------------
 
-    // Karakter portalýn içine girdiðinde (temas ettiðinde) tetiklenir
     private void OnTriggerEnter(Collider other)
     {
         TeleportPointSettings(other);
     }
+
+    //Ýsinlanma Metodu
     public void TeleportPointSettings(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             Debug.Log($"{destinationScene} sahnesine ýþýnlanýlýyor...");
 
-            // 1. Envanteri Kaydet
+            //Envanteri kaydet.
             if (InventoryManager.Instance != null)
             {
                 InventoryManager.Instance.SaveInventory();
             }
 
-            // 2. Kalýcý Efektleri Kaydet
+            //Kalici Efektleri Kaydet.
             PlayerCrystalEffect crystalEffect = other.GetComponent<PlayerCrystalEffect>();
             PlayerAttackSystem attackSystem = other.GetComponent<PlayerAttackSystem>();
             EquipmentManager equipmentManager = other.GetComponent<EquipmentManager>();
@@ -48,24 +46,20 @@ public class TeleportPoint : MonoBehaviour
                 SceneController.Instance.hasSavedPermanentEffects = true;
             }
 
-            // --- YENÝ EKLENEN: CAN VE MAKSÝMUM CANI KAYDET ---
+            //Cani kaydet.
             PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
-                // Kalýcý saðlýk basýldýysa maxHealth zaten artmýþtýr, bunu direkt kaydediyoruz
                 SceneController.Instance.savedCurrentHealth = playerHealth.currentHealth;
                 SceneController.Instance.savedMaxHealth = playerHealth.maxHealth;
             }
-            // -------------------------------------------------
 
-            // --- YENÝ EKLENEN: DOÐMA NOKTASINI KAYDET ---
+            //Spawn Noktasini kaydet.
             if (SceneController.Instance != null)
             {
                 SceneController.Instance.targetSpawnPointID = this.targetSpawnPointID;
             }
-            // --------------------------------------------
 
-            // 3. Sahneyi Yükle
             SceneController.Instance.LoadScene(destinationScene);
         }
     }

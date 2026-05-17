@@ -4,19 +4,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerCrystalEffect : MonoBehaviour
 {
-    [Header("Input ve Slotlar")]
+    [Header("Inputs & Slots")]
     [SerializeField] private InputActionReference[] inventorySlotActions;
     [SerializeField] private InventorySlot[] inventorySlots;
 
-    [Header("Referanslar")]
+    [Header("References")]
     private PlayerAttackSystem playerAttackSystem;
     private EquipmentManager equipmentManager;
-    private PlayerHealth playerHealth; // YENÝ EKLENDÝ
+    private PlayerHealth playerHealth;
 
-    [Header("Görsel Efektler")]
+    [Header("Visual Effects")]
     public ParticleSystem crystalUseEffect;
 
-    [Header("Kalýcý Efekt Sayaçlarý")]
+    [Header("Permanent Effect Counters")]
     public int permanentHealthCount = 0;
     public int permanentDamageCount = 0;
     public int permanentSpeedCount = 0;
@@ -24,7 +24,6 @@ public class PlayerCrystalEffect : MonoBehaviour
     private bool isCrystalActive = false;
     void Start()
     {
-        // Validasyon
         if (inventorySlotActions.Length != inventorySlots.Length)
         {
             Debug.LogError("HATA: Input sayýsý ile Slot sayýsý eþit deðil!");
@@ -35,15 +34,15 @@ public class PlayerCrystalEffect : MonoBehaviour
         playerAttackSystem = GetComponent<PlayerAttackSystem>();
         equipmentManager = GetComponent<EquipmentManager>();
 
-        // --- YENÝ EKLENEN: SAHNE YÜKLENDÝÐÝNDE KALICI EFEKTLERÝ GERÝ YÜKLE ---
+        //Sahne gecislerinde kalici efektlerin korunmasi icin geri yukleme islemi
         if (SceneController.Instance != null && SceneController.Instance.hasSavedPermanentEffects)
         {
-            // 1. UI Sayaçlarýný Geri Yükle
+            //UI degiskenleri
             permanentHealthCount = SceneController.Instance.savedPermanentHealthCount;
             permanentDamageCount = SceneController.Instance.savedPermanentDamageCount;
             permanentSpeedCount = SceneController.Instance.savedPermanentSpeedCount;
 
-            // 2. Gerçek Bonus Deðerlerini Geri Yükle
+            //Kalici efektler
             if (playerAttackSystem != null)
             {
                 playerAttackSystem.permanentBonusDamage = SceneController.Instance.savedPermanentBonusDamage;
@@ -51,17 +50,17 @@ public class PlayerCrystalEffect : MonoBehaviour
                 playerAttackSystem.permanentBonusCritMultiplier = SceneController.Instance.savedPermanentBonusCritMultiplier;
             }
 
+            //Kilictaki efektler
             if (equipmentManager != null)
             {
                 equipmentManager.permanentBonusAttackSpeed = SceneController.Instance.savedPermanentBonusAttackSpeed;
-                // Ekipman hýzýný hemen güncelle
+
                 equipmentManager.UpdateAttackSpeed();
             }
 
-            // 3. UI Panelini Güncelle (Sayaçlar 0'dan büyükse paneli de açar)
+            //UI Guncellemesi
             UpdatePermanentUI();
         }
-        // ---------------------------------------------------------------------
     }
     private void OnEnable()
     {
@@ -85,6 +84,8 @@ public class PlayerCrystalEffect : MonoBehaviour
             }
         }
     }
+
+    //2-3-4 Tuslari metodu
     private void UseCrystalPerformed(InputAction.CallbackContext context)
     {
         if (isCrystalActive)
@@ -93,18 +94,16 @@ public class PlayerCrystalEffect : MonoBehaviour
             // Ýleride buraya hata sesi ekleyebilirsin.
             return;
         }
-        // Hangi tuþa basýldýðýný bul
+        //2-3-4 tus kontrolcusu
         for (int i = 0; i < inventorySlotActions.Length; i++)
         {
             if (inventorySlotActions[i].action == context.action)
             {
-                // O slot dolu mu?
+                //Slotta kristal var mi?
                 if (inventorySlots[i].transform.childCount > 0)
                 {
-                    // Slottaki InventoryItem bileþenini al
                     InventoryItem itemInSlot = inventorySlots[i].transform.GetChild(0).GetComponent<InventoryItem>();
 
-                    // Eðer bu bir "Other" (yani kristal/iksir) tipindeyse kullan
                     if (itemInSlot.item.itemType == Item.ItemType.Other)
                     {
                         ConsumeItemAndApplyEffect(itemInSlot);
@@ -115,7 +114,7 @@ public class PlayerCrystalEffect : MonoBehaviour
                     // Boþ slota basýldý (Ses efekti buraya)
                     Debug.Log("Slot Boþ!");
                 }
-                break; // Döngüden çýk
+                break;
             }
         }
     }
@@ -124,113 +123,101 @@ public class PlayerCrystalEffect : MonoBehaviour
     {
         Item crystalToUse = inventoryItem.item;
 
-        // --- YENÝ: DÝNAMÝK PARTÝKÜL RENGÝ ---
+        //Kullanilan kristalin rengine gore VFX
         if (crystalUseEffect != null)
         {
-            // Particle System'in ana (main) modülüne eriþiyoruz
+            //Particle System'in ana (main) modulune erisiyoruz.
             var main = crystalUseEffect.main;
 
-            // Kristalin rengini partikülün baþlangýç rengi (startColor) yapýyoruz
+            //Kristalin rengini partikulun baslangic rengi (startColor) yapiyoruz.
             main.startColor = crystalToUse.itemColor;
 
             crystalUseEffect.Play();
         }
-        // ------------------------------------
 
-        // 1. Efekti Baþlat
         if (crystalToUse.effectDuration > 0)
         {
-            // Süreli efekt
+            //Sureli efekt
             StartCoroutine(EffectRoutine(crystalToUse, crystalToUse.effectDuration));
         }
         else
         {
-            // Kalýcý efekt (Kalýcýlýk için PlayerPrefs sistemi buraya entegre edilecek)
+            //Kalici efekt
             ApplyEffect(crystalToUse, true);
         }
 
-        // 2. Eþyayý Tüket (Envanterden Silme Ýþlemi)
-        // Sayýyý düþür
+        //Envanter slotu temizleme
         inventoryItem.count--;
 
         if (inventoryItem.count <= 0)
         {
-            // Eðer sayý bittiyse objeyi yok et
             Destroy(inventoryItem.gameObject);
         }
         else
         {
-            // Bitmediyse sayýyý güncelle
             inventoryItem.RefreshCount();
         }
     }
-    // GÜNCELLENDÝ: Geri sayým sayacý eklendi
+    //Sureli efekt Coroutine'u
     IEnumerator EffectRoutine(Item crystal, float duration)
     {
-        // Efekti ver ve UI'ý ayarla
+        //Can yenileme efekti haric tum efektler buradan uygulanir.
         ApplyEffect(crystal, true);
 
-        //Efekt aktifken baþka kristal kullanýlamaz.
         SetCrsytalUsability(false);
 
         Debug.Log($"{crystal.itemName} etkisi baþladý! ({duration} sn)");
 
         float remainingTime = duration;
-        float regenTimer = 0f; // YENÝ: Yenilenme hýzý için sayaç
+        float regenTimer = 0f;
 
-        // Kalan süre 0'dan büyük olduðu sürece döngüyü çalýþtýr
+        //Efekt Paneli
         while (remainingTime > 0)
         {
-            // UI Güncellemesi (Örn: "5.0", "4.9")
             if (UIManager.Instance != null && UIManager.Instance.txtEffectDuration != null)
             {
-                // "F1" formatý virgülden sonra tek hane gösterir (Örn: 5.0)
+                // "F1" (Orn: 5.0)
                 UIManager.Instance.txtEffectDuration.text = remainingTime.ToString("F1");
             }
-            // --- 2. YENÝ: CAN YENÝLEME MANTIÐI ---
-            // Eðer kristalin bir yenileme miktarý ve hýzý varsa çalýþýr
+
+            //Can yenileme efekti
             if (crystal.healthRegenerationAmount > 0 && crystal.healthRegenerationSpeed > 0 && playerHealth != null)
             {
-                // Sayacý her karede artýr
+                //Sayaci her karede artir.
                 regenTimer += Time.deltaTime;
 
-                // Eðer sayaç, belirlenen hýza ulaþtýysa (örn: her 2 saniyede bir)
+                // Eger sayac, belirlenen hiza ulastiysa (orn: her 2 saniyede bir)
                 if (regenTimer >= crystal.healthRegenerationSpeed)
                 {
-                    // Caný doldur ve sayacý sýfýrla ki tekrar saymaya baþlasýn
                     playerHealth.Heal(crystal.healthRegenerationAmount);
                     regenTimer = 0f;
                 }
             }
-            // -------------------------------------
-            // Zamaný eksilt
+
             remainingTime -= Time.deltaTime;
 
-            // Bir sonraki frame'e (kareye) kadar bekle
             yield return null;
         }
 
-        // Süre bittiðinde efekti geri al
+        //EFekti geri al.
         ApplyEffect(crystal, false);
 
-        //Efekt bittiðinde yeni kristal kullanýmý açýlýr.
         SetCrsytalUsability(true);
 
         Debug.Log($"{crystal.itemName} etkisi bitti.");
     }
 
-    // GÜNCELLENDÝ: Dinamik metin üretimi eklendi
+    //Efekt uygulama metodu (Can yenileme haric)
     private void ApplyEffect(Item crystal, bool isApplying)
     {
-        // Çarpan faktörü: True ise 1 (Ekle), False ise -1 (Çýkar)
+        //Efekt acma kapama ayari
         int factor = isApplying ? 1 : -1;
 
-        // --- SALDIRI HASARI VE KRÝTÝK EFEKTLERÝ ---
+        //Hasar ve kritik efektleri
         if (playerAttackSystem != null)
         {
-            if (crystal.isPermanent && isApplying)
+            if (crystal.isPermanent && isApplying)//Kalici
             {
-                // KALICI: factor'e gerek yok, sadece 1 kere ekliyoruz ve geri alýnmýyor
                 playerAttackSystem.permanentBonusDamage += crystal.attackDamage;
                 playerAttackSystem.permanentBonusCritChance += crystal.attackDamageMultiplierChance;
                 playerAttackSystem.permanentBonusCritMultiplier += crystal.attackDamageMultiplier;
@@ -241,24 +228,22 @@ public class PlayerCrystalEffect : MonoBehaviour
                     UpdatePermanentUI();
                 }
             }
-            else if (!crystal.isPermanent)
+            else if (!crystal.isPermanent)//Sureli
             {
-                // SÜRELÝ: factor ile ekle veya çýkar
                 playerAttackSystem.bonusDamage += (crystal.attackDamage * factor);
                 playerAttackSystem.bonusCritChance += (crystal.attackDamageMultiplierChance * factor);
                 playerAttackSystem.bonusCritMultiplier += (crystal.attackDamageMultiplier * factor);
             }
         }
 
-        // --- SALDIRI HIZI EFEKTÝ ---
+        //Saldiri hizi efekti
         if (equipmentManager != null)
         {
             if (crystal.isPermanent && isApplying)
             {
-                // KALICI HIZ
+                //Kalici
                 equipmentManager.permanentBonusAttackSpeed += (crystal.attackSpeed / 10f);
 
-                // YENÝ: Hýz artýþý varsa sayacý artýr
                 if (crystal.attackSpeed > 0)
                 {
                     permanentSpeedCount++;
@@ -267,23 +252,22 @@ public class PlayerCrystalEffect : MonoBehaviour
             }
             else if (!crystal.isPermanent)
             {
-                // SÜRELÝ HIZ
+                //Sureli
                 equipmentManager.bonusAttackSpeed += (crystal.attackSpeed / 10f * factor);
             }
-            equipmentManager.UpdateAttackSpeed(); // Silah ve animatör hýzýný güncelle
+            equipmentManager.UpdateAttackSpeed();
         }
 
-        // --- CAN DOLDURMA VE KALICI CAN YÜKSELTME ---
+        //Can Doldurma Efekti
         if (isApplying && crystal.health != 0 && playerHealth != null)
         {
-            playerHealth.Heal(crystal.health); // Her halükarda anlýk caný doldur
+            playerHealth.Heal(crystal.health);
 
-            if (crystal.isPermanent)
+            if (crystal.isPermanent)//Kalici ise
             {
-                playerHealth.maxHealth += crystal.health; // Kalýcýysa maksimum kapasiteyi artýr
-                playerHealth.UpdateUI(); // UI'ý güncelle ki yeni max can görünür olsun
+                playerHealth.maxHealth += crystal.health;
+                playerHealth.UpdateUI();
 
-                // YENÝ: Can artýþý varsa sayacý artýr
                 if (crystal.health > 0)
                 {
                     permanentHealthCount++;
@@ -291,19 +275,17 @@ public class PlayerCrystalEffect : MonoBehaviour
                 }
             }
         }
-        // --- UI GÜNCELLEME KISMI ---
-        // Sadece süreli efektler için UI panelini aç/kapat
+        //UI Ayarlari (Sureli Efekt Paneli)
         if (crystal.effectDuration > 0 && UIManager.Instance != null)
         {
             UIManager.Instance.pnlCrystalEffectStatus.SetActive(isApplying);
 
-            // Sadece efekt baþlarken yazýlarý oluþturalým (biterken panel kapanacaðý için gerek yok)
+            //Efekt yazilari
             if (isApplying)
             {
                 string effectDetails = "";
 
-                // Dinamik Ýþaret Mantýðý: Sadece 0'dan büyükse "+" koyar, küçükse hiçbir þey koymaz (kendi eksisi görünür)
-
+                //Efekt ozelligine gore "+" ya da "-" ayari yapilir.
                 if (crystal.attackDamage != 0)
                     effectDetails += $"Attack Damage {(crystal.attackDamage > 0 ? "+" : "")}{crystal.attackDamage}\n";
 
@@ -328,7 +310,6 @@ public class PlayerCrystalEffect : MonoBehaviour
                 if (crystal.healthRegenerationSpeed != 0)
                     effectDetails += $"Health Regen Speed {(crystal.healthRegenerationSpeed > 0 ? "+" : "")}{crystal.healthRegenerationSpeed}\n";
 
-                // Oluþturulan dinamik metni UI'a gönder
                 if (UIManager.Instance.txtEffects != null)
                 {
                     UIManager.Instance.txtEffects.text = effectDetails;
@@ -336,12 +317,11 @@ public class PlayerCrystalEffect : MonoBehaviour
             }
         }
     }
-    // YENÝ: Kalýcý efekt UI yazýlarýný güncelleyen yardýmcý metot
+    //UI Ayarlari (Kalici Efekt Paneli)
     public void UpdatePermanentUI()
     {
         if (UIManager.Instance == null) return;
 
-        // Panel kapalýysa açalým (sadece ilk kullanýldýðýnda çalýþmasý yeterli)
         if (!UIManager.Instance.pnlPermanentCrystals.activeSelf &&
             (permanentHealthCount > 0 || permanentDamageCount > 0 || permanentSpeedCount > 0))
         {
@@ -357,6 +337,7 @@ public class PlayerCrystalEffect : MonoBehaviour
         if (UIManager.Instance.txtSpeedPermanent != null)
             UIManager.Instance.txtSpeedPermanent.text = $"x{permanentSpeedCount}";
     }
+    //Sureli kristal aktifken kristal kullanimini ayarlayan metot
     private void SetCrsytalUsability(bool isUsable)
     {
         isCrystalActive = !isUsable;

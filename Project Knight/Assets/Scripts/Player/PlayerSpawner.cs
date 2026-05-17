@@ -16,19 +16,18 @@ public class PlayerSpawner : MonoBehaviour
                 if (sp.spawnPointID == SceneController.Instance.targetSpawnPointID)
                 {
                     TeleportPlayer(sp.transform);
-                    break; // Hedefi bulduk, aramayý býrak
+                    break;
                 }
             }
         }
     }
 
+    //Oyuncu Sahne Gecisi Metodu
     private void TeleportPlayer(Transform targetTransform)
     {
-        // ÖNEMLÝ: Eðer karakterinde CharacterController varsa, pozisyon deðiþtirmeden önce kapatýlmalýdýr.
         CharacterController cc = GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
 
-        // Karakterin pozisyonunu ve bakýþ açýsýný hedef noktaya eþitle
         transform.position = targetTransform.position;
         transform.rotation = targetTransform.rotation;
 
