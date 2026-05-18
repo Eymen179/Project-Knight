@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
   m_Name: Crystal1
   m_EditorClassIdentifier: 
-  itemName: Can Kristali
-  description: "Can\u0131n\u0131 belli bir miktar doldurur."
+  itemName: Health Crystal
+  description: Restores some health.
   inventorySprite: {fileID: 21300000, guid: 1681ef140f3509c44be421ed44a7dc2c, type: 3}
   itemObject: {fileID: 7063743252289416628, guid: c6fbd86bfcf5ce74aa78f4a1904a4f7a, type: 3}
   itemColor: {r: 0.9433962, g: 0.0934496, b: 0.0934496, a: 1}

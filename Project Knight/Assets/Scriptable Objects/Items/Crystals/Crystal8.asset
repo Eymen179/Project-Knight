@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f0c294d459912489e8e5cdd9f10061, type: 3}
   m_Name: Crystal8
   m_EditorClassIdentifier: 
-  itemName: "Kal\u0131c\u0131 H\u0131z Kristali"
-  description: "Kal\u0131c\u0131 olarak sald\u0131r\u0131 h\u0131z\u0131n\u0131 y\xFCkseltir."
+  itemName: Permanent Speed Upgrade Crystal
+  description: Permanently increases attack speed.
   inventorySprite: {fileID: 21300000, guid: 724772cea83d6024099c23c277f3d477, type: 3}
   itemObject: {fileID: 7370043300670028658, guid: 19b7e95a091652640b4df605bec6a161, type: 3}
   itemColor: {r: 0.21586859, g: 0.71218026, b: 0.9339623, a: 1}

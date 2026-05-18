@@ -70,6 +70,7 @@ MonoBehaviour:
   pnlDieScreen: {fileID: 0}
   btnRespawn: {fileID: 0}
   isRespawnButtonActive: 0
+  pnlESCMenu: {fileID: 0}
   pnlPermanentCrystals: {fileID: 0}
   txtHealthPermanent: {fileID: 0}
   txtDamagePermanent: {fileID: 0}
