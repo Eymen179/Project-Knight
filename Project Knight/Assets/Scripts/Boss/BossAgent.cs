@@ -25,6 +25,15 @@ public class BossAgent : Agent
     private bool special4Input;
 
     private Vector3 startPos;
+
+    [Header("Savaþ Ayarlarý")]
+    public float basicAttackCooldown = 3f; // Temel saldýrý yasaklanma süresi
+    private float nextBasicAttackTime = 0f;
+
+    // --- YENÝ EKLENEN KÝLÝT TAKÝPÇÝLERÝ ---
+    private bool wasActionLocked = false;
+    private bool wasBasicAttack = false;
+
     public override void Initialize()
     {
         navAgent = GetComponent<NavMeshAgent>();
@@ -91,85 +100,22 @@ public class BossAgent : Agent
         if (Keyboard.current.digit2Key.wasPressedThisFrame) special2Input = true;
         if (Keyboard.current.digit3Key.wasPressedThisFrame) special3Input = true;
         if (Keyboard.current.digit4Key.wasPressedThisFrame) special4Input = true;
+
+        // --- YENÝ: COOLDOWN'I SALDIRI BÝTTÝÐÝNDE BAÞLAT ---
+        // Eðer Boss bir önceki karede kilitliyse ve ÞU AN kilit açýldýysa (Yani animasyon bittiyse)
+        if (wasActionLocked && !attackSystem.isActionLocked)
+        {
+            if (wasBasicAttack)
+            {
+                // Temel saldýrý KESÝN OLARAK bitti, sayacý ÞÝMDÝ baþlat!
+                nextBasicAttackTime = Time.time + basicAttackCooldown;
+                wasBasicAttack = false; // Hafýzayý sýfýrla
+            }
+        }
+        // Bir sonraki kare için kilit durumunu hafýzada tut
+        wasActionLocked = attackSystem.isActionLocked;
     }
 
-    /* public override void OnActionReceived(ActionBuffers actions)
-     {
-         // KÝLÝT KONTROLÜ: Animasyon oynuyorsa hiçbir yeni emri dinleme!
-         if (attackSystem.isActionLocked)
-         {
-             if (navAgent.isOnNavMesh) navAgent.isStopped = true;
-             return;
-         }
-
- // --- 1. HAREKET KARARLARI (Branch 0) ---
-         int moveDecision = actions.DiscreteActions[0];
-         float distance = Vector3.Distance(transform.position, playerTarget.position);
-
-         if (moveDecision == 1 && distance > stats.attackRange) 
-         {
-             if(navAgent.isOnNavMesh)
-             {
-                 navAgent.isStopped = false;
-                 navAgent.speed = stats.chaseSpeed;
-                 navAgent.SetDestination(playerTarget.position);
-             }
-             animator.SetFloat("speed", 1f);
-         }
-         else 
-         {
-             if(navAgent.isOnNavMesh) 
-             {
-                 navAgent.isStopped = true;
-                 navAgent.velocity = Vector3.zero; // YENÝ: W býrakýldýðýnda patinajý/kaymayý anýnda kes!
-             }
-             animator.SetFloat("speed", 0f);
-         }
-
-         // --- YENÝ DÖNÜÞ (ROTATION) MANTIÐI ---
-         if (distance <= stats.attackRange)
-         {
-             // Sadece menzile girdiðinde DÝREKT oyuncuya bak (Kýlýç vurmak için)
-             Vector3 direction = (playerTarget.position - transform.position).normalized;
-             direction.y = 0;
-             if (direction != Vector3.zero)
-             {
-                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 5f);
-             }
-         }
-         else if (moveDecision == 1 && navAgent.isOnNavMesh && navAgent.hasPath)
-         {
-             // Uzaktayken duvarýn arkasýndaki oyuncuya DEÐÝL, yolun bir sonraki adýmýna (köþeye) bak!
-             Vector3 direction = (navAgent.steeringTarget - transform.position).normalized;
-             direction.y = 0;
-             if (direction != Vector3.zero)
-             {
-                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 10f);
-             }
-         }
-
-         // --- 2. SAVAÞ KARARLARI (Branch 1) ---
-         int combatDecision = actions.DiscreteActions[1];
-
-         // NOT: Artýk "distance <= stats.attackRange" kýsýtlamasý yok. Ýsterse havaya vurabilir.
-         if (combatDecision == 1)
-         {
-             animator.SetTrigger("attack"); // Temel kombo tetikleyicisi
-             attackSystem.LockAction();
-         }
-         else if (combatDecision == 2)
-         {
-             if (bossHealth.TryStartBlock())
-             {
-                 if (navAgent.isOnNavMesh) navAgent.isStopped = true;
-                 animator.SetFloat("speed", 0f);
-             }
-         }
-         else if (combatDecision == 3) { TriggerSpecialAttack("specialAttack1"); }
-         else if (combatDecision == 4) { TriggerSpecialAttack("specialAttack2"); }
-         else if (combatDecision == 5) { TriggerSpecialAttack("specialAttack3"); }
-         else if (combatDecision == 6) { TriggerSpecialAttack("specialAttack4"); }
-     }*/
     public override void OnActionReceived(ActionBuffers actions)
     {
         // --- KÝLÝT KONTROLÜ VE KESÝN FREN ---
@@ -232,7 +178,7 @@ public class BossAgent : Agent
         // --- 2. SAVAÞ KARARLARI (Branch 1) ---
         int combatDecision = actions.DiscreteActions[1];
 
-        // EÐER HERHANGÝ BÝR SAVAÞ HAMLESÝ YAPILACAKSA, SALDIRMADAN ÖNCE ANINDA ZINK DÝYE DUR!
+        // EÐER HERHANGÝ BÝR SAVAÞ HAMLESÝ YAPILACAKSA, ANINDA ZINK DÝYE DUR!
         if (combatDecision != 0)
         {
             if (navAgent.isOnNavMesh)
@@ -243,22 +189,37 @@ public class BossAgent : Agent
             animator.SetFloat("speed", 0f);
         }
 
+        // --- YENÝ HÝBRÝT SALDIRI SÝSTEMÝ (Þans & Zorunluluk) ---
         if (combatDecision == 1)
         {
-            animator.SetTrigger("attack");
-            attackSystem.LockAction();
+            // Eðer temel saldýrý bekleme süresi BÝTTÝYSE
+            if (Time.time >= nextBasicAttackTime)
+            {
+                animator.SetTrigger("attack");
+                attackSystem.LockAction();
+                wasBasicAttack = true;
+            }
+            // Eðer temel saldýrý BEKLEME SÜRESÝNDEYSE (AI gafil avlandý!)
+            else
+            {
+                // Biz araya giriyoruz ve 1, 2, 3 veya 4 numaralý özel saldýrýlardan birini ZORLA yaptýrýyoruz.
+                int randomSpecial = Random.Range(1, 5); // 1 ile 4 arasýnda sayý tutar
+                TriggerSpecialAttack("specialAttack" + randomSpecial);
+            }
         }
         else if (combatDecision == 2)
         {
             if (bossHealth.TryStartBlock())
             {
-                // Blok zaten yukarýdaki blokta durduruldu
+                // Blok zaten durduruldu
             }
         }
-        else if (combatDecision == 3) { TriggerSpecialAttack("specialAttack1"); }
+        // AI'ýn kafasý karýþmasýn diye diðer tuþlarý (3,4,5,6) tamamen göz ardý ediyoruz.
+        // O sadece "1" tuþuna basacak, biz arkada þov yapacaðýz.
+        /*else if (combatDecision == 3) { TriggerSpecialAttack("specialAttack1"); }
         else if (combatDecision == 4) { TriggerSpecialAttack("specialAttack2"); }
         else if (combatDecision == 5) { TriggerSpecialAttack("specialAttack3"); }
-        else if (combatDecision == 6) { TriggerSpecialAttack("specialAttack4"); }
+        else if (combatDecision == 6) { TriggerSpecialAttack("specialAttack4"); }*/
     }
 
     // Özel saldýrýlarý tetikleyen ve kilitleyen yardýmcý fonksiyon
@@ -266,6 +227,22 @@ public class BossAgent : Agent
     {
         animator.SetTrigger(triggerName);
         attackSystem.LockAction();
+        wasBasicAttack = false; // Özel saldýrý yapýldý, temel saldýrý deðildi!
+    }
+
+    // Savaþ anýnda animasyonlarýn hazýrlýk evresinde oyuncuya dönmek için yardýmcý metot
+    public void TrackPlayer(float speed)
+    {
+        if (playerTarget == null) return;
+
+        Vector3 direction = (playerTarget.position - transform.position).normalized;
+        direction.y = 0; // Yukarý/Aþaðý eðilmeyi engelle (Sadece X-Z ekseninde dön)
+
+        if (direction != Vector3.zero)
+        {
+            // Update içinde çalýþýyormuþ gibi pürüzsüz dönüþ (Slerp)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * speed);
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

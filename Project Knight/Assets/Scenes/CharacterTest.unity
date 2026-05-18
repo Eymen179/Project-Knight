@@ -3331,7 +3331,7 @@ MonoBehaviour:
   isLocked: 1
   requiredConditionsCount: 1
   invisibleBlocker: {fileID: 1071551852}
-  door: {fileID: 0}
+  door1: {fileID: 0}
   door2: {fileID: 0}
   activationEffects: []
 --- !u!4 &1093628188
@@ -6785,11 +6785,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3600687090631308435, guid: b568b1aa32270144cbf6295bcb553376, type: 3}
       propertyPath: destinationScene
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3600687090631308435, guid: b568b1aa32270144cbf6295bcb553376, type: 3}
       propertyPath: targetSpawnPointID
-      value: Dungeon_Hall
+      value: Dungeon_BossRoom
       objectReference: {fileID: 0}
     - target: {fileID: 4313058420806662149, guid: b568b1aa32270144cbf6295bcb553376, type: 3}
       propertyPath: m_Name
