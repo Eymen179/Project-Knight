@@ -12,6 +12,9 @@ public class InGameMenuManager : MonoBehaviour
     public GameObject player;
     public GameObject pnlEscMenu;
 
+    // SADECE BU DEÐÝÞKEN EKLEDÝ: Options panelini editörden baðlamak için
+    public GameObject pnlOptions;
+
     private void OnEnable()
     {
         toggleEscMenu.action.Enable();
@@ -27,6 +30,13 @@ public class InGameMenuManager : MonoBehaviour
     //"ESC" tusu metodu
     private void OnToggleEscMenuPerformed(InputAction.CallbackContext context)
     {
+        // DEÐÝÞÝKLÝK YAPILMADI: Eðer Options paneli açýksa ESC'ye basýnca önce onu kapatsýn ve ana menüye dönsün
+        if (pnlOptions != null && pnlOptions.activeSelf)
+        {
+            CloseOptionsButton();
+            return;
+        }
+
         //ESC menusu acma - kapama kontrolcusu
         isEscMenuOpen = !isEscMenuOpen;
         pnlEscMenu.SetActive(isEscMenuOpen);
@@ -53,13 +63,21 @@ public class InGameMenuManager : MonoBehaviour
             player.GetComponent<PlayerInteraction>().enabled = true;
 
             UIManager.Instance.toolBarBarrier.enabled = false;
+
+            // ESC ile menü tamamen kapatýlýyorsa Options da kapansýn
+            if (pnlOptions != null) pnlOptions.SetActive(false);
         }
     }
+
     //ESC Ekrani
     public void ResumeButton()
     {
         isEscMenuOpen = false;
         pnlEscMenu.SetActive(isEscMenuOpen);
+
+        // Resume basýldýðýnda eðer arkada options açý kaldýysa onu da kapatýr
+        if (pnlOptions != null) pnlOptions.SetActive(false);
+
         CursorVisibility(false);
 
         player.GetComponent<PlayerCombatManager>().enabled = true;
@@ -67,6 +85,19 @@ public class InGameMenuManager : MonoBehaviour
         player.GetComponent<PlayerInteraction>().enabled = true;
 
         UIManager.Instance.toolBarBarrier.enabled = false;
+    }
+
+    // SADECE BU ÝKÝ FONKSÝYON EKLEDÝ: Options butonlarý için
+    public void OpenOptionsButton()
+    {
+        pnlEscMenu.SetActive(false); // Ana ESC menüsünü gizle
+        pnlOptions.SetActive(true);  // Options menüsünü aç
+    }
+
+    public void CloseOptionsButton()
+    {
+        pnlOptions.SetActive(false); // Options menüsünü kapat
+        pnlEscMenu.SetActive(true);  // Yeniden ana ESC menüsünü göster
     }
 
     //Olum Ekrani
