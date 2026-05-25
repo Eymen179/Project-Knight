@@ -149,7 +149,7 @@ public class EnemyHealth : MonoBehaviour
 
         UpdateUI();
     }
-    private void UpdateUI()
+    public void UpdateUI()
     {
         if (stats != null)
         {
