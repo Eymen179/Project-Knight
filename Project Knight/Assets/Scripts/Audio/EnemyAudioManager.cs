@@ -103,8 +103,11 @@ public class EnemyAudioManager : MonoBehaviour
 
         return maxIndex;
     }
-
+    //Animation Event
     public void PlayAttackSound() { if (attackSound != null) enemyAudioSource.PlayOneShot(attackSound); }
+
+    //Kod bazli
     public void PlayHurtSound() { if (hurtSound != null) enemyAudioSource.PlayOneShot(hurtSound); }
+    //Kod bazli
     public void PlayBlockSuccessSound() { if (blockSuccessSound != null) enemyAudioSource.PlayOneShot(blockSuccessSound); }
 }

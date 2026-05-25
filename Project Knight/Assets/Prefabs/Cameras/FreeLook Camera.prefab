@@ -263,16 +263,16 @@ MonoBehaviour:
     Enabled: 1
     ObstacleLayers:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 65
     UseFollowTarget:
       Enabled: 0
       YOffset: 0
     Damping: 0.5
-    SmoothingTime: 0
+    SmoothingTime: 0.2
   TerrainResolution:
-    Enabled: 1
+    Enabled: 0
     TerrainLayers:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 64
     MaximumRaycast: 10
     Damping: 0.5
