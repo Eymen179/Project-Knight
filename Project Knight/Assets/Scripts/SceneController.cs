@@ -94,6 +94,9 @@ public class SceneController : MonoBehaviour
             case GameScenes.CharacterTest:
                 SceneManager.LoadScene("CharacterTest");
                 break;
+            case GameScenes.Game_End:
+                SceneManager.LoadScene("Game_End");
+                break;
             default:
                 Debug.Log("Sahne Bulunamadý.");
                 break;
@@ -135,6 +138,7 @@ public class SceneController : MonoBehaviour
         Dungeon_Hall,
         Dungeon_Main,
         Dungeon_Bossroom,
-        CharacterTest
+        CharacterTest,
+        Game_End
     }
 }

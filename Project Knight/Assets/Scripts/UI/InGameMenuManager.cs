@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class InGameMenuManager : MonoBehaviour
 {
@@ -14,6 +15,14 @@ public class InGameMenuManager : MonoBehaviour
 
     // SADECE BU DEÐÝÞKEN EKLEDÝ: Options panelini editörden baðlamak için
     public GameObject pnlOptions;
+
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "Game_End")
+        {
+            CursorVisibility(true);
+        }
+    }
 
     private void OnEnable()
     {

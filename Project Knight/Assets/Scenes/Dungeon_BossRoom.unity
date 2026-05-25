@@ -20145,6 +20145,74 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 872954663666569469, guid: b2e45dd6af1b1874582506c085ff8e5c, type: 3}
   m_PrefabInstance: {fileID: 470517632}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &470628167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 470628170}
+  - component: {fileID: 470628169}
+  - component: {fileID: 470628168}
+  m_Layer: 0
+  m_Name: TeleportPoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &470628168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470628167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d91b15150ab30104eafb0f927e07ad78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destinationScene: 7
+  targetSpawnPointID: Game_End
+--- !u!65 &470628169
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470628167}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &470628170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470628167}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.808, y: 5.25, z: -26.25}
+  m_LocalScale: {x: 1.43, y: 4.29, z: 0.26}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &470718696
 GameObject:
   m_ObjectHideFlags: 0
@@ -56598,6 +56666,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5715572529862429478, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
       propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024959021964262259, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024959021964262259, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6334268492793661612, guid: 8a1b03aab33bb94439eaee66e5b6f9b4, type: 3}
@@ -101591,6 +101667,7 @@ SceneRoots:
   - {fileID: 2083155788}
   - {fileID: 3107530326565894959}
   - {fileID: 5110961460637963466}
+  - {fileID: 470628170}
   - {fileID: 483682633}
   - {fileID: 799638175}
   - {fileID: 410352679}
