@@ -7549,6 +7549,7 @@ GameObject:
   - component: {fileID: 8442196530240933934}
   - component: {fileID: 4020826724178654314}
   - component: {fileID: 8869193624348086648}
+  - component: {fileID: 4450738018337313651}
   - component: {fileID: 7966854835744457500}
   - component: {fileID: 2878168511094816453}
   - component: {fileID: 3310814891154792581}
@@ -7659,7 +7660,6 @@ MonoBehaviour:
   attack: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   block: {fileID: 8952290963971338528, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   isWeaponEquipped: 0
-  attackInputThreshold: 0.4
 --- !u!114 &6048758083785235787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7769,6 +7769,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc4590a5ba9f35419e154c028372600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4450738018337313651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7245607276765736895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f831a9c9a2491034fafab7b81a370096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSound: {fileID: 0}
+  hurtSound: {fileID: 0}
+  blockSuccessSound: {fileID: 0}
+  footTransform: {fileID: 0}
+  rayDistance: 0.5
+  dungeonFootstepSound: {fileID: 0}
+  footstepByTerrainLayerSounds: []
 --- !u!54 &7966854835744457500
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7831,7 +7850,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

@@ -6696,6 +6696,7 @@ GameObject:
   - component: {fileID: 424545756554395874}
   - component: {fileID: 2191961907068400744}
   - component: {fileID: 7171604060353188827}
+  - component: {fileID: 4014576193738559040}
   m_Layer: 7
   m_Name: NPC1
   m_TagString: NPC
@@ -6908,7 +6909,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -6993,6 +6994,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4014576193738559040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885283746668633753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 067559322b9f3bb4c88afb9e3775b796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSound: {fileID: 0}
+  hurtSound: {fileID: 0}
+  blockSuccessSound: {fileID: 0}
+  footTransform: {fileID: 0}
+  rayDistance: 0.5
+  dungeonFootstepSound: {fileID: 0}
+  terrainLayerSounds: []
 --- !u!1 &5173468461143171866
 GameObject:
   m_ObjectHideFlags: 0

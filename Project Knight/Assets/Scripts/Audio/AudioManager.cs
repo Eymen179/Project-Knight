@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
 
     /*
      ButtonTickSound
+     ChestOpenSound
      LootPickupSound
      
      */
@@ -44,7 +45,7 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
-
+    //Kod bazli
     public void PlayClip(string audioName)
     {
         // Döngü yok! Sözlükte o isimde ses varsa anýnda bul ve çal
