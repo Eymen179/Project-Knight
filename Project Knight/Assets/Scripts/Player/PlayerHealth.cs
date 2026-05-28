@@ -24,16 +24,37 @@ public class PlayerHealth : MonoBehaviour
     private bool isStunned = false;
     public bool isDead = false;
 
+    [Header("Ragdoll Settings")]
+    public Rigidbody hipsRigidbody;
+    private Rigidbody[] ragdollRigidbodies;
+    private Collider[] ragdollColliders;
+    private Rigidbody mainRigidbody;
+    private Collider mainCollider;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        damageFlasher = GetComponent<DamageFlasher>();
+
+        mainRigidbody = GetComponent<Rigidbody>();
+        mainCollider = GetComponent<Collider>();
+
+        ragdollRigidbodies = GetComponentsInChildren<Rigidbody>(true);
+        ragdollColliders = GetComponentsInChildren<Collider>(true);
+    }
     private void Start()
     {
         currentHealth = maxHealth;
         currentBlockCount = maxBlockCount;
-        animator = GetComponent<Animator>();
-        damageFlasher = GetComponent<DamageFlasher>();
+
+        // Oyun baþlarken Ragdoll'u kapalý tut, animasyonlarý oynat
+        if (ragdollRigidbodies != null && ragdollRigidbodies.Length > 0)
+        {
+            SetRagdollState(false);
+        }
 
         if (SceneController.Instance != null && SceneController.Instance.savedMaxHealth != -1)
         {
-            //Sahne gecisinden gelen can bilgileri
             maxHealth = SceneController.Instance.savedMaxHealth;
             currentHealth = SceneController.Instance.savedCurrentHealth;
         }
@@ -151,6 +172,17 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         Debug.Log("Oyuncu Öldü! (Ölüm ekraný altyapýsý tetiklendi)");
 
+        // --- RAGDOLL AKTÝVASYONU ---
+        SetRagdollState(true);
+
+        // Vuruþ Hissi (Geriye doðru savrulma)
+        if (hipsRigidbody != null)
+        {
+            // Oyuncu ölürken kameranýn tersine veya kendi arkasýna doðru savrulmasý þýk durur
+            Vector3 knockbackDirection = -transform.forward + (Vector3.up * 0.8f);
+            hipsRigidbody.AddForce(knockbackDirection.normalized * 15f, ForceMode.Impulse);
+        }
+
         UIManager.Instance.pnlDieScreen.SetActive(true);
         InventoryManager.Instance.CursorVisibility(true);
 
@@ -159,5 +191,32 @@ public class PlayerHealth : MonoBehaviour
         gameObject.GetComponent<PlayerInteraction>().enabled = false;
 
         gameObject.GetComponent<Animator>().SetFloat("speed", 0f);
+    }
+    private void SetRagdollState(bool isRagdoll)
+    {
+        // 1. Alt kemiklerin fizik durumu
+        foreach (Rigidbody rb in ragdollRigidbodies)
+        {
+            if (rb == mainRigidbody) continue;
+            rb.isKinematic = !isRagdoll;
+        }
+
+        // 2. Alt kemiklerin çarpýþma kutularý
+        foreach (Collider col in ragdollColliders)
+        {
+            if (col == mainCollider) continue;
+            col.enabled = isRagdoll; // Oyuncu yaþarken (false) bu kutular KESÝNLÝKLE KAPALI kalmalý!
+        }
+
+        // 3. Ana Beden Ayarlarý
+        if (mainCollider != null) mainCollider.enabled = !isRagdoll;
+
+        if (mainRigidbody != null)
+        {
+            // PlayerMovement Rigidbody tabanlý olduðu için yaþarken Kinematic olmamalý, ölünce Kinematic olmalý.
+            mainRigidbody.isKinematic = isRagdoll;
+        }
+
+        if (animator != null) animator.enabled = !isRagdoll;
     }
 }
