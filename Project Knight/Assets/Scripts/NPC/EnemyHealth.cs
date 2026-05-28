@@ -22,8 +22,19 @@ public class EnemyHealth : MonoBehaviour
     [HideInInspector] public bool isDead = false;
     private int dynamicMaxHealth; // Zorluk arttýkca max cani artan NPC'ler icin dinamik max can degeri
 
+    // --- YENÝ EKLENEN KORUMA ZAMANLAYICISI ---
+    private float lastDamageTime = 0f;
+
     private Animator animator;
     private DamageFlasher damageFlasher;
+
+    [Header("Ragdoll Settings")]
+    public Rigidbody hipsRigidbody; // Ölüm anýnda darbe kuvvetini uygulayacaðýmýz merkez kemik (Kalça)
+
+    private Rigidbody[] ragdollRigidbodies;
+    private Collider[] ragdollColliders;
+    private Rigidbody mainRigidbody;
+    private Collider mainCollider;
 
     [Header("Enhanced Block & Stun Settings")]
     public int maxBlockCount = 3;
@@ -38,14 +49,32 @@ public class EnemyHealth : MonoBehaviour
     [Header("Loot Settings")]
     [Range(0,100)]
     public int dropChance = 100;
-    void Start()
+    void Awake()
     {
+        // Referans atamalarýný Awake içine alýyoruz ki NPC havuzdan çýkarýldýðýnda
+        // Start'ý beklemeden tüm kemikler ve bileþenler hafýzaya alýnmýþ olsun.
         animator = GetComponent<Animator>();
         damageFlasher = GetComponent<DamageFlasher>();
 
+        mainRigidbody = GetComponent<Rigidbody>();
+        mainCollider = GetComponent<Collider>();
+
+        // (true) parametresi: Alt objeler o an gizli olsa bile onlarý bulmasýný saðlar.
+        ragdollRigidbodies = GetComponentsInChildren<Rigidbody>(true);
+        ragdollColliders = GetComponentsInChildren<Collider>(true);
+    }
+
+    void Start()
+    {
         if (healthSlider != null)
         {
             healthSlider.maxValue = 1f;
+        }
+
+        // Oyun baþlarken Ragdoll'u kapalý tut, animasyonlarý oynat
+        if (ragdollRigidbodies != null && ragdollRigidbodies.Length > 0)
+        {
+            SetRagdollState(false);
         }
 
         // Oyun ilk baþladýðýnda sahnede hazýr duran NPC'ler için zorluðu hesapla
@@ -68,6 +97,11 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damageAmount)
     {
         if (isDead) return;
+
+        // --- SHOTGUN (ÇOKLU VURUÞ) KORUMASI ---
+        // Ayný kýlýç darbesinden saliseler içinde 10 kere hasar almayý engeller
+        if (Time.time < lastDamageTime + 0.1f) return;
+        lastDamageTime = Time.time;
 
         //Blok Kontrolu
         if (!isStunned && animator != null && animator.GetBool("isBlocking"))
@@ -175,7 +209,7 @@ public class EnemyHealth : MonoBehaviour
 
         GetComponent<EnemyAI>().enabled = false;
         GetComponent<UnityEngine.AI.NavMeshAgent>().enabled = false;
-        if (animator != null) animator.enabled = false;
+        /*if (animator != null) animator.enabled = false;
 
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
@@ -188,6 +222,19 @@ public class EnemyHealth : MonoBehaviour
                 Vector3 knockbackDirection = player.transform.forward + (Vector3.up * 0.8f);
                 rb.AddForce(knockbackDirection.normalized * 10f, ForceMode.Impulse);
                 rb.AddTorque(player.transform.right * 5f, ForceMode.Impulse);
+            }
+        }*/
+        // --- RAGDOLL'U AKTÝF ET ---
+        SetRagdollState(true);
+
+        // Vuruþ hissi için kalça kemiðine darbe kuvveti uygula
+        if (hipsRigidbody != null)
+        {
+            PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+            if (player != null)
+            {
+                Vector3 knockbackDirection = player.transform.forward + (Vector3.up * 0.8f);
+                hipsRigidbody.AddForce(knockbackDirection.normalized * 15f, ForceMode.Impulse);
             }
         }
 
@@ -217,8 +264,11 @@ public class EnemyHealth : MonoBehaviour
 
         gameObject.layer = LayerMask.NameToLayer("NPC");
 
+        // --- RAGDOLL'U KAPAT VE ANÝMASYONA DÖN ---
+        SetRagdollState(false);
+
         // Kinematic uyarýsý kontrolcüsü
-        Rigidbody rb = GetComponent<Rigidbody>();
+        /*Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
             if (!rb.isKinematic)
@@ -234,7 +284,7 @@ public class EnemyHealth : MonoBehaviour
         {
             animator.enabled = true;
             animator.SetFloat("speed", 0f);
-        }
+        }*/
 
         if (healthSlider != null) healthSlider.gameObject.SetActive(true);
         UpdateUI();
@@ -267,5 +317,34 @@ public class EnemyHealth : MonoBehaviour
         if (crystalPrefabs.Count == 0) return;
         GameObject crystalPrefab = crystalPrefabs[Random.Range(0, crystalPrefabs.Count)];
         Instantiate(crystalPrefab, NPCpos.position + Vector3.up * 0.5f, Quaternion.identity);
+    }
+    private void SetRagdollState(bool isRagdoll)
+    {
+        // 1. Alt kemiklerin fizik durumunu ayarla
+        foreach (Rigidbody rb in ragdollRigidbodies)
+        {
+            if (rb == mainRigidbody) continue; // Ana bedeni atla
+            // Yaþarken (false) animasyonu izlerler, ölünce (true) yerçekimine kapýlýrlar.
+            rb.isKinematic = !isRagdoll;
+        }
+
+        // 2. Alt kemiklerin çarpýþma kutularý (Hitboxlar)
+        foreach (Collider col in ragdollColliders)
+        {
+            if (col == mainCollider) continue;
+            // DÜZELTME 1: Kýlýçla vurabilmen için yaþarken de AÇIK kalmalýlar!
+            col.enabled = true;
+        }
+
+        // 3. Ana Beden Ayarlarý
+        if (mainCollider != null) mainCollider.enabled = !isRagdoll; // Ölünce ana kapsül kapansýn
+
+        if (mainRigidbody != null)
+        {
+            // DÜZELTME 2: NavMeshAgent ile çakýþmamasý için ana Rigidbody HER ZAMAN Kinematic kalmalýdýr!
+            mainRigidbody.isKinematic = true;
+        }
+
+        if (animator != null) animator.enabled = !isRagdoll;
     }
 }
