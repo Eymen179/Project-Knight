@@ -31,23 +31,48 @@ public class BossHealth : MonoBehaviour
     private BossAttackSystem attackSystem;
     private DamageFlasher damageFlasher;
 
+    [Header("Ragdoll Settings")]
+    public Rigidbody hipsRigidbody;
+    private Rigidbody[] ragdollRigidbodies;
+    private Collider[] ragdollColliders;
+    private Rigidbody mainRigidbody;
+    private Collider mainCollider;
+
+    // "Shotgun (Çoklu Vuruþ)" Bug'ý Korumasý
+    private float lastDamageTime = 0f;
+
     // --- ML-AGENTS REFERANSI ---
     private BossAgent agent;
 
     [Header("Görev/Kapý Sistemi (Events)")]
     public UnityEvent onBossDied;
 
-    void Start()
+    private void Awake()
     {
         animator = GetComponent<Animator>();
         attackSystem = GetComponent<BossAttackSystem>();
         damageFlasher = GetComponent<DamageFlasher>();
-        agent = GetComponent<BossAgent>(); // Ajaný bulduk
+        agent = GetComponent<BossAgent>();
 
+        mainRigidbody = GetComponent<Rigidbody>();
+        mainCollider = GetComponent<Collider>();
+
+        // (true) parametresi ile kapalý olsalar bile alt kemikleri bulmasýný saðlarýz
+        ragdollRigidbodies = GetComponentsInChildren<Rigidbody>(true);
+        ragdollColliders = GetComponentsInChildren<Collider>(true);
+    }
+
+    void Start()
+    {
         if (stats != null) currentHealth = stats.maxHealth;
 
-        // Yerel slider'ýn maksimum deðerini ayarla
         if (localHealthSlider != null) localHealthSlider.maxValue = 1f;
+
+        // Oyun baþlarken Ragdoll'u kapalý tut, animasyonlarý oynat
+        if (ragdollRigidbodies != null && ragdollRigidbodies.Length > 0)
+        {
+            SetRagdollState(false);
+        }
 
         UpdateUI();
     }
@@ -68,6 +93,10 @@ public class BossHealth : MonoBehaviour
     public void TakeDamage(int damageAmount)
     {
         if (isDead) return;
+
+        // --- SHOTGUN (ÇOKLU VURUÞ) KORUMASI ---
+        if (Time.time < lastDamageTime + 0.1f) return;
+        lastDamageTime = Time.time;
 
         if (animator.GetBool("isBlocking"))
         {
@@ -140,10 +169,25 @@ public class BossHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        if (animator != null) animator.SetTrigger("die");
+        // if (animator != null) animator.SetTrigger("die"); (Buna gerek kalmadý)
 
-        Collider col = GetComponent<Collider>();
-        if (col != null) col.enabled = false;
+        // --- RAGDOLL'U AKTÝF ET ---
+        SetRagdollState(true);
+
+        // Vuruþ hissi için kalça kemiðine darbe kuvveti uygula (Boss aðýr olduðu için kuvveti artýrdýk: 25f)
+        if (hipsRigidbody != null)
+        {
+            PlayerMovement player = FindFirstObjectByType<PlayerMovement>();
+            if (player != null)
+            {
+                Vector3 knockbackDirection = player.transform.forward + (Vector3.up * 0.8f);
+                hipsRigidbody.AddForce(knockbackDirection.normalized * 25f, ForceMode.Impulse);
+            }
+        }
+
+        // Fizik motoru ile savaþmamasý için NavMeshAgent'ý kapat
+        UnityEngine.AI.NavMeshAgent navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (navAgent != null) navAgent.enabled = false;
 
         // Doðru UI'ý kapat
         if (isTrainingMode)
@@ -156,16 +200,12 @@ public class BossHealth : MonoBehaviour
                 UIManager.Instance.bossHealthSlider.gameObject.SetActive(false);
         }
 
-        // --- YENÝ EKLENEN KISIM ---
         onBossDied?.Invoke(); // Boss ölünce sinyal gönder
-        // --------------------------
 
         // BÜYÜK CEZA: Boss ölürse aðýr eksi puan alýr ve eðitim turu (Episode) biter.
         if (agent != null)
         {
-            //agent.SetReward(-1.0f);
-            //agent.EndEpisode();
-            agent.enabled = false;
+            agent.enabled = false; // Beyni tamamen kapat
         }
     }
 
@@ -174,8 +214,11 @@ public class BossHealth : MonoBehaviour
         isDead = false;
         if (stats != null) currentHealth = stats.maxHealth;
 
-        Collider col = GetComponent<Collider>();
-        if (col != null) col.enabled = true;
+        // --- RAGDOLL'U KAPAT VE ANÝMASYONA DÖN ---
+        SetRagdollState(false);
+
+        UnityEngine.AI.NavMeshAgent navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (navAgent != null) navAgent.enabled = true;
 
         // Doðru UI'ý geri aç
         if (isTrainingMode)
@@ -189,5 +232,29 @@ public class BossHealth : MonoBehaviour
         }
 
         UpdateUI();
+    }
+    private void SetRagdollState(bool isRagdoll)
+    {
+        foreach (Rigidbody rb in ragdollRigidbodies)
+        {
+            if (rb == mainRigidbody) continue;
+            rb.isKinematic = !isRagdoll;
+        }
+
+        foreach (Collider col in ragdollColliders)
+        {
+            if (col == mainCollider) continue;
+            col.enabled = true; // Yaþarken de açýk kalmalýlar ki kýlýç çarpabilsin
+        }
+
+        if (mainCollider != null) mainCollider.enabled = !isRagdoll;
+
+        if (mainRigidbody != null)
+        {
+            // Boss NavMeshAgent kullandýðý için ana bedeni buzda kaymamasý adýna Kinematic kalmalý
+            mainRigidbody.isKinematic = true;
+        }
+
+        if (animator != null) animator.enabled = !isRagdoll;
     }
 }
