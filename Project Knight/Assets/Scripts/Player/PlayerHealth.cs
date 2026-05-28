@@ -172,25 +172,26 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         Debug.Log("Oyuncu Öldü! (Ölüm ekraný altyapýsý tetiklendi)");
 
-        // --- RAGDOLL AKTÝVASYONU ---
+        // --- 1. RAGDOLL VE FÝZÝK (Hemen Çalýþmalý) ---
         SetRagdollState(true);
 
-        // Vuruþ Hissi (Geriye doðru savrulma)
         if (hipsRigidbody != null)
         {
-            // Oyuncu ölürken kameranýn tersine veya kendi arkasýna doðru savrulmasý þýk durur
             Vector3 knockbackDirection = -transform.forward + (Vector3.up * 0.8f);
             hipsRigidbody.AddForce(knockbackDirection.normalized * 15f, ForceMode.Impulse);
         }
-
-        UIManager.Instance.pnlDieScreen.SetActive(true);
-        InventoryManager.Instance.CursorVisibility(true);
 
         gameObject.GetComponent<PlayerCombatManager>().enabled = false;
         gameObject.GetComponent<PlayerMovement>().enabled = false;
         gameObject.GetComponent<PlayerInteraction>().enabled = false;
 
-        gameObject.GetComponent<Animator>().SetFloat("speed", 0f);
+
+        Invoke(nameof(ShowDeathScreen), 0.5f);
+    }
+    private void ShowDeathScreen()
+    {
+        UIManager.Instance.pnlDieScreen.SetActive(true);
+        InventoryManager.Instance.CursorVisibility(true);
     }
     private void SetRagdollState(bool isRagdoll)
     {
