@@ -119,7 +119,7 @@ public class InGameMenuManager : MonoBehaviour
     public void RestartButton()
     {
         SceneController.Instance.ResetAllSavedData();
-
+        SceneController.Instance.globalDifficultyMultiplier = 1.0f;
         SceneController.Instance.LoadScene(SceneController.GameScenes.Map);
     }
     public void BackToMainMenuButton()

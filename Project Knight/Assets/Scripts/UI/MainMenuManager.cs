@@ -20,6 +20,8 @@ public class MainMenuManager : MonoBehaviour
     //Ana menudeki butonlarin fonksiyonlari
     public void PlayButton()
     {
+        SceneController.Instance.globalDifficultyMultiplier = 1.0f; // Oyun baþlarken zorluk çarpanýný sýfýrla
+
         SceneController.Instance.LoadScene(SceneController.GameScenes.Map);
     }
     public void OptionsButton()

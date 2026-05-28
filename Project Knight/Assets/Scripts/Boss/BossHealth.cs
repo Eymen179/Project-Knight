@@ -163,8 +163,9 @@ public class BossHealth : MonoBehaviour
         // BÜYÜK CEZA: Boss ölürse aðýr eksi puan alýr ve eðitim turu (Episode) biter.
         if (agent != null)
         {
-            agent.SetReward(-1.0f);
-            agent.EndEpisode();
+            //agent.SetReward(-1.0f);
+            //agent.EndEpisode();
+            agent.enabled = false;
         }
     }
 

@@ -95,11 +95,11 @@ public class BossAttackSystem : MonoBehaviour
 
                 if (pHealth.currentHealth <= 0)
                 {
-                    if (agent != null)
+                    /*if (agent != null)
                     {
                         agent.SetReward(1.0f);
                         agent.EndEpisode(); // Oyuncuyu öldürdü, tur bitti!
-                    }
+                    }*/
                 }
             }
             else if (dHealth != null)
@@ -110,11 +110,11 @@ public class BossAttackSystem : MonoBehaviour
 
                 if (dHealth.currentHealth <= 0)
                 {
-                    if (agent != null)
+                    /*if (agent != null)
                     {
                         agent.SetReward(1.0f);
                         agent.EndEpisode(); // Oyuncuyu öldürdü, tur bitti!
-                    }
+                    }*/
                 }
             }
         }
