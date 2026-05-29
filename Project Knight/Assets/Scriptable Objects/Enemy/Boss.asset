@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss
   m_EditorClassIdentifier: 
   enemyName: Boss
-  maxHealth: 30
+  maxHealth: 12500
   patrolSpeed: 2
   chaseSpeed: 6
   attackDamage: 15

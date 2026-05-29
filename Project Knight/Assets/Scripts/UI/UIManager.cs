@@ -44,6 +44,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI txtDamagePermanent;
     public TextMeshProUGUI txtSpeedPermanent;
 
+    [Header("Scene Transition")]
+    public Animator sceneTransitionAnimator;
+
     private void Awake()
     {
         Instance = this;
