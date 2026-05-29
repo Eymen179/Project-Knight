@@ -186,7 +186,7 @@ public class PlayerHealth : MonoBehaviour
         gameObject.GetComponent<PlayerInteraction>().enabled = false;
 
 
-        Invoke(nameof(ShowDeathScreen), 0.5f);
+        Invoke(nameof(ShowDeathScreen), 1f);
     }
     private void ShowDeathScreen()
     {
