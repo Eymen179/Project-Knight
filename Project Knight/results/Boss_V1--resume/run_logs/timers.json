@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1780592296",
+        "python_version": "3.10.12 | packaged by Anaconda, Inc. | (main, Jul  5 2023, 19:01:18) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\Eymen\\miniconda3\\envs\\mlagents\\Scripts\\mlagents-learn config/boss_config.yaml --run-id=Boss_V1--resume",
+        "mlagents_version": "1.2.0.dev0",
+        "mlagents_envs_version": "1.2.0.dev0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.8.0+cpu",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1780592321"
+    },
+    "total": 24.519330499926582,
+    "count": 1,
+    "self": 0.006136299925856292,
+    "children": {
+        "run_training.setup": {
+            "total": 0.10250779998023063,
+            "count": 1,
+            "self": 0.10250779998023063
+        },
+        "TrainerController.start_learning": {
+            "total": 24.410686400020495,
+            "count": 1,
+            "self": 0.0003760999534279108,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 24.41029700008221,
+                    "count": 1,
+                    "self": 24.41029700008221
+                },
+                "trainer_threads": {
+                    "total": 1.400010660290718e-06,
+                    "count": 1,
+                    "self": 1.400010660290718e-06
+                },
+                "TrainerController._save_models": {
+                    "total": 1.1899974197149277e-05,
+                    "count": 1,
+                    "self": 1.1899974197149277e-05
+                }
+            }
+        }
+    }
+}
